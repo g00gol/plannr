@@ -6,7 +6,7 @@ import viteLogo from "/vite.svg";
 function App(): React.ReactElement {
   return (
     <>
-      <h1>hello world</h1>
+      <h1>Plannr</h1>
       <div className="flex space-x-4">
         <a href="https://vitejs.dev" target="_blank">
           <img src={viteLogo} className="logo" alt="Vite logo" />
