@@ -1,22 +1,17 @@
-import React from "react";
+import React, {useState, useEffect}from "react";
+import { PlanMap } from "./types/PlanMap";
+import { PlanMarker } from "./types/PlanMarker";
+import {APIProvider} from '@vis.gl/react-google-maps';
 
-import reactLogo from "./assets/react.svg";
-import viteLogo from "/vite.svg";
+const elemId = "TEST_MAP";
 
 function App(): React.ReactElement {
-  return (
-    <>
-      <h1>Plannr</h1>
-      <div className="flex space-x-4">
-        <a href="https://vitejs.dev" target="_blank">
-          <img src={viteLogo} className="logo" alt="Vite logo" />
-        </a>
-        <a href="https://react.dev" target="_blank">
-          <img src={reactLogo} className="logo react" alt="React logo" />
-        </a>
-      </div>
-    </>
-  );
+  const map = new PlanMap(elemId, 40.71314239501953, -74.00843048095703);
+  const marker = new PlanMarker("TEST_POINT", 40.71314239501953, -74.00843048095703);
+
+  return <APIProvider apiKey={process.env.MAPS_API as string} libraries={['marker']} version="beta">
+      {map.getMap()}
+  </APIProvider>;
 }
 
 export default App;
