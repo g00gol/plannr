@@ -21,7 +21,21 @@ export class PlanMap {
     addLineToMap(){}
 
     getMap() : ReactElement<any, any> {
-          
-        return <GoogleMap center={{lat: this.center[0], lng: this.center[1]}} zoom={this.zoom} id={this.id}></GoogleMap>
+        return <GoogleMap 
+                    mapContainerStyle={
+                        {
+                            width: '100vw',
+                            height: '100vh'
+                        }
+                    } 
+                    center={
+                        {
+                            lat: this.center[0], 
+                            lng: this.center[1]
+                        }
+                    } 
+                    zoom={this.zoom} 
+                    id={this.id}
+                ></GoogleMap>
     }
 }
