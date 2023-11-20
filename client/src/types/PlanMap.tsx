@@ -1,6 +1,7 @@
-import {Map} from '@vis.gl/react-google-maps';
 import { ReactElement } from 'react';
 import { PlanLine } from './PlanLine';
+import { GoogleMap } from '@react-google-maps/api';
+import React from 'react';
 
 export class PlanMap {
     public center : [number, number];
@@ -20,6 +21,7 @@ export class PlanMap {
     addLineToMap(){}
 
     getMap() : ReactElement<any, any> {
-        return <Map center={{lat: this.center[0], lng: this.center[1]}} zoom={this.zoom} id={this.id}></Map>
+          
+        return <GoogleMap center={{lat: this.center[0], lng: this.center[1]}} zoom={this.zoom} id={this.id}></GoogleMap>
     }
 }
