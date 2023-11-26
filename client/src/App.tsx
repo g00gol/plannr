@@ -1,24 +1,24 @@
 import React, {useState, useEffect}from "react";
-import { PlanMap } from "./types/PlanMap";
-import { PlanMarker } from "./types/PlanMarker";
+import { PlanMap } from "./components/PlanMap";
+import { PlanMarker } from "./components/PlanMarker";
 import { useJsApiLoader } from '@react-google-maps/api'
 
 const elemId = "TEST_MAP";
 
 function App(): React.ReactElement {
 
-  const map = new PlanMap(elemId, 40.74691667, -74.02580556);
-  const marker = new PlanMarker("TEST_POINT", 40.74691667, -74.02580556);
-  const marker2 = new PlanMarker("TEST_POINT2", 40.74272, -74.02710);
-  map.addLineFromPoints(marker, marker2)
+  //const map : PlanMap = <PlanMap id={elemId} latitude={40.74691667} longitude={-74.02580556}></PlanMap>;
 
   const { isLoaded } = useJsApiLoader({
     id: 'google-map-script',
     googleMapsApiKey: String(process.env.MAPS_API)
   })
 
-  return isLoaded ? 
-  (map.getMap())
+  return isLoaded ?
+  <PlanMap id={elemId} latitude={40.74691667} longitude={-74.02580556} zoom={15}>
+    <PlanMarker title={"TEST_POINT"} latitude={40.74691667} longitude={-74.02580556}></PlanMarker>
+    <PlanMarker title={"TEST_POINT_2"} latitude={40.74272} longitude={-74.02710}></PlanMarker>
+  </PlanMap>
   : <></>;
 }
 
