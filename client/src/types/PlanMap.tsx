@@ -1,7 +1,7 @@
 import { ReactElement } from 'react';
 import { PlanLine } from './PlanLine';
 import { GoogleMap } from '@react-google-maps/api';
-import React from 'react';
+import { PlanMarker } from './PlanMarker';
 
 export class PlanMap {
     public center : [number, number];
@@ -11,14 +11,16 @@ export class PlanMap {
         private id: string,
         latitude: number,
         longitude: number,
-        public zoom: number = 8
+        public zoom: number = 15
     ) {
         this.id = id;
         this.center = [latitude, longitude];
-        this.zoom = 8;
+        this.zoom = zoom;
     }
 
-    addLineToMap(){}
+    addLineFromPoints(pm1 : PlanMarker, pm2 : PlanMarker, travelMode : string = 'WALKING'){
+        this.lines.push(new PlanLine(pm1, pm2, travelMode));
+    }
 
     getMap() : ReactElement<any, any> {
         return <GoogleMap 
@@ -36,6 +38,12 @@ export class PlanMap {
                     } 
                     zoom={this.zoom} 
                     id={this.id}
-                ></GoogleMap>
+                >
+                    {
+                        this.lines.map((line) => {
+                            return line.getLine()
+                        })
+                    }
+                </GoogleMap>
     }
 }
