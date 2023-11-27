@@ -22,7 +22,6 @@ function App(): React.ReactElement {
   });
 
   useEffect(() => {
-    console.log('on load useeffect');
     async function fetchData() {
       try {
         //const data = await getSearchData(blahblahblah);
@@ -47,14 +46,17 @@ function App(): React.ReactElement {
           )
         ]
         setSideBarData([...data]);
-        console.log('hi')
 
       } catch (e) {
         console.log(e);
       }
     }
-    fetchData();
-  }, [isLoaded]);
+
+    if(sideBarToggle) {
+      fetchData();
+    }
+
+  }, [isLoaded, sideBarToggle]);
 
   return isLoaded ?
   <div>
