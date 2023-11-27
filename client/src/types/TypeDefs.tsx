@@ -32,4 +32,16 @@ interface PlanMapState {
     lines : PlanLineProps[]
 }
 
-export type {PlanMarkerProps, PlanMarkerState, PlanLineProps, PlanLineState, PlanMapProps, PlanMapState} 
+interface SearchResProps {
+    title: string
+    desc: string
+    isOpen: boolean
+    addr: string
+    img?: string
+}
+
+interface SearchResState {
+
+}
+
+export type {PlanMarkerProps, PlanMarkerState, PlanLineProps, PlanLineState, PlanMapProps, PlanMapState, SearchResProps, SearchResState} 
