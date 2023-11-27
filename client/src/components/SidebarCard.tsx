@@ -1,6 +1,6 @@
 import React from "react"
 import testImage from "../assets/testImage.jpeg"
-import { SearchResProps, SearchResState } from "../types/TypeDefs"
+import { SearchResProps, SearchResState } from "../types/SearchResTypes"
 
 export class SidebarCard extends React.Component<SearchResProps, SearchResState>{
     state: SearchResState = {

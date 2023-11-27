@@ -5,8 +5,6 @@ import { useJsApiLoader } from '@react-google-maps/api'
 import { SidebarCard } from "./components/SidebarCard";
 import { SidebarData } from "./dataObjects/SidebarData";
 
-const elemId = "TEST_MAP";
-
 function App(): React.ReactElement {
   const [sideBarToggle, toggleSideBar] = useState(false);
   const [sideBarData, setSideBarData] = useState<Array<SidebarData>>([]);
@@ -60,7 +58,7 @@ function App(): React.ReactElement {
 
   return isLoaded ?
   <div>
-    <PlanMap id={elemId} latitude={40.74691667} longitude={-74.02580556} zoom={15}>
+    <PlanMap id={"TEST_MAP"} latitude={40.74691667} longitude={-74.02580556} zoom={15}>
     <form onSubmit={search}>
       <div className="flex justify-center ">
           <input 
