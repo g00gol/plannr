@@ -30,8 +30,8 @@ export class PlanMarker extends React.Component<PlanMarkerProps, PlanMarkerState
     }
 
     render() {
-        console.log(this.props.title && this.props.latitude !== undefined && this.props.longitude !== undefined)
-        console.log(this.props.title + " " + this.props.latitude + " " + this.props.longitude)
+        //console.log(this.props.title && this.props.latitude !== undefined && this.props.longitude !== undefined)
+        //console.log(this.props.title + " " + this.props.latitude + " " + this.props.longitude)
         return ( 
             this.props.title && this.props.latitude !== undefined && this.props.longitude !== undefined
             ?
