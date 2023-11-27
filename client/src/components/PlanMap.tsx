@@ -1,6 +1,6 @@
 import { PlanLine } from './PlanLine';
 import { GoogleMap } from '@react-google-maps/api';
-import { PlanLineProps, PlanMapProps, PlanMapState } from '../types/TypeDefs';
+import { PlanMapProps, PlanMapState } from '../types/TypeDefs';
 import React from 'react';
 
 export class PlanMap extends React.Component<PlanMapProps, PlanMapState>{
