@@ -1,13 +1,15 @@
-import React, {useState }from "react";
+import React, {useState, useEffect}from "react";
 import { PlanMap } from "./components/PlanMap";
 import { PlanMarker } from "./components/PlanMarker";
 import { useJsApiLoader } from '@react-google-maps/api'
 import { SidebarCard } from "./components/SidebarCard";
+import { SidebarData } from "./dataObjects/SidebarData";
 
 const elemId = "TEST_MAP";
 
 function App(): React.ReactElement {
   const [sideBarToggle, toggleSideBar] = useState(false);
+  const [sideBarData, setSideBarData] = useState<Array<SidebarData>>([]);
 
   const { isLoaded } = useJsApiLoader({
     id: 'google-map-script',
@@ -17,7 +19,42 @@ function App(): React.ReactElement {
   const search = ((event : React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
     toggleSideBar(true);
-  })
+  });
+
+  useEffect(() => {
+    console.log('on load useeffect');
+    async function fetchData() {
+      try {
+        //const data = await getSearchData(blahblahblah);
+        const data = [
+          new SidebarData(
+              "Title", 
+              "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.",
+              "1234 Address Blvd",
+              false
+              ),
+          new SidebarData(
+              "Title2",
+              "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.",
+              "123 Gay Street",
+              true
+              ),
+          new SidebarData(
+              "Title 3",
+              "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.",
+              "12 Frog Avenue",
+              false
+          )
+        ]
+        setSideBarData([...data]);
+        console.log('hi')
+
+      } catch (e) {
+        console.log(e);
+      }
+    }
+    fetchData();
+  }, [isLoaded]);
 
   return isLoaded ?
   <div>
@@ -47,24 +84,11 @@ function App(): React.ReactElement {
                     onClick={() => toggleSideBar(!sideBarToggle)}>X</button>
               </div>
               <ul className="space-y-[10%]">
-                <SidebarCard 
-                  title="Title" 
-                  desc="Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua."
-                  addr="1234 Address Blvd"
-                  isOpen={false}
-                  />
-                  <SidebarCard 
-                  title="Title 2" 
-                  desc="Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua."
-                  addr="123 Gay Street"
-                  isOpen={false}
-                  />
-                  <SidebarCard 
-                  title="Title 3" 
-                  desc="Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua."
-                  addr="12 Frog Avenue"
-                  isOpen={false}
-                  />
+                {
+                  sideBarData.map((result) => {
+                    return <SidebarCard title={result.title} desc={result.desc} addr={result.addr} isOpen={result.isOpen}/>;
+                  })
+                }
               </ul>
             </div>
         </aside>
