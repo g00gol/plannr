@@ -6,11 +6,10 @@ import { confirmresetpassword } from "../../api/auth.js";
 function ResetPassword(): React.ReactElement {
 	const [searchParams, setSearchParams] = useSearchParams();
 	console.log('hi')
-	const doResetPassword = (e) => {
-		const oobCode = searchParams.get("oobCode");
-		console.log(oobCode)
+	const doResetPassword = (e: React.FormEvent) => {
 		e.preventDefault();
-		const password = document.getElementById("password").value;
+		const oobCode = searchParams.get("oobCode") || '';
+		const password = (document.getElementById("password") as HTMLInputElement).value;
 		confirmresetpassword(oobCode, password);
 	};
 	return (

@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import React, { useEffect, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { resetpassword } from "../../api/auth";
 import "../../styles/auth.scss";
@@ -7,16 +7,16 @@ function ForgotPassword(): React.ReactElement {
 	const [error, setError] = useState("");
 	const navigate = useNavigate();
 
-	const doResetPassword = async (e) => {
+	const doResetPassword = async (e: React.FormEvent) => {
 		e.preventDefault();
-		const email = document.getElementById("email").value;
+		const email = (document.getElementById("email") as HTMLInputElement).value;
 		try {
 			// TODO: VALIDATION
 			await resetpassword(email);
 			navigate("/signin");
-		} catch (e) {
-			console.log(`Error: ${e.message}`);
-			setError(e.message);
+		} catch (error: any) {
+			console.log(`Error: ${error.message}`);
+			setError(error.message);
 		}
 	};
 	return (

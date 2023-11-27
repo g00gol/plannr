@@ -9,17 +9,17 @@ function Signin(): React.ReactElement {
 	const [forgot, setForgot] = useState(false);
 	const navigate = useNavigate();
 
-	const doSignIn = async (e) => {
+	const doSignIn = async (e: React.FormEvent) => {
 		e.preventDefault();
-		const email = document.getElementById("email").value;
-		const password = document.getElementById("password").value;
+		const email = (document.getElementById("email") as HTMLInputElement).value;
+		const password = (document.getElementById("password") as HTMLInputElement).value;
 		try {
 			// TODO: VALIDATION
 			await signin(email, password);
 			navigate('/');
-		} catch (e) {
-			console.log(`Error: ${e.message}`);
-			setError(e.message);
+		} catch (error: any) {
+			console.log(`Error: ${error.message}`);
+			setError(error.message);
 		}
 	};
 	return (

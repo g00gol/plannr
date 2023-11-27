@@ -7,18 +7,18 @@ function Signup(): React.ReactElement {
 	const [error, setError] = useState("");
 	const navigate = useNavigate();
 
-	const doSignUp = async (e) => {
+	const doSignUp = async (e: React.FormEvent) => {
 		e.preventDefault();
-		const email = document.getElementById("email").value;
-		const username = document.getElementById("username").value;
-		const password = document.getElementById("password").value;
+		const email = (document.getElementById("email") as HTMLInputElement).value;
+		const username = (document.getElementById("username") as HTMLInputElement).value;
+		const password = (document.getElementById("password") as HTMLInputElement).value;
 		try {
 			// TODO: VALIDATION
 			await signup(email, username, password);		
 			navigate('/signin');
-		} catch(e) {
-			console.log(`Error: ${e.message}`);
-			setError(e.message);
+		} catch(error: any) {
+			console.log(`Error: ${error.message}`);
+			setError(error.message);
 		}
 	};
 
