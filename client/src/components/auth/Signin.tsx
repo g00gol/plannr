@@ -23,20 +23,19 @@ function Signin(): React.ReactElement {
 		}
 	};
 	return (
-		<div className='content-container auth'>
-			<div className="auth-container">
-				<div className="auth-buttons">
+		<div>
+			<div>
+				<div>
 					<Link to="/signin">
-						<button className="signin">Sign In</button>
+						<button>Sign In</button>
 					</Link>
 					<Link to="/signup">
-						<button className="signup">Sign Up</button>
+						<button>Sign Up</button>
 					</Link>
 				</div>
-				<form className="auth-form" onSubmit={doSignIn}>
+				<form onSubmit={doSignIn}>
 					<label>
 						<input
-							className="input"
 							id="email"
 							type="email"
 							placeholder="email"
@@ -44,16 +43,15 @@ function Signin(): React.ReactElement {
 					</label>
 					<label>
 						<input
-							className="input"
 							id="password"
 							type="password"
 							placeholder="password"
 						/>
 					</label>
 					{	error && 
-						<span className="input-error">{error}</span>
+						<span>{error}</span>
 					}
-					<button className="login-button" type="submit">
+					<button type="submit">
 						Login
 					</button>
 					<label>

@@ -20,19 +20,18 @@ function ForgotPassword(): React.ReactElement {
 		}
 	};
 	return (
-		<div className="content-container auth">
-			<div className="forgot-container">
-				<form className="forgot-form" onSubmit={doResetPassword}>
+		<div>
+			<div>
+				<form onSubmit={doResetPassword}>
 					<label>
 						<input
-							className="input"
 							id="email"
 							type="email"
 							placeholder="email"
 						/>
 					</label>
 					{error && <span className="input-error">{error}</span>}
-					<button className="login-button" type="submit">
+					<button type="submit">
 						Send Email
 					</button>
 					<Link to="/signin">Cancel</Link>

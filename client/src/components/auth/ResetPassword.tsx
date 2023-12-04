@@ -13,18 +13,17 @@ function ResetPassword(): React.ReactElement {
 		confirmresetpassword(oobCode, password);
 	};
 	return (
-		<div className="content-container auth">
-			<div className="forgot-container">
-				<form className="forgot-form" onSubmit={doResetPassword}>
+		<div>
+			<div>
+				<form onSubmit={doResetPassword}>
 					<label>
 						<input
-							className="input"
 							id="password"
 							type="password"
 							placeholder="password"
 						/>
 					</label>
-					<button className="login-button" type="submit">
+					<button type="submit">
 						Reset Password
 					</button>
 				</form>
