@@ -8,7 +8,7 @@ export class SidebarCard extends React.Component<SearchResProps, SearchResState>
     }
 
     render() {
-        return <li>
+        return <li className="hover:bg-gray-100">
         <div className="grid grid-flow-col grid-rows-2 gap-4">
           <div className="row-span-2">
             <p className="text-lg font-bold">{this.props.title}</p>
