@@ -12,16 +12,12 @@ import {
   } from 'firebase/auth';
 // import axios from 'axios';
 
-// const baseURL: string = import.meta.env.VITE_BASE_API
-
 const signup = async (email: string, username: string, password: string) => { //create
     const auth = getAuth() as any; 
     // const userCredentials = await createUserWithEmailAndPassword(auth, email, password);
     // await updateProfile(userCredentials.user, {displayName: username});
     await createUserWithEmailAndPassword(auth, email, password);
     await updateProfile(auth.currentUser, {displayName: username});
-    // const {data} = await axios.post(`${baseURL}/user_api/add_user`, {username: username, uid: auth.currentUser.uid});
-    // if(!data) throw 'Problem adding user to database';
 
     console.log(`Signup successful for ${username}`);
 }

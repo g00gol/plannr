@@ -10,3 +10,5 @@ interface PlanLineState {
     place1: PlanMarkerProps
     place2: PlanMarkerProps
 }
+
+export type { PlanLineProps, PlanLineState }
