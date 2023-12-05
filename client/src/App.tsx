@@ -11,7 +11,7 @@ function App(): React.ReactElement {
 
   const { isLoaded } = useJsApiLoader({
     id: 'google-map-script',
-    googleMapsApiKey: String(process.env.MAPS_API)
+    googleMapsApiKey: String(import.meta.env.VITE_MAPS_API_KEY)
   })
 
   const search = ((event : React.FormEvent<HTMLFormElement>) => {
