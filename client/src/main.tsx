@@ -5,6 +5,7 @@ import './index.css';
 
 //import { initializeApp } from "firebase/app";
 import React from 'react';
+import { AuthProvider } from './contexts/AuthContext.tsx';
 
 //const config = JSON.parse(import.meta.env.VITE_FIREBASE_CONFIG);
 //const app = initializeApp(config);
@@ -12,7 +13,9 @@ import React from 'react';
 ReactDOM.createRoot(document.getElementById('root')!).render(
   <React.StrictMode>
     <BrowserRouter>
-      <App />
+      <AuthProvider>
+        <App />
+      </AuthProvider>
     </BrowserRouter>
   </React.StrictMode>,
 )
