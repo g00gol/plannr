@@ -1,7 +1,6 @@
 interface SearchResProps {
     title: string
-    desc: string
-    isOpen: boolean
+    isOpen: boolean | undefined
     addr: string
     img?: string
 }

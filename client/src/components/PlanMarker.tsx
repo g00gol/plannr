@@ -13,37 +13,34 @@ export class PlanMarker extends React.Component<PlanMarkerProps, PlanMarkerState
     }
 
     instantiateVals = (title: string, latitude: number, longitude: number) => {
-        this.setState(() => {
-            title: title
+        this.setState({
+            title: title,
             location: new google.maps.LatLng({lat: latitude, lng: longitude})
         })
     }
 
     instantiateProps = (props : PlanMarkerProps) => {
-        this.setState((state) => {
-            title: props.title
+        this.setState({
+            title: String(props.title),
             location: 
             props.latitude && props.longitude 
             ? new google.maps.LatLng({lat: props.latitude, lng: props.longitude})
-            : state.location
+            : this.state.location
+        }, () => {
+            console.log(this.state.title + " " + this.state.location.lat() + " " + this.state.location.lng())
         })
     }
 
     render() {
-        //console.log(this.props.title && this.props.latitude !== undefined && this.props.longitude !== undefined)
-        //console.log(this.props.title + " " + this.props.latitude + " " + this.props.longitude)
+        console.log(this.props.title + " " + this.props.latitude + " " + this.props.longitude)
+        console.log(this.state.title + " " + this.state.location.lat() + " " + this.state.location.lng())
         return ( 
-            this.props.title && this.props.latitude !== undefined && this.props.longitude !== undefined
+            this.state.title && !(this.state.location.lat() == 0 && this.state.location.lng() == 0)
             ?
             <Marker
                 title={this.props.title}
-                position= { new google.maps.LatLng(
-                        {
-                            lat: this.props.latitude, 
-                            lng: this.props.longitude
-                        })
-                }
-            ></Marker>
+                position= {this.props.latitude && this.props.longitude ? new google.maps.LatLng(this.props.latitude, this.props.longitude) : this.state.location}
+            />
             : <></>
         ) 
     }

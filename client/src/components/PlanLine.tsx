@@ -1,6 +1,7 @@
 import { PlanMarker } from "./PlanMarker";
 import { PlanLineState, PlanLineProps } from "../types/PlanLineTypes";
 import React from "react";
+import { PlanMarkerData } from "../dataObjects/PlanMarkerData";
 
 export class PlanLine extends React.Component<PlanLineProps, PlanLineState> {
     //TODO: Have the polyline be calculated, not have it be an input param 
@@ -18,9 +19,20 @@ export class PlanLine extends React.Component<PlanLineProps, PlanLineState> {
         this.travelMode = travelMode.trim().toLowerCase();
     }*/
 
+    componentDidMount(): void {
+        this.instantiate(this.props.place1, this.props.place2);
+    }
+
+    instantiate = (place1 : PlanMarkerData | undefined, place2 : PlanMarkerData | undefined) => {
+        this.setState({
+            place1: place1 ? place1 : this.state.place1,
+            place2: place2 ? place2 : this.state.place2
+        })
+    }
+
     state: PlanLineState = {
-        place1: {},
-        place2: {}
+        place1: undefined,
+        place2: undefined
     }
 
     static getTravelMode(travelMode : string) : google.maps.TravelMode {
@@ -42,29 +54,21 @@ export class PlanLine extends React.Component<PlanLineProps, PlanLineState> {
 
     // TODO: Plot line here as well
     render() {
-        //const apiResultOpts : google.maps.DirectionsRendererOptions = this.getAPI() //Spoofing backend API call for testing purposes
-        //console.log(apiResultOpts)
-        //<DirectionsRenderer options = {apiResultOpts}></DirectionsRenderer>
-
-        this.setState((state) => {
-            place1: this.props.place1
-                        ? this.props.place1
-                        : state.place1
-            place2: this.props.place2
-                        ? this.props.place2
-                        : state.place2
-        });
-
         return <>
-            <PlanMarker 
-                title={this.state.place1.title}
-                latitude={this.state.place1.latitude}
-                longitude={this.state.place1.longitude}></PlanMarker>
-            
-            <PlanMarker 
-                title={this.state.place2.title}
-                latitude={this.state.place2.latitude}
-                longitude={this.state.place2.longitude}></PlanMarker>
+            {
+                    <PlanMarker 
+                    title={this.props.place1?.title}
+                    latitude={this.props.place1?.location.lat()}
+                    longitude={this.props.place1?.location.lng()}/>
+            }
+            {
+                this.state.place2
+                ?   <PlanMarker 
+                    title={this.state.place2.title}
+                    latitude={this.state.place2.location.lat()}
+                    longitude={this.state.place2.location.lng()}/>
+                : <></>
+            }
         </>
     }
 }
