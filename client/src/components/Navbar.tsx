@@ -2,7 +2,7 @@ import React from "react"
 import { Link } from "react-router-dom";
 import { AuthContext } from "../contexts/AuthContext" 
 import logo from "../assets/logo_transparent.png"
-import { FaCircle, FaCircleUser} from 'react-icons/fa6';
+import { FaCircleUser} from 'react-icons/fa6';
 
 const NavBar = (): React.ReactElement => {
     const currentUser = React.useContext(AuthContext);
