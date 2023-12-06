@@ -3,7 +3,7 @@ import { signup } from "../../api/auth.js";
 import { Link, useNavigate } from "react-router-dom";
 import "../../styles/auth.scss";
 
-function Signup(): React.ReactElement {
+const Signup = (): React.ReactElement => {
 	const [error, setError] = useState("");
 	const navigate = useNavigate();
 

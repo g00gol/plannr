@@ -3,7 +3,7 @@ import { useSearchParams } from "react-router-dom";
 import "../../styles/auth.scss";
 import { confirmresetpassword } from "../../api/auth.js";
 
-function ResetPassword(): React.ReactElement {
+const ResetPassword = (): React.ReactElement => {
 	const [searchParams, setSearchParams] = useSearchParams();
 	console.log('hi')
 	const doResetPassword = (e: React.FormEvent) => {
