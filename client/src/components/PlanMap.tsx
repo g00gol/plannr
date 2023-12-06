@@ -13,7 +13,7 @@ export class PlanMap extends React.Component<PlanMapProps, PlanMapState>{
                     mapContainerStyle={
                         {
                             width: '100vw',
-                            height: '100vh'
+                            // height: '100vh' //App.tsx flex-grows map to fill screen
                         }
                     } 
                     center={
