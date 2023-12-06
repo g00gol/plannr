@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 # Logs
 logs
 *.log
@@ -25,4 +26,6 @@ dist-ssr
 
 *.env
 
+=======
+>>>>>>> 16454be0b20023480dba41844fd383fbecf1a7a7
 *.code-workspace
