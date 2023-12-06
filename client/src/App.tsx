@@ -1,21 +1,23 @@
 import React, {useState, useEffect, useRef, useCallback, FormEvent}from "react";
-import { PlanMap } from "./components/PlanMap";
-import { PlanMarker } from "./components/PlanMarker";
-import { GoogleMap, Libraries, Marker } from "@react-google-maps/api";
+import { Circle, GoogleMap, Marker } from "@react-google-maps/api";
 import { useJsApiLoader } from '@react-google-maps/api'
 import { SidebarCard } from "./components/SidebarCard";
 import { SidebarData } from "./dataObjects/SidebarData";
-import { PlanLine } from "./components/PlanLine";
 import { PlanMarkerData } from "./dataObjects/PlanMarkerData";
-import axios from "axios";
+import { CircleData } from "./dataObjects/CircleData";
 
+const DEFAULT_RADIUS = 1500;
 
 function App(): React.ReactElement {
-  const mapRef = useRef<HTMLDivElement | google.maps.Map>();
+  const mapRef = useRef<google.maps.Map>();
+  const [centerData, setCenterData] = useState<google.maps.LatLng | google.maps.LatLngLiteral>({lat: 40.74273, lng: -74.038});
+  const [circleData, setCircleData] = useState<CircleData>();
   const [sideBarToggle, toggleSideBar] = useState(false);
   const [sideBarData, setSideBarData] = useState<Array<SidebarData>>([]);
   const [markerData, setMarkerData] = useState<Array<PlanMarkerData>>([]);
   const [keyWordData, setKeyWordData] = useState<string>("");
+  const pinSVGFilled = "M 12,2 C 8.1340068,2 5,5.1340068 5,9 c 0,5.25 7,13 7,13 0,0 7,-7.75 7,-13 0,-3.8659932 -3.134007,-7 -7,-7 z";
+
 
   const { isLoaded } = useJsApiLoader({
     id: 'google-map-script',
@@ -23,14 +25,21 @@ function App(): React.ReactElement {
     libraries:["places"]
   })
 
-  const onLoad = useCallback((map : HTMLDivElement | google.maps.Map) => {
+  const onLoad = useCallback((map : google.maps.Map) => {
     mapRef.current = map;
   }, []);
 
   const search = ((event : FormEvent<HTMLFormElement>) => {
-    console.log(keyWordData)
     event.preventDefault();
-    setKeyWordData(event.currentTarget.searchBar.value)
+    setKeyWordData(event.currentTarget.searchBar.value);
+    setCircleData(undefined);
+
+    const center = mapRef.current?.getCenter();
+    if(center){
+      setCenterData(center);
+      setCircleData(new CircleData(centerData, DEFAULT_RADIUS))
+    }
+
     toggleSideBar(true);
   });
 
@@ -39,20 +48,18 @@ function App(): React.ReactElement {
       try {
         if(mapRef && mapRef.current){
           setSideBarData([]);
-            const placesService = new google.maps.places.PlacesService(mapRef.current)
+            const placesService = new google.maps.places.PlacesService(mapRef.current);
             placesService.nearbySearch({
-              location: new google.maps.LatLng(40.74273, -74.038),
-              radius: 1500,
-              rankBy: google.maps.places.RankBy.PROMINENCE,
-              openNow: true,
-              keyword: keyWordData,
+              location: centerData,
+              radius: circleData? circleData.radius : DEFAULT_RADIUS,
+              //openNow: true,
+              keyword: keyWordData.trim(),
             }, (res, status) => {
               if(status === google.maps.places.PlacesServiceStatus.OK && res !== null){
                 const data : Array<SidebarData> = res.map((r) => {
                   const isOpen = r.opening_hours?.isOpen();
                   const location = r.geometry?.location;
                   const name = r.name ? r.name : "Invalid Name";
-                  console.log(r)
 
                   return new SidebarData(
                     name, 
@@ -76,9 +83,9 @@ function App(): React.ReactElement {
       fetchData();
     }
 
-  }, [isLoaded, keyWordData]);
+  }, [keyWordData, centerData]);
 
-  useEffect(() => {
+  /*useEffect(() => {
     async function fetchData() {
       try {
         //const data = await getSearchData(blahblahblah);
@@ -97,8 +104,7 @@ function App(): React.ReactElement {
     
     fetchData();
 
-  }, [isLoaded]);
-
+  }, [isLoaded]);*/
   return isLoaded ?
   <div>
     <GoogleMap 
@@ -107,13 +113,8 @@ function App(): React.ReactElement {
                     width: '100vw',
                     height: '100vh'
                 }
-            } 
-            center={
-                {
-                    lat: 40.74273, 
-                    lng: -74.038
-                }
-            } 
+            }
+            center={centerData}
             zoom={15} 
             id={"TEST_MAP"}
             onLoad={onLoad}
@@ -157,19 +158,35 @@ function App(): React.ReactElement {
           })
         }
         {
+          circleData 
+          ? <Circle
+              center={centerData}
+              radius={circleData.radius}
+              options={{
+                strokeColor: "#FF0000",
+                strokeOpacity: 0.8,
+                strokeWeight: 2,
+                fillColor: "#FF0000",
+                fillOpacity: 0.35,
+              }}
+            />
+          : <></>
+        }
+        {
           sideBarData.map((result) => {
             if(result.marker){
-              return <Marker title={result.marker.title} position={result.marker.location}/>;
+              return <Marker title={result.marker.title} position={result.marker.location} icon={{  
+                path: pinSVGFilled,
+                anchor: new google.maps.Point(12,17),
+                fillOpacity: 1,
+                fillColor: "lightblue",
+                strokeWeight: 2,
+                strokeColor: "gray",
+                scale: 2
+            }}/>;
             }
           })
         }
-        <Marker title="TEST_POINT4" position={new google.maps.LatLng(40.74263,-74.048)}/>
-        <PlanMarker title="TEST_POINT3" longitude={40.74273} latitude={-74.038}/>
-        <PlanLine 
-        place1={new PlanMarkerData("TEST_POINT", new google.maps.LatLng(40.74691667, -74.025805))}
-        place2={new PlanMarkerData("TEST_POINT2", new google.maps.LatLng(40.74272 , -74.0271))}
-        travelMode="WALKING"
-      />
     </GoogleMap>
   </div>
   : <></>;
