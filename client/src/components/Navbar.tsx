@@ -6,9 +6,9 @@ const NavBar = (): React.ReactElement => {
     return(
         <header className='nav'>
 			<Link to='/'>
-				<h1>Reels</h1> {/* replace with svg? */}
+				<h1>Plannr</h1> {/* replace with svg? */}
 			</Link>
-			{	currentUser 
+			{/* {	currentUser 
 				? 	<div className='nav-right'>
 						<Link to='/add'><FaPlus size={30}/></Link> 
 						
@@ -22,7 +22,7 @@ const NavBar = (): React.ReactElement => {
 				: 	<Link to={'/signin'}>
 						<FaCircleUser size={30}/>
 					</Link>
-			}
+			} */}
 		</header>
     );
 }
