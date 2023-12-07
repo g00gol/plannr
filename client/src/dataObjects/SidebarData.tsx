@@ -14,7 +14,7 @@ export class SidebarData {
         this.addr = addr;
         this.isOpen = isOpen;
         this.marker = marker;
-        this.img = img
+        this.img = img;
     }
 
     public getOpenStr() : string {

@@ -3,7 +3,7 @@ import { signin } from "../../api/auth.js";
 import { Link, useNavigate } from "react-router-dom";
 import "../../styles/auth.scss";
 
-function Signin(): React.ReactElement {
+const Signin = (): React.ReactElement => {
 	const [checked, setChecked] = useState(false);
 	const [error, setError] = useState('');
 	const [forgot, setForgot] = useState(false);

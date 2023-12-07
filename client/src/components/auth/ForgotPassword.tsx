@@ -3,7 +3,7 @@ import { Link, useNavigate } from "react-router-dom";
 import { resetpassword } from "../../api/auth";
 import "../../styles/auth.scss";
 
-function ForgotPassword(): React.ReactElement {
+const ForgotPassword = (): React.ReactElement => {
 	const [error, setError] = useState("");
 	const navigate = useNavigate();
 
