@@ -1,7 +1,8 @@
 import React from "react"
 import { Link } from "react-router-dom";
 import { AuthContext } from "../contexts/AuthContext" 
-import logo from "../assets/logo_transparent.png"
+import logo_transparent from "../assets/logo_transparent.png"
+import logo_cropped from "../assets/logo_cropped.png"
 import { FaCircleUser} from 'react-icons/fa6';
 
 const NavBar = (): React.ReactElement => {
@@ -12,7 +13,8 @@ const NavBar = (): React.ReactElement => {
             <nav className="mx-auto flex max-w-7xl items-center justify-between p-4 lg:px-8" aria-label="Global">
                 <div className="flex lg:flex-1">
                     <Link to="/" className="-m-1.5 p-1.5">
-                        <img className="h-14 w-auto" src={logo} alt=""></img>
+                        {/* <img className="h-14 w-auto" src={logo_transparent} alt=""></img> */}
+                        <img className="h-14 w-auto" src={logo_cropped} alt=""></img>
                     </Link>
                 </div>
                 <div className="hidden lg:flex lg:flex-1 lg:justify-end">

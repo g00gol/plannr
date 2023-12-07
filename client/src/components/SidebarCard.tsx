@@ -17,10 +17,9 @@ export class SidebarCard extends React.Component<SearchResProps, SearchResState>
                 ? "Open" 
                 : "Closed"
                }`}</p>
-            <p>{this.props.desc}</p>
           </div>
           <div className="row-span-2 col-span-1">
-            <img className="object-scale-down rounded-lg" src={
+            <img className="object-scale-down rounded-lg max-h-[10vh]" src={
                 this.props.img 
                 ? this.props.img
                 : testImage
