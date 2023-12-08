@@ -1,6 +1,5 @@
 import React, { useEffect, useState } from "react";
 import { useSearchParams } from "react-router-dom";
-import "../../styles/auth.scss";
 import { confirmresetpassword } from "../../api/auth.js";
 
 const ResetPassword = (): React.ReactElement => {
@@ -13,22 +12,18 @@ const ResetPassword = (): React.ReactElement => {
 		confirmresetpassword(oobCode, password);
 	};
 	return (
-		<div>
-			<div>
-				<form onSubmit={doResetPassword}>
-					<label>
-						<input
-							id="password"
-							type="password"
-							placeholder="password"
-						/>
-					</label>
-					<button type="submit">
-						Reset Password
-					</button>
-				</form>
-			</div>
-		</div>
+		<form onSubmit={doResetPassword}>
+			<label>
+				<input
+					id="password"
+					type="password"
+					placeholder="password"
+				/>
+			</label>
+			<button type="submit">
+				Reset Password
+			</button>
+		</form>
 	);
 }
 

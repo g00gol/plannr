@@ -1,7 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { resetpassword } from "../../api/auth";
-import "../../styles/auth.scss";
 
 const ForgotPassword = (): React.ReactElement => {
 	const [error, setError] = useState("");
@@ -20,24 +19,20 @@ const ForgotPassword = (): React.ReactElement => {
 		}
 	};
 	return (
-		<div>
-			<div>
-				<form onSubmit={doResetPassword}>
-					<label>
-						<input
-							id="email"
-							type="email"
-							placeholder="email"
-						/>
-					</label>
-					{error && <span className="input-error">{error}</span>}
-					<button type="submit">
-						Send Email
-					</button>
-					<Link to="/signin">Cancel</Link>
-				</form>
-			</div>
-		</div>
+		<form onSubmit={doResetPassword}>
+			<label>
+				<input
+					id="email"
+					type="email"
+					placeholder="email"
+				/>
+			</label>
+			{error && <span className="input-error">{error}</span>}
+			<button type="submit">
+				Send Email
+			</button>
+			<Link to="/signin">Cancel</Link>
+		</form>
 	);
 }
 

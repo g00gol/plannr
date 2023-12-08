@@ -18,7 +18,7 @@ const NavBar = (): React.ReactElement => {
                     </Link>
                 </div>
                 <div className="hidden lg:flex lg:flex-1 lg:justify-end">
-                    <Link to="/">
+                    <Link to="/signin">
                         <FaCircleUser size={35} />
                     </Link>
                     {/* <a href="#" className="text-lg font-semibold leading-6 text-gray-900">Log in</a> */}
