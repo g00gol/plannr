@@ -48,7 +48,7 @@ const Signup = (): React.ReactElement => {
 				<span>{error}</span>
 			}
 			<button type="submit">
-				Login
+				Sign up
 			</button>
 			<div>
 				Already have an account? <Link to="/signin">Sign in</Link>	
