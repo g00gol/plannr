@@ -24,7 +24,7 @@ const Signin = (): React.ReactElement => {
 	};
 	return (
 		<div className="flex flex-col items-center justify-center">
-			<h1 className="text-xl"> Sign In </h1>
+			<h1 className="text-xl font-bold"> Sign In </h1>
 			<form onSubmit={doSignIn}>
 				<TextField
 					id="email"
@@ -50,7 +50,7 @@ const Signin = (): React.ReactElement => {
 				{	error && 
 					<span>{error}</span>
 				}
-				<button type="submit">
+				<button type="submit" className="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 me-2 mb-2 dark:bg-blue-600 dark:hover:bg-blue-700 focus:outline-none dark:focus:ring-blue-800">
 					Login
 				</button>
 				<label>
@@ -63,18 +63,14 @@ const Signin = (): React.ReactElement => {
 					Remember me
 					<Link
 						to="/forgot"
-						style={{
-							textAlign: "right",
-							display: "inline-block",
-							float: "right",
-						}}
+						className="hover:underline text-blue-700 hover:text-blue-800 transition duration-150 ease-in-out"
 					>
 						Forgot Password
 					</Link>
 				</label>
 				<div>
-					Don't have an account? <Link to="/signup">Sign up</Link>	
-				</div>		
+					Don't have an account? <Link to="/signup">Sign up</Link>
+				</div>
 			</form>
 		</div>
 	);
