@@ -6,3 +6,11 @@ class User(BaseModel):
 
     class Config:
         extra = "forbid"
+
+
+class Route(BaseModel):
+    name: str
+    route: list[list[float]]
+
+    class Config:
+        extra = "forbid"
