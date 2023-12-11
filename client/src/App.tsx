@@ -1,22 +1,20 @@
 import React from "react";
-
-import reactLogo from "./assets/react.svg";
-import viteLogo from "/vite.svg";
+import { Routes, Route } from "react-router-dom";
+import Home from "./components/Home";
+import AuthModal from "./components/auth/AuthModal";
+import Signin from "./components/auth/Signin";
+import Signup from "./components/auth/Signup";
 
 function App(): React.ReactElement {
-  return (
-    <>
-      <h1>hello world</h1>
-      <div className="flex space-x-4">
-        <a href="https://vitejs.dev" target="_blank">
-          <img src={viteLogo} className="logo" alt="Vite logo" />
-        </a>
-        <a href="https://react.dev" target="_blank">
-          <img src={reactLogo} className="logo react" alt="React logo" />
-        </a>
-      </div>
-    </>
-  );
+	return (
+		<Routes>
+			<Route path="/" element={<Home><></></Home>} />
+			<Route path="/signin" element={<Home><AuthModal><Signin/></AuthModal></Home>} />
+			<Route path="/signup" element={<Home><AuthModal><Signup/></AuthModal></Home>} />
+			{/* <Route path="/forgot" element={<Home><></></Home>} /> */}
+			<Route path="*" element={<Home><></></Home>} />
+		</Routes>
+	);
 }
 
 export default App;
