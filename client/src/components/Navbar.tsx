@@ -8,6 +8,15 @@ import { FaCircleUser} from 'react-icons/fa6';
 const NavBar = (): React.ReactElement => {
     const currentUser = React.useContext(AuthContext);
 
+    const blam = (): void => {
+        try {
+            const token = currentUser?.getIdToken();
+            console.log(token)
+        } catch(e) {
+            
+        }
+    }
+
     return(
         <header className="bg-white">
             <nav className="mx-auto flex max-w-7xl items-center justify-between p-4 lg:px-8" aria-label="Global">
@@ -18,6 +27,9 @@ const NavBar = (): React.ReactElement => {
                     </Link>
                 </div>
                 <div className="hidden lg:flex lg:flex-1 lg:justify-end">
+                    <button onClick={blam}>
+                        Test Token
+                    </button>
                     <Link to="/signin">
                         <FaCircleUser size={35} />
                     </Link>
