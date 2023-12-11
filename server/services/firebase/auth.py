@@ -6,6 +6,9 @@ token_auth_scheme = HTTPBearer()
 
 
 def firebase_auth_dependency(auth: HTTPAuthorizationCredentials = Depends(token_auth_scheme)):
+    """
+    Checks if the token is valid and returns the decoded token if it is.
+    """
     try:
         token = auth.credentials
         decoded_token = auth.verify_id_token(token)
