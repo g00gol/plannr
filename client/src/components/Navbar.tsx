@@ -14,7 +14,7 @@ const NavBar = (): React.ReactElement => {
             console.log(token)
         } catch(e) {
             console.log('err')
-            console.log(e.message)
+            console.log(e)
         }
     }
 
