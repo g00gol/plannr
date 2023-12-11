@@ -23,9 +23,5 @@ dist-ssr
 *.njsproj
 *.sln
 *.sw?
-
 *.env
-
-=======
->>>>>>> 16454be0b20023480dba41844fd383fbecf1a7a7
-*.code-workspace
+__pycache__/
