@@ -8,12 +8,13 @@ import { FaCircleUser} from 'react-icons/fa6';
 const NavBar = (): React.ReactElement => {
     const currentUser = React.useContext(AuthContext);
 
-    const blam = (): void => {
+    const blam = async (): Promise<void> => {
         try {
-            const token = currentUser?.getIdToken();
+            const token = await currentUser?.getIdToken();
             console.log(token)
         } catch(e) {
-            
+            console.log('err')
+            console.log(e.message)
         }
     }
 
