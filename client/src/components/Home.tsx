@@ -1,8 +1,8 @@
 import React, {useState, useEffect, useRef, useCallback, FormEvent}from "react";
 import { Circle, GoogleMap, Marker } from "@react-google-maps/api";
 import { useJsApiLoader } from '@react-google-maps/api'
-import { SidebarCard } from "./SidebarCard";
-import { SidebarData } from "../dataObjects/SidebarData";
+import { ResultsCard } from "./ResultsCard";
+import { ResultsData } from "../dataObjects/ResultsData";
 import { PlanMarkerData } from "../dataObjects/PlanMarkerData";
 import { CircleData } from "../dataObjects/CircleData";
 import { HomeProps } from "../types/HomeTypes";
@@ -115,8 +115,8 @@ function Home(props: HomeProps): React.ReactElement {
 	const mapRef = useRef<google.maps.Map>();
 	const [centerData, setCenterData] = useState<google.maps.LatLng | google.maps.LatLngLiteral>({lat: 40.74273, lng: -74.038});
 	const [circleData, setCircleData] = useState<CircleData>();
-	const [sideBarToggle, toggleSideBar] = useState(false);
-	const [sideBarData, setSideBarData] = useState<Array<SidebarData>>([]);
+	const [resultsToggle, toggleResults] = useState(false);
+	const [resultsData, setresultsData] = useState<Array<ResultsData>>([]);
 	const [markerData, setMarkerData] = useState<Array<PlanMarkerData>>([]);
 	const [typeData, setTypeData] = useState<string>("");
 	const [keyWordData, setKeyWordData] = useState<string>("");
@@ -130,7 +130,7 @@ function Home(props: HomeProps): React.ReactElement {
 
 	const onLoad = useCallback((map : google.maps.Map) => {
 		setCircleData(undefined);
-		setSideBarData([]);
+		setresultsData([]);
 		setMarkerData([]);
 		mapRef.current = map;
 	}, []);
@@ -140,7 +140,7 @@ function Home(props: HomeProps): React.ReactElement {
 		setKeyWordData(event.currentTarget.searchBar.value);
 		setTypeData(event.currentTarget.categories.value)
 		setCircleData(undefined);
-		setSideBarData([]);
+		setresultsData([]);
 		setMarkerData([]);
 
 		const center = mapRef.current?.getCenter();
@@ -149,14 +149,14 @@ function Home(props: HomeProps): React.ReactElement {
 			setCircleData(new CircleData(centerData, DEFAULT_RADIUS))
 		}
 
-		toggleSideBar(true);
+		toggleResults(true);
 	});
 
 	useEffect(() => {
 		async function fetchData() {
 			try {
 				if(mapRef && mapRef.current){
-					setSideBarData([]);
+					setresultsData([]);
 					const placesService = new google.maps.places.PlacesService(mapRef.current);
 					placesService.nearbySearch({
 						location: centerData,
@@ -166,12 +166,12 @@ function Home(props: HomeProps): React.ReactElement {
 						type: typeData.toUpperCase().trim() == "NONE" ? undefined : typeData.trim()
 					}, (res, status) => {
 						if(status === google.maps.places.PlacesServiceStatus.OK && res !== null){
-							const data : Array<SidebarData> = res.map((r) => {
+							const data : Array<ResultsData> = res.map((r) => {
 								const isOpen = r.opening_hours?.isOpen();
 								const location = r.geometry?.location;
 								const name = r.name ? r.name : "Invalid Name";
 
-								return new SidebarData(
+								return new ResultsData(
 									name, 
 									r.vicinity ? r.vicinity : "Invalid Address",
 									isOpen ? isOpen : false,
@@ -179,7 +179,7 @@ function Home(props: HomeProps): React.ReactElement {
 									r.photos ? r.photos[0] : undefined
 								)
 							});
-							setSideBarData([...data]);
+							setresultsData([...data]);
 						}
 					})
 				}
@@ -187,7 +187,7 @@ function Home(props: HomeProps): React.ReactElement {
 				console.log(e);
 			}
 		}
-		if(sideBarToggle) {
+		if(resultsToggle) {
 			fetchData();
 		}
 	}, [keyWordData, centerData]);
@@ -229,7 +229,7 @@ function Home(props: HomeProps): React.ReactElement {
 								}
 							</select>
 						</form>
-						{ 	sideBarToggle &&
+						{ 	resultsToggle &&
 							<aside 
 								id="searchResults"
 								className="fixed opacity-90 top-inherit left-inherit ml-2 z-20 h-4/5 w-1/6 transition-transform -translate-x-full sm:translate-x-0"
@@ -240,12 +240,12 @@ function Home(props: HomeProps): React.ReactElement {
 										<button 
 											type="button" 
 											className="hover:text-red-500 font-bold rounded-md text-md px-4 py-2 text-center"
-											onClick={() => toggleSideBar(!sideBarToggle)}>X</button>
+											onClick={() => toggleResults(!resultsToggle)}>X</button>
 									</div>
 									<ul className="px-3 py-4 flex-grow overflow-y-scroll">
 										{
-											sideBarData.map((result) => {
-												return <SidebarCard key={result.addr} title={result.title} addr={result.addr} isOpen={result.isOpen} img={result.img?.getUrl()}/>;
+											resultsData.map((result) => {
+												return <ResultsCard key={result.addr} title={result.title} addr={result.addr} isOpen={result.isOpen} img={result.img?.getUrl()}/>;
 											})
 										}
 									</ul>
@@ -272,7 +272,7 @@ function Home(props: HomeProps): React.ReactElement {
 							/>
 						}
 						{
-							sideBarData.map((result) => {
+							resultsData.map((result) => {
 								if(result.marker){
 									return <Marker key={`(${result.marker.location.lat()}, ${result.marker.location.lng()})`} title={result.marker.title} position={result.marker.location} icon={{  
 										path: pinSVGFilled,

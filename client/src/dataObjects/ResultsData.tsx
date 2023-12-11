@@ -1,6 +1,6 @@
 import { PlanMarkerData } from "./PlanMarkerData";
 
-export class SidebarData {
+export class ResultsData {
     //private markerStyle;
 
     constructor(
