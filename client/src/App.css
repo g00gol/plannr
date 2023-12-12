@@ -8,3 +8,30 @@ body {
     margin: 0;
     padding: 0;
 }
+
+.load-slide {
+    animation: 1s ease-out 0s 1 slideInFromLeft;
+}
+
+.back-link {
+    color: #000000;
+    font-size: large;
+    text-decoration: none;
+    transition: 0.5s;
+
+}
+
+.back-link:hover {
+    font-size: larger;
+    text-decoration: underline;
+    transition: 0.5s;
+}
+
+@keyframes slideInFromLeft {
+    0% {
+        transform: translateX(-100%);
+    }
+    100% {
+        transform: translateX(0);
+    }
+}

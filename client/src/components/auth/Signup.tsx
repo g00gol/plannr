@@ -1,6 +1,6 @@
-import React, { useEffect, useState } from "react";
-import { signup } from "../../api/auth.js";
+import React, { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
+import { signup } from "../../api/auth.js";
 
 const Signup = (): React.ReactElement => {
 	const [error, setError] = useState("");
@@ -22,38 +22,40 @@ const Signup = (): React.ReactElement => {
 	};
 
 	return (
-		<form onSubmit={doSignUp}>
-			<label>
-				<input
-					id="email"
-					type="email"
-					placeholder="email"
-				/>
-			</label>
-			<label>
-				<input
-					id="username"
-					type="username"
-					placeholder="username"
-				/>
-			</label>
-			<label>
-				<input
-					id="password"
-					type="password"
-					placeholder="password"
-				/>
-			</label>
-			{	error && 
-				<span>{error}</span>
+		<>
+			<form onSubmit={doSignUp}>
+				<label>
+					<input
+						id="email"
+						type="email"
+						placeholder="email"
+					/>
+				</label>
+				<label>
+					<input
+						id="username"
+						type="username"
+						placeholder="username"
+					/>
+				</label>
+				<label>
+					<input
+						id="password"
+						type="password"
+						placeholder="password"
+					/>
+				</label>
+				<button type="submit">
+					Sign up
+				</button>
+				<div>
+					Already have an account? <Link to="/signin">Sign in</Link>
+				</div>
+			</form>
+			{	error &&
+				<span className="text-red-500 py-2">{error}</span>
 			}
-			<button type="submit">
-				Sign up
-			</button>
-			<div>
-				Already have an account? <Link to="/signin">Sign in</Link>	
-			</div>
-		</form>
+		</>
 	);
 }
 

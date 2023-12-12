@@ -60,12 +60,12 @@ const Signin = (): React.ReactElement => {
 						name="remember"
 						onChange={() => setChecked(!checked)}
 					/>{" "}
-					Remember me
+					Remember me |
 					<Link
 						to="/forgot"
-						className="pl-20 hover:underline text-blue-700 hover:text-blue-800 transition duration-150 ease-in-out"
+						className="pl-1 text-right relative hover:underline text-blue-700 hover:text-blue-800 transition duration-150 ease-in-out"
 					>
-						Forgot Password
+					Forgot Password?
 					</Link>
 				</label>
 				<div>
