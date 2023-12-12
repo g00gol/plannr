@@ -63,13 +63,13 @@ const Signin = (): React.ReactElement => {
 					Remember me
 					<Link
 						to="/forgot"
-						className="hover:underline text-blue-700 hover:text-blue-800 transition duration-150 ease-in-out"
+						className="pl-20 hover:underline text-blue-700 hover:text-blue-800 transition duration-150 ease-in-out"
 					>
 						Forgot Password
 					</Link>
 				</label>
 				<div>
-					Don't have an account? <Link to="/signup">Sign up</Link>
+					Don't have an account? <Link to="/signup" className="hover:underline text-blue-700 hover:text-blue-800 transition duration-150 ease-in-out">Sign up</Link>
 				</div>
 			</form>
 		</div>
