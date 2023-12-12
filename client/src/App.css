@@ -23,6 +23,18 @@ body {
 
 .back-link:hover {
     font-size: larger;
+    transition: 0.5s;
+    color: #4182dc;
+}
+
+.login-link {
+    color: #4182dc;
+    text-decoration: none;
+    transition: 0.5s;
+}
+
+.login-link:hover {
+    color: #37465f;
     text-decoration: underline;
     transition: 0.5s;
 }

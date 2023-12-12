@@ -1,3 +1,4 @@
+import InfoIcon from '@mui/icons-material/Info';
 import LoginIcon from '@mui/icons-material/Login';
 import Button from '@mui/material/Button';
 import Menu from '@mui/material/Menu';
@@ -47,6 +48,10 @@ const NavDropdown = (): React.ReactElement => {
           </>
         ) : (
           <>
+            <MenuItem onClick={handleClose}>
+              About plannr
+              <InfoIcon className="ml-2" />
+            </MenuItem>
             <MenuItem onClick={handleClose}>
               <Link to="/signin">Sign in</Link>
               <LoginIcon className="ml-2" />

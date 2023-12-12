@@ -1,12 +1,11 @@
-import React, {useState, useEffect, useRef, useCallback, FormEvent}from "react";
-import { Circle, GoogleMap, Marker } from "@react-google-maps/api";
-import { useJsApiLoader } from '@react-google-maps/api'
-import { ResultsCard } from "./ResultsCard";
-import { ResultsData } from "../dataObjects/ResultsData";
-import { PlanMarkerData } from "../dataObjects/PlanMarkerData";
+import { Circle, GoogleMap, Marker, useJsApiLoader } from "@react-google-maps/api";
+import React, { FormEvent, useCallback, useEffect, useRef, useState } from "react";
 import { CircleData } from "../dataObjects/CircleData";
+import { PlanMarkerData } from "../dataObjects/PlanMarkerData";
+import { ResultsData } from "../dataObjects/ResultsData";
 import { HomeProps } from "../types/HomeTypes";
 import Navbar from "./Navbar";
+import { ResultsCard } from "./ResultsCard";
 
 const DEFAULT_RADIUS = 1500;
 enum PLACES_TYPES {

@@ -1,7 +1,9 @@
 import { TextField } from "@mui/material";
 import React, { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
+import '../../App.css';
 import { signin } from "../../api/auth.js";
+import logo from '../../assets/logo_cropped.png';
 
 const Signin = (): React.ReactElement => {
 	const [checked, setChecked] = useState(false);
@@ -24,7 +26,8 @@ const Signin = (): React.ReactElement => {
 	};
 	return (
 		<div className="flex flex-col items-center justify-center">
-			<h1 className="text-xl font-bold"> Sign In </h1>
+			<img src={logo} alt="logo" className="w-1/4 h-1/4 mb-4 rounded-full" />
+			<h1 className="text-3xl font-bold"> Sign In </h1>
 			<form onSubmit={doSignIn}>
 				<TextField
 					id="email"
@@ -47,7 +50,7 @@ const Signin = (): React.ReactElement => {
 					fullWidth
 					margin="normal"
 				/>
-				{	error && 
+				{	error &&
 					<span>{error}</span>
 				}
 				<button type="submit" className="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 me-2 mb-2 dark:bg-blue-600 dark:hover:bg-blue-700 focus:outline-none dark:focus:ring-blue-800">
@@ -63,13 +66,13 @@ const Signin = (): React.ReactElement => {
 					Remember me |
 					<Link
 						to="/forgot"
-						className="pl-1 text-right relative hover:underline text-blue-700 hover:text-blue-800 transition duration-150 ease-in-out"
+						className="pl-1 text-right relative login-link"
 					>
 					Forgot Password?
 					</Link>
 				</label>
 				<div>
-					Don't have an account? <Link to="/signup" className="hover:underline text-blue-700 hover:text-blue-800 transition duration-150 ease-in-out">Sign up</Link>
+					Don't have an account? <Link to="/signup" className="login-link">Sign up</Link>
 				</div>
 			</form>
 		</div>
