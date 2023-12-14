@@ -169,20 +169,27 @@ function Home(props: HomeProps): React.ReactElement {
 						type: typeData.toUpperCase().trim() == "NONE" ? undefined : typeData.trim()
 					}, (res, status) => {
 						if(status === google.maps.places.PlacesServiceStatus.OK && res !== null){
+							console.log(res);
 							const data : Array<ResultsData> = res.map((r) => {
 								const isOpen = r.opening_hours?.isOpen();
 								const location = r.geometry?.location;
 								const name = r.name ? r.name : "Invalid Name";
+								const priceLevel = r.price_level;
+								const rating = r.rating;
 
 								return new ResultsData(
-									name, 
+									name,
 									r.vicinity ? r.vicinity : "Invalid Address",
+									priceLevel ? priceLevel : undefined,
+									rating ? rating : undefined,
 									isOpen ? isOpen : false,
 									location ? new PlanMarkerData(name, location) : undefined,
 									r.photos ? r.photos[0] : undefined
 								)
 							});
 							setresultsData([...data]);
+
+							//console.log(data);
 						}
 					})
 				}
@@ -245,11 +252,11 @@ function Home(props: HomeProps): React.ReactElement {
 											className="hover:text-red-500 font-bold rounded-md text-md px-4 py-2 text-center"
 											onClick={() => toggleResults(!resultsToggle)}>X</button>
 									</div>
-									<h3 className="text-1xl px-5"><span className="font-bold">Number of Results{searchText ? `for "${searchText}"` : `for keyword "${keyWordData}"`}</span>: {resultsData.length}</h3>
+									<h3 className="text-1xl px-5"><span className="font-bold">Number of Results{searchText ? ` for "${searchText}"` : ""}</span>: {resultsData.length}</h3>
 									<ul className="px-3 py-4 flex-grow overflow-y-scroll">
 										{
 											resultsData.map((result) => {
-												return <ResultsCard key={result.addr} title={result.title} addr={result.addr} isOpen={result.isOpen} img={result.img?.getUrl()}/>;
+												return <ResultsCard key={result.addr} title={result.title} addr={result.addr} isOpen={result.isOpen} img={result.img?.getUrl()} rating={result.rating} priceLevel={result.priceLevel}/>;
 											})
 										}
 									</ul>

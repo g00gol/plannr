@@ -77,7 +77,19 @@ body {
     display: grid;
     grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
     grid-gap: 10px;
+}
 
+.card-title {
+    font-weight: bold;
+    margin: 0;
+    padding: 0;
+    transition: 0.5s;
+}
+
+.card-title:hover {
+    font-size: 20px;
+    color: #4182dc;
+    transition: 0.5s;
 }
 
 .results-card:hover {

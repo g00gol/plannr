@@ -2,6 +2,8 @@ interface SearchResProps {
     title: string
     isOpen: boolean | undefined
     addr: string
+    rating?: number | undefined
+    priceLevel?: number | undefined
     img?: string
 }
 
