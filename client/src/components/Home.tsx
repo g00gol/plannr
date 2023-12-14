@@ -1,12 +1,12 @@
-import React, {useState, useEffect, useRef, useCallback, FormEvent}from "react";
-import { Circle, GoogleMap, Marker } from "@react-google-maps/api";
-import { useJsApiLoader } from '@react-google-maps/api'
-import { ResultsCard } from "./ResultsCard";
-import { ResultsData } from "../dataObjects/ResultsData";
-import { PlanMarkerData } from "../dataObjects/PlanMarkerData";
+import { Circle, GoogleMap, Marker, useJsApiLoader } from "@react-google-maps/api";
+import React, { FormEvent, useCallback, useEffect, useRef, useState } from "react";
+import 'react-simple-typewriter/dist/index';
 import { CircleData } from "../dataObjects/CircleData";
+import { PlanMarkerData } from "../dataObjects/PlanMarkerData";
+import { ResultsData } from "../dataObjects/ResultsData";
 import { HomeProps } from "../types/HomeTypes";
 import Navbar from "./Navbar";
+import { ResultsCard } from "./ResultsCard";
 
 const DEFAULT_RADIUS = 1500;
 enum PLACES_TYPES {
@@ -120,6 +120,7 @@ function Home(props: HomeProps): React.ReactElement {
 	const [markerData, setMarkerData] = useState<Array<PlanMarkerData>>([]);
 	const [typeData, setTypeData] = useState<string>("");
 	const [keyWordData, setKeyWordData] = useState<string>("");
+	const [searchText, setSearchText] = useState<string>("");
 	const pinSVGFilled = "M 12,2 C 8.1340068,2 5,5.1340068 5,9 c 0,5.25 7,13 7,13 0,0 7,-7.75 7,-13 0,-3.8659932 -3.134007,-7 -7,-7 z";
 
 	const { isLoaded } = useJsApiLoader({
@@ -137,6 +138,8 @@ function Home(props: HomeProps): React.ReactElement {
 
 	const search = ((event : FormEvent<HTMLFormElement>) => {
 		event.preventDefault();
+
+		setSearchText(event.currentTarget.searchBar.value);
 		setKeyWordData(event.currentTarget.searchBar.value);
 		setTypeData(event.currentTarget.categories.value)
 		setCircleData(undefined);
@@ -166,20 +169,29 @@ function Home(props: HomeProps): React.ReactElement {
 						type: typeData.toUpperCase().trim() == "NONE" ? undefined : typeData.trim()
 					}, (res, status) => {
 						if(status === google.maps.places.PlacesServiceStatus.OK && res !== null){
+							console.log(res);
 							const data : Array<ResultsData> = res.map((r) => {
 								const isOpen = r.opening_hours?.isOpen();
 								const location = r.geometry?.location;
 								const name = r.name ? r.name : "Invalid Name";
+								const priceLevel = r.price_level;
+								const rating = r.rating;
+								const ratingsTotal = r.user_ratings_total;
 
 								return new ResultsData(
-									name, 
+									name,
 									r.vicinity ? r.vicinity : "Invalid Address",
+									priceLevel ? priceLevel : undefined,
+									rating ? rating : undefined,
+									ratingsTotal ? ratingsTotal : undefined,
 									isOpen ? isOpen : false,
 									location ? new PlanMarkerData(name, location) : undefined,
 									r.photos ? r.photos[0] : undefined
 								)
 							});
 							setresultsData([...data]);
+
+							//console.log(data);
 						}
 					})
 				}
@@ -206,17 +218,17 @@ function Home(props: HomeProps): React.ReactElement {
 						onLoad={onLoad}
 					>
 						<form className="flex justify-center" onSubmit={search}>
-							<input 
-								type="search" 
-								id="searchBar" 
+							<input
+								type="search"
+								id="searchBar"
 								name="searchBar"
-								placeholder="Search Plannr"
+								placeholder="Search Plannr ... Need inspiration? Use the dropdown to filter by category."
 								className="z-10 opacity-90 block m-3 w-3/6 p-4 ps-10 text-lg border border-gray-600 rounded-xl bg-gray-40 p-50"
 								>
 							</input>
-							<select 
-								name="categories" 
-								id="categories" 
+							<select
+								name="categories"
+								id="categories"
 								className="z-10 opacity-90 block m-3 w-1/8 p-4 ps-10 text-lg border border-gray-600 rounded-xl bg-gray-40 p-50">
 								{
 									keys.map((key) => {
@@ -230,22 +242,23 @@ function Home(props: HomeProps): React.ReactElement {
 							</select>
 						</form>
 						{ 	resultsToggle &&
-							<aside 
+							<aside
 								id="searchResults"
-								className="fixed opacity-90 top-inherit left-inherit ml-2 z-20 h-4/5 w-1/6 transition-transform -translate-x-full sm:translate-x-0"
+								className="fixed pb-10 pl-10 opacity-90 top-inherit left-inherit ml-2 z-20 h-4/5 w-1/3 load-slide-fast rounded-lg shadow-md"
 								>
-								<div className="flex flex-col z-20 h-full bg-white dark:bg-gray-150">
+								<div className="flex flex-col z-20 h-full bg-white dark:bg-gray-150 rounded-lg shadow-md">
 									<div className="px-5 py-4 flex justify-between">
-										<h2 className="text-2xl font-bold">Search Results</h2>
-										<button 
-											type="button" 
+										<h2 className="text-2xl font-bold pt-2 text-blue-500">Search Results</h2>
+										<button
+											type="button"
 											className="hover:text-red-500 font-bold rounded-md text-md px-4 py-2 text-center"
 											onClick={() => toggleResults(!resultsToggle)}>X</button>
 									</div>
+									<h3 className="text-1xl px-5"><span className="font-bold">Number of Results{searchText ? ` for "${searchText}"` : ""}</span>: {resultsData.length}</h3>
 									<ul className="px-3 py-4 flex-grow overflow-y-scroll">
 										{
 											resultsData.map((result) => {
-												return <ResultsCard key={result.addr} title={result.title} addr={result.addr} isOpen={result.isOpen} img={result.img?.getUrl()}/>;
+												return <ResultsCard key={result.addr} title={result.title} addr={result.addr} isOpen={result.isOpen} img={result.img?.getUrl()} rating={result.rating} priceLevel={result.priceLevel} ratingsTotal={result.ratingsTotal}/>;
 											})
 										}
 									</ul>
@@ -274,7 +287,7 @@ function Home(props: HomeProps): React.ReactElement {
 						{
 							resultsData.map((result) => {
 								if(result.marker){
-									return <Marker key={`(${result.marker.location.lat()}, ${result.marker.location.lng()})`} title={result.marker.title} position={result.marker.location} icon={{  
+									return <Marker key={`(${result.marker.location.lat()}, ${result.marker.location.lng()})`} title={result.marker.title} position={result.marker.location} icon={{
 										path: pinSVGFilled,
 										anchor: new google.maps.Point(12,17),
 										fillOpacity: 1,
@@ -287,7 +300,7 @@ function Home(props: HomeProps): React.ReactElement {
 							})
 						}
 					</GoogleMap>
-				</div> : 
+				</div> :
 				<div>Loading...</div>
 			}
 		</div>
