@@ -13,6 +13,14 @@ body {
     animation: 1s ease-out 0s 1 slideInFromLeft;
 }
 
+.load-slide-fast {
+    animation: 0.25s ease-out 0s 1 slideInFromLeft;
+}
+
+.unload-slide {
+    animation: 1s ease-out 0s 1 slideOutToLeft;
+}
+
 .back-link {
     color: #000000;
     font-size: large;
@@ -45,5 +53,14 @@ body {
     }
     100% {
         transform: translateX(0);
+    }
+}
+
+@keyframes slideOutToLeft {
+    0% {
+        transform: translateX(0);
+    }
+    100% {
+        transform: translateX(-100%);
     }
 }

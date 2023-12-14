@@ -42,12 +42,12 @@ const NavDropdown = (): React.ReactElement => {
         }}
       >
         {currentUser ? (
-          <>
+          <div>
             <MenuItem onClick={handleClose}>Profile</MenuItem>
             <MenuItem onClick={handleClose}>My account</MenuItem>
-          </>
+          </div>
         ) : (
-          <>
+          <div>
             <MenuItem onClick={handleClose}>
               About plannr
               <InfoIcon className="ml-2" />
@@ -56,7 +56,7 @@ const NavDropdown = (): React.ReactElement => {
               <Link to="/signin">Sign in</Link>
               <LoginIcon className="ml-2" />
             </MenuItem>
-          </>
+          </div>
         )}
       </Menu>
     </div>

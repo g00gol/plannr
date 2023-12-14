@@ -1,5 +1,6 @@
 import { Circle, GoogleMap, Marker, useJsApiLoader } from "@react-google-maps/api";
 import React, { FormEvent, useCallback, useEffect, useRef, useState } from "react";
+import 'react-simple-typewriter/dist/index';
 import { CircleData } from "../dataObjects/CircleData";
 import { PlanMarkerData } from "../dataObjects/PlanMarkerData";
 import { ResultsData } from "../dataObjects/ResultsData";
@@ -205,17 +206,17 @@ function Home(props: HomeProps): React.ReactElement {
 						onLoad={onLoad}
 					>
 						<form className="flex justify-center" onSubmit={search}>
-							<input 
-								type="search" 
-								id="searchBar" 
+							<input
+								type="search"
+								id="searchBar"
 								name="searchBar"
-								placeholder="Search Plannr"
+								placeholder="Search Plannr ... Need inspiration? Use the dropdown to filter by category."
 								className="z-10 opacity-90 block m-3 w-3/6 p-4 ps-10 text-lg border border-gray-600 rounded-xl bg-gray-40 p-50"
 								>
 							</input>
-							<select 
-								name="categories" 
-								id="categories" 
+							<select
+								name="categories"
+								id="categories"
 								className="z-10 opacity-90 block m-3 w-1/8 p-4 ps-10 text-lg border border-gray-600 rounded-xl bg-gray-40 p-50">
 								{
 									keys.map((key) => {
@@ -229,15 +230,15 @@ function Home(props: HomeProps): React.ReactElement {
 							</select>
 						</form>
 						{ 	resultsToggle &&
-							<aside 
+							<aside
 								id="searchResults"
-								className="fixed opacity-90 top-inherit left-inherit ml-2 z-20 h-4/5 w-1/6 transition-transform -translate-x-full sm:translate-x-0"
+								className="fixed pb-10 pl-10 opacity-90 top-inherit left-inherit ml-2 z-20 h-4/5 w-1/3 load-slide-fast rounded-lg shadow-md"
 								>
-								<div className="flex flex-col z-20 h-full bg-white dark:bg-gray-150">
+								<div className="flex flex-col z-20 h-full bg-white dark:bg-gray-150 rounded-lg shadow-md">
 									<div className="px-5 py-4 flex justify-between">
 										<h2 className="text-2xl font-bold">Search Results</h2>
-										<button 
-											type="button" 
+										<button
+											type="button"
 											className="hover:text-red-500 font-bold rounded-md text-md px-4 py-2 text-center"
 											onClick={() => toggleResults(!resultsToggle)}>X</button>
 									</div>
@@ -286,7 +287,7 @@ function Home(props: HomeProps): React.ReactElement {
 							})
 						}
 					</GoogleMap>
-				</div> : 
+				</div> :
 				<div>Loading...</div>
 			}
 		</div>
