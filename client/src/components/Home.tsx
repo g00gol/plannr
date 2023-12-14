@@ -176,12 +176,14 @@ function Home(props: HomeProps): React.ReactElement {
 								const name = r.name ? r.name : "Invalid Name";
 								const priceLevel = r.price_level;
 								const rating = r.rating;
+								const ratingsTotal = r.user_ratings_total;
 
 								return new ResultsData(
 									name,
 									r.vicinity ? r.vicinity : "Invalid Address",
 									priceLevel ? priceLevel : undefined,
 									rating ? rating : undefined,
+									ratingsTotal ? ratingsTotal : undefined,
 									isOpen ? isOpen : false,
 									location ? new PlanMarkerData(name, location) : undefined,
 									r.photos ? r.photos[0] : undefined
@@ -256,7 +258,7 @@ function Home(props: HomeProps): React.ReactElement {
 									<ul className="px-3 py-4 flex-grow overflow-y-scroll">
 										{
 											resultsData.map((result) => {
-												return <ResultsCard key={result.addr} title={result.title} addr={result.addr} isOpen={result.isOpen} img={result.img?.getUrl()} rating={result.rating} priceLevel={result.priceLevel}/>;
+												return <ResultsCard key={result.addr} title={result.title} addr={result.addr} isOpen={result.isOpen} img={result.img?.getUrl()} rating={result.rating} priceLevel={result.priceLevel} ratingsTotal={result.ratingsTotal}/>;
 											})
 										}
 									</ul>

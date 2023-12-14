@@ -32,7 +32,7 @@ export class ResultsCard extends React.Component<SearchResProps, SearchResState>
                   ? "Open"
                   : "Closed"
                 }`}</p>
-              <p><span className="font-bold">Price Level: </span>{this.props.priceLevel ? this.convertPriceLevel(this.props.priceLevel) : "N/A"} | <span className="font-bold">Rating: </span>{this.props.rating} ☆</p>
+              <p><span className="font-bold">Price Level: </span>{this.props.priceLevel ? this.convertPriceLevel(this.props.priceLevel) : "N/A"} | <span className="font-bold">Rating: </span>{this.props.rating? this.props.rating : "N/A"} ☆ ({this.props.ratingsTotal? this.props.ratingsTotal : 0})</p>
             </div>
             <div className="row-span-2 col-span-1 results-img-container">
               <img className="results-img" src={

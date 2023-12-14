@@ -8,6 +8,7 @@ export class ResultsData {
         public addr : string,
         public priceLevel : number | undefined,
         public rating : number | undefined,
+        public ratingsTotal : number | undefined,
         public isOpen : boolean | undefined,
         public marker? : PlanMarkerData,
         public img? : google.maps.places.PlacePhoto
