@@ -120,6 +120,7 @@ function Home(props: HomeProps): React.ReactElement {
 	const [markerData, setMarkerData] = useState<Array<PlanMarkerData>>([]);
 	const [typeData, setTypeData] = useState<string>("");
 	const [keyWordData, setKeyWordData] = useState<string>("");
+	const [searchText, setSearchText] = useState<string>("");
 	const pinSVGFilled = "M 12,2 C 8.1340068,2 5,5.1340068 5,9 c 0,5.25 7,13 7,13 0,0 7,-7.75 7,-13 0,-3.8659932 -3.134007,-7 -7,-7 z";
 
 	const { isLoaded } = useJsApiLoader({
@@ -137,6 +138,8 @@ function Home(props: HomeProps): React.ReactElement {
 
 	const search = ((event : FormEvent<HTMLFormElement>) => {
 		event.preventDefault();
+
+		setSearchText(event.currentTarget.searchBar.value);
 		setKeyWordData(event.currentTarget.searchBar.value);
 		setTypeData(event.currentTarget.categories.value)
 		setCircleData(undefined);
@@ -236,12 +239,13 @@ function Home(props: HomeProps): React.ReactElement {
 								>
 								<div className="flex flex-col z-20 h-full bg-white dark:bg-gray-150 rounded-lg shadow-md">
 									<div className="px-5 py-4 flex justify-between">
-										<h2 className="text-2xl font-bold">Search Results</h2>
+										<h2 className="text-2xl font-bold pt-2 text-blue-500">Search Results</h2>
 										<button
 											type="button"
 											className="hover:text-red-500 font-bold rounded-md text-md px-4 py-2 text-center"
 											onClick={() => toggleResults(!resultsToggle)}>X</button>
 									</div>
+									<h3 className="text-1xl px-5"><span className="font-bold">Number of Results{searchText ? `for "${searchText}"` : `for keyword "${keyWordData}"`}</span>: {resultsData.length}</h3>
 									<ul className="px-3 py-4 flex-grow overflow-y-scroll">
 										{
 											resultsData.map((result) => {
@@ -274,7 +278,7 @@ function Home(props: HomeProps): React.ReactElement {
 						{
 							resultsData.map((result) => {
 								if(result.marker){
-									return <Marker key={`(${result.marker.location.lat()}, ${result.marker.location.lng()})`} title={result.marker.title} position={result.marker.location} icon={{  
+									return <Marker key={`(${result.marker.location.lat()}, ${result.marker.location.lng()})`} title={result.marker.title} position={result.marker.location} icon={{
 										path: pinSVGFilled,
 										anchor: new google.maps.Point(12,17),
 										fillOpacity: 1,

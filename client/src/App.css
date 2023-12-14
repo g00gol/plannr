@@ -47,6 +47,45 @@ body {
     transition: 0.5s;
 }
 
+.results-img {
+    width: 100px;
+    height: 100px;
+    object-fit: cover;
+    overflow: hidden;
+    border-radius: 10px;
+}
+
+.results-img-container {
+    width: 100px;
+    height: 100px;
+    overflow: hidden;
+    border-radius: 10px;
+    text-align: right;
+    display: flex;
+    justify-content: right;
+}
+
+.results-card {
+    margin: 10px;
+    padding: 5px;
+    border-radius: 10px;
+    transition: 0.5s;
+    animation: 0.5s ease-out 0s 1 slideInFromLeft;
+}
+
+.card-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+    grid-gap: 10px;
+
+}
+
+.results-card:hover {
+    box-shadow: 0 0 5px 0 rgba(0, 0, 0, 0.5);
+    transition: 0.5s;
+    background-color: #f5f5f5;
+}
+
 @keyframes slideInFromLeft {
     0% {
         transform: translateX(-100%);
