@@ -14,6 +14,7 @@ export class PlaceData {
         public marker? : PlanMarkerData,
         public img? : google.maps.places.PlacePhoto
     ) {
+        this.placeId = placeId;
         this.title = title;
         this.addr = addr;
         this.priceLevel = priceLevel;

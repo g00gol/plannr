@@ -265,7 +265,7 @@ function Home(props: HomeProps): React.ReactElement {
 										<ul className="px-3 py-4 flex-grow overflow-y-scroll">
 											{
 												placeData.map((result) => {
-													return <PlaceCard key={result.addr} title={result.title} addr={result.addr} isOpen={result.isOpen} img={result.img?.getUrl()} rating={result.rating} priceLevel={result.priceLevel} ratingsTotal={result.ratingsTotal}/>;
+													return <PlaceCard mapRef={mapRef} placeId={result.placeId} key={result.addr} title={result.title} addr={result.addr} isOpen={result.isOpen} img={result.img?.getUrl()} rating={result.rating} priceLevel={result.priceLevel} ratingsTotal={result.ratingsTotal}/>;
 												})
 											}
 										</ul>
@@ -277,7 +277,7 @@ function Home(props: HomeProps): React.ReactElement {
 							{	!tripToggle &&
 								<aside
 									id="tripWindow"
-									className="fixed right-10 pb-10 pl-10 opacity-90 top-inherit left-inherit mr-2 z-20 h-4/5 w-1/3 load-slide-fast rounded-lg shadow-md"
+									className="fixed right-10 pb-10 pl-10 opacity-90 top-inherit left-inherit mr-2 z-20 h-4/5 w-1/3 load-slide-right rounded-lg shadow-md"
 									>
 									<div className="flex flex-col z-20 h-full bg-white dark:bg-gray-150 rounded-lg shadow-md">
 										<div className="px-5 py-4 flex justify-between">
@@ -291,12 +291,12 @@ function Home(props: HomeProps): React.ReactElement {
 										<ul className="px-3 py-4 flex-grow overflow-y-scroll">
 											{
 												placeData.map((result) => {
-													return <PlaceCard key={result.addr} title={result.title} addr={result.addr} isOpen={result.isOpen} img={result.img?.getUrl()} rating={result.rating} priceLevel={result.priceLevel} ratingsTotal={result.ratingsTotal}/>;
+													return <PlaceCard mapRef={mapRef} placeId={result.placeId} key={result.addr} title={result.title} addr={result.addr} isOpen={result.isOpen} img={result.img?.getUrl()} rating={result.rating} priceLevel={result.priceLevel} ratingsTotal={result.ratingsTotal}/>;
 												})
 											}
 										</ul>
 									</div>
-								</aside>						
+								</aside>
 							}
 
 							{
