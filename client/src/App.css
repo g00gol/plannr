@@ -8,3 +8,110 @@ body {
     margin: 0;
     padding: 0;
 }
+
+.load-slide {
+    animation: 1s ease-out 0s 1 slideInFromLeft;
+}
+
+.load-slide-fast {
+    animation: 0.25s ease-out 0s 1 slideInFromLeft;
+}
+
+.unload-slide {
+    animation: 1s ease-out 0s 1 slideOutToLeft;
+}
+
+.back-link {
+    color: #000000;
+    font-size: large;
+    text-decoration: none;
+    transition: 0.5s;
+
+}
+
+.back-link:hover {
+    font-size: larger;
+    transition: 0.5s;
+    color: #4182dc;
+}
+
+.login-link {
+    color: #4182dc;
+    text-decoration: none;
+    transition: 0.5s;
+}
+
+.login-link:hover {
+    color: #37465f;
+    text-decoration: underline;
+    transition: 0.5s;
+}
+
+.results-img {
+    width: 100px;
+    height: 100px;
+    object-fit: cover;
+    overflow: hidden;
+    border-radius: 10px;
+}
+
+.results-img-container {
+    width: 100px;
+    height: 100px;
+    overflow: hidden;
+    border-radius: 10px;
+    text-align: right;
+    display: flex;
+    justify-content: right;
+}
+
+.results-card {
+    margin: 10px;
+    padding: 5px;
+    border-radius: 10px;
+    transition: 0.5s;
+    animation: 0.5s ease-out 0s 1 slideInFromLeft;
+}
+
+.card-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+    grid-gap: 10px;
+}
+
+.card-title {
+    font-weight: bold;
+    margin: 0;
+    padding: 0;
+    transition: 0.5s;
+}
+
+.card-title:hover {
+    font-size: 20px;
+    color: #4182dc;
+    transition: 0.5s;
+}
+
+.results-card:hover {
+    box-shadow: 0 0 5px 0 rgba(0, 0, 0, 0.5);
+    transition: 0.5s;
+    background-color: #f5f5f5;
+}
+
+@keyframes slideInFromLeft {
+    0% {
+        transform: translateX(-100%);
+    }
+    100% {
+        transform: translateX(0);
+    }
+}
+
+@keyframes slideOutToLeft {
+    0% {
+        transform: translateX(0);
+    }
+    100% {
+        transform: translateX(-100%);
+    }
+}

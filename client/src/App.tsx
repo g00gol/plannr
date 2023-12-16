@@ -4,6 +4,7 @@ import Home from "./components/Home";
 import AuthModal from "./components/auth/AuthModal";
 import Signin from "./components/auth/Signin";
 import Signup from "./components/auth/Signup";
+import "./App.css";
 
 function App(): React.ReactElement {
 	return (
