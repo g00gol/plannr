@@ -1,5 +1,6 @@
 import AddIcon from '@mui/icons-material/Add';
-import InfoIcon from '@mui/icons-material/Info';
+import KeyboardArrowDownIcon from '@mui/icons-material/KeyboardArrowDown';
+import KeyboardArrowUpIcon from '@mui/icons-material/KeyboardArrowUp';
 import { Button } from "@mui/material";
 import React from "react";
 import noImage from "../assets/noImage.png";
@@ -12,6 +13,7 @@ export class PlaceCard extends React.Component<SearchResProps, SearchResState>{
       phone: "",
       website: "",
       hours: [],
+      date: new Date().getDay()
     }
 
     constructor(props: SearchResProps){
@@ -21,6 +23,7 @@ export class PlaceCard extends React.Component<SearchResProps, SearchResState>{
         phone: "",
         website: "",
         hours: [],
+        date: new Date().getDay()
       }
 
       this.showDetails = this.showDetails.bind(this);
@@ -81,11 +84,11 @@ export class PlaceCard extends React.Component<SearchResProps, SearchResState>{
                 </Button>
                 {
                   this.state.showDetails ? (
-                    <Button variant="text" color='inherit' startIcon={<InfoIcon />} onClick={() => this.hideDetails()}>
+                    <Button variant="text" color='inherit' startIcon={<KeyboardArrowUpIcon />} onClick={() => this.hideDetails()}>
                       Less Info
                     </Button>
                   ) : (
-                    <Button variant="text" color='inherit' startIcon={<InfoIcon />} onClick={() => this.showDetails()}>
+                    <Button variant="text" color='inherit' startIcon={<KeyboardArrowDownIcon />} onClick={() => this.showDetails()}>
                       More Info
                     </Button>
                   )
@@ -103,18 +106,26 @@ export class PlaceCard extends React.Component<SearchResProps, SearchResState>{
 
           {this.state.showDetails ? (
               <div className="row-span-2 col-span-1 place-details">
-                <hr className="border-1 pb-2"></hr>
+                <hr className="border-1 pb-2 border-gray-300"/>
                 <p><span className="font-bold">Phone: </span>{this.state.phone}</p>
-                <p><span className="font-bold">Website: </span><a className="text-blue-500" href={this.state.website}>{this.state.website}</a></p>
+                <p><span className="font-bold">Website: </span><a className="text-blue-500" href={this.state.website} rel="noopener noreferrer" target="_blank">{this.state.website}</a></p>
+
                 <p><span className="font-bold pt-5">Hours: </span></p>
                 { this.state.hours ? (
                   <table className="table-auto">
                     <tbody>
                       {this.state.hours.map((day, index) => (
-                        <tr key={index}>
-                          <td className="italic">{day.substring(0, day.indexOf(":"))}</td>
-                          <td className='pl-2'>{day.substring(day.indexOf(":") + 1)}</td>
-                        </tr>
+                        (index == this.state.date - 1) ? (
+                          <tr className="font-bold" key={index}>
+                            <td className="pr-2">{day.substring(0, day.indexOf(":"))}</td>
+                            <td>{day.substring(day.indexOf(":") + 1)}</td>
+                          </tr>
+                        ) : (
+                          <tr key={index}>
+                            <td className="pr-2">{day.substring(0, day.indexOf(":"))}</td>
+                            <td>{day.substring(day.indexOf(":") + 1)}</td>
+                          </tr>
+                        )
                       ))}
                     </tbody>
                   </table>

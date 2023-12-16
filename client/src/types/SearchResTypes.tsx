@@ -15,6 +15,7 @@ interface SearchResState {
     phone: string,
     website: string
     hours: string[] | undefined
+    date: number
 }
 
 export type { SearchResProps, SearchResState }
