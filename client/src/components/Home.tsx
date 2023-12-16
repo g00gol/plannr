@@ -1,7 +1,7 @@
 import { Circle, GoogleMap, Marker, useJsApiLoader } from "@react-google-maps/api";
 import React, { FormEvent, useCallback, useEffect, useRef, useState } from "react";
 import 'react-simple-typewriter/dist/index';
-import { TripProvider } from "../contexts/TripContext";
+import { TripContext } from "../contexts/TripContext";
 import { CircleData } from "../dataObjects/CircleData";
 import { PlaceData } from "../dataObjects/PlaceData";
 import { PlanMarkerData } from "../dataObjects/PlanMarkerData";
@@ -126,6 +126,8 @@ function Home(props: HomeProps): React.ReactElement {
 	const [searchText, setSearchText] = useState<string>("");
 	const pinSVGFilled = "M 12,2 C 8.1340068,2 5,5.1340068 5,9 c 0,5.25 7,13 7,13 0,0 7,-7.75 7,-13 0,-3.8659932 -3.134007,-7 -7,-7 z";
 
+	const currentTrip = React.useContext(TripContext);
+
 	const { isLoaded } = useJsApiLoader({
 		id: 'google-map-script',
 		googleMapsApiKey: String(import.meta.env.VITE_MAPS_API_KEY),
@@ -174,7 +176,7 @@ function Home(props: HomeProps): React.ReactElement {
 						if(status === google.maps.places.PlacesServiceStatus.OK && res !== null){
 							console.log(res);
 							const data : Array<PlaceData> = res.map((r) => {
-								const placeId = r.place_id;
+								const place_id = r.place_id;
 								const isOpen = r.opening_hours?.isOpen();
 								const location = r.geometry?.location;
 								const name = r.name ? r.name : "Invalid Name";
@@ -183,7 +185,7 @@ function Home(props: HomeProps): React.ReactElement {
 								const ratingsTotal = r.user_ratings_total;
 
 								return new PlaceData(
-									placeId ? placeId : "Invalid Place ID",
+									place_id ? place_id : "Invalid Place ID",
 									name,
 									r.vicinity ? r.vicinity : "Invalid Address",
 									priceLevel ? priceLevel : undefined,
@@ -208,6 +210,18 @@ function Home(props: HomeProps): React.ReactElement {
 			fetchData();
 		}
 	}, [keyWordData, centerData]);
+
+	useEffect(() => {
+		async function fetchData() {
+			// fetch data from currentTrip
+			currentTrip.places.forEach((place) => {
+				setTripData([...tripData, place]);
+			});
+		}
+		if(tripToggle) {
+			fetchData();
+		}
+	}, [tripData]);
 
 	return (
 		<div className="flex flex-col h-screen">
@@ -239,45 +253,45 @@ function Home(props: HomeProps): React.ReactElement {
 									keys.map((key) => {
 										const val = PLACES_TYPES[key]
 										const text = (key[0].toUpperCase() + key.substring(1, key.length)).replace(underScoreRegex, ' ')
-										return <option id={val.toString()} value={key}>
+										return <option key={val.toString()} id={val.toString()} value={key}>
 											{text}
 										</option>
 									})
 								}
 							</select>
 						</form>
-						<TripProvider>
-							{/* Results Window pretend-component */}
-							{ 	resultsToggle &&
-								<aside
-									id="searchResults"
-									className="fixed pb-10 pl-10 opacity-90 top-inherit left-inherit ml-2 z-20 h-4/5 w-1/3 load-slide-fast rounded-lg shadow-md"
-									>
-									<div className="flex flex-col z-20 h-full bg-white dark:bg-gray-150 rounded-lg shadow-md">
-										<div className="px-5 py-4 flex justify-between">
-											<h2 className="text-2xl font-bold pt-2 text-blue-500">Search Results</h2>
-											<button
-												type="button"
-												className="hover:text-red-500 font-bold rounded-md text-md px-4 py-2 text-center"
-												onClick={() => toggleResults(!resultsToggle)}>X</button>
-										</div>
-										<h3 className="text-1xl px-5"><span className="font-bold">Number of Results{searchText ? ` for "${searchText}"` : ""}</span>: {placeData.length}</h3>
-										<ul className="px-3 py-4 flex-grow overflow-y-scroll">
-											{
-												placeData.map((result) => {
-													return <PlaceCard mapRef={mapRef} placeId={result.placeId} key={result.addr} title={result.title} addr={result.addr} isOpen={result.isOpen} img={result.img?.getUrl()} rating={result.rating} priceLevel={result.priceLevel} ratingsTotal={result.ratingsTotal}/>;
-												})
-											}
-										</ul>
+
+						{/* Results Window pretend-component */}
+						{ 	resultsToggle &&
+							<aside
+								id="searchResults"
+								className="fixed pb-10 pl-10 opacity-90 top-inherit left-inherit left-2 ml-2 z-20 h-4/5 w-1/3 load-slide-fast rounded-lg shadow-md"
+								>
+								<div className="flex flex-col z-20 h-full bg-white dark:bg-gray-150 rounded-lg shadow-md">
+									<div className="px-5 py-4 flex justify-between">
+										<h2 className="text-2xl font-bold pt-2 text-blue-500">Search Results</h2>
+										<button
+											type="button"
+											className="hover:text-red-500 font-bold rounded-md text-md px-4 py-2 text-center"
+											onClick={() => toggleResults(!resultsToggle)}>X</button>
 									</div>
-								</aside>
-							}
+									<h3 className="text-1xl px-5"><span className="font-bold">Number of Results{searchText ? ` for "${searchText}"` : ""}</span>: {placeData.length}</h3>
+									<ul className="px-3 py-4 flex-grow overflow-y-scroll">
+										{
+											placeData.map((result) => {
+												return <PlaceCard key={`${result.addr}-result`} mapRef={mapRef} place_id={result.place_id} title={result.title} addr={result.addr} isOpen={result.isOpen} img={result.img?.getUrl()} rating={result.rating} priceLevel={result.priceLevel} ratingsTotal={result.ratingsTotal} isResult={true}/>;
+											})
+										}
+									</ul>
+								</div>
+							</aside>
+						}
 
 							{/* Trip Window pretend-component */}
 							{	!tripToggle &&
 								<aside
 									id="tripWindow"
-									className="fixed right-10 pb-10 pl-10 opacity-90 top-inherit left-inherit mr-2 z-20 h-4/5 w-1/3 load-slide-right rounded-lg shadow-md"
+									className="fixed right-10 pb-10 pl-10 opacity-90 top-inherit left-inherit mr-2 z-20 h-4/5 w-1/3 load-slide-fast rounded-lg shadow-md"
 									>
 									<div className="flex flex-col z-20 h-full bg-white dark:bg-gray-150 rounded-lg shadow-md">
 										<div className="px-5 py-4 flex justify-between">
@@ -291,50 +305,49 @@ function Home(props: HomeProps): React.ReactElement {
 										<ul className="px-3 py-4 flex-grow overflow-y-scroll">
 											{
 												placeData.map((result) => {
-													return <PlaceCard mapRef={mapRef} placeId={result.placeId} key={result.addr} title={result.title} addr={result.addr} isOpen={result.isOpen} img={result.img?.getUrl()} rating={result.rating} priceLevel={result.priceLevel} ratingsTotal={result.ratingsTotal}/>;
+													return <PlaceCard key={result.addr} mapRef={mapRef} place_id={result.place_id} title={result.title} addr={result.addr} isOpen={result.isOpen} img={result.img?.getUrl()} rating={result.rating} priceLevel={result.priceLevel} ratingsTotal={result.ratingsTotal}/>;
 												})
 											}
 										</ul>
 									</div>
-								</aside>
+								</aside>						
 							}
 
-							{
-								markerData.map((result) => {
-									return <Marker key={`(${result.location.lat()}, ${result.location.lng()})`} title={result.title} position={result.location}/>;
-								})
-							}
-							
-							{
-								circleData &&
-								<Circle
-								center={centerData}
-								radius={circleData.radius}
-								options={{
-									strokeColor: "#FF0000",
-									strokeOpacity: 0.8,
-									strokeWeight: 2,
-									fillColor: "#FF0000",
-									fillOpacity: 0.35,
-								}}
-								/>
-							}
-							{
-								placeData.map((result) => {
-									if(result.marker){
-										return <Marker key={`(${result.marker.location.lat()}, ${result.marker.location.lng()})`} title={result.marker.title} position={result.marker.location} icon={{
-											path: pinSVGFilled,
-											anchor: new google.maps.Point(12,17),
-											fillOpacity: 1,
-											fillColor: "lightblue",
-											strokeWeight: 2,
-											strokeColor: "gray",
-											scale: 2
-										}}/>;
-									}
-								})
-							}
-						</TripProvider>
+						{
+							markerData.map((result) => {
+								return <Marker key={`(${result.location.lat()}, ${result.location.lng()})`} title={result.title} position={result.location}/>;
+							})
+						}
+						
+						{
+							circleData &&
+							<Circle
+							center={centerData}
+							radius={circleData.radius}
+							options={{
+								strokeColor: "#FF0000",
+								strokeOpacity: 0.8,
+								strokeWeight: 2,
+								fillColor: "#FF0000",
+								fillOpacity: 0.35,
+							}}
+							/>
+						}
+						{
+							placeData.map((result) => {
+								if(result.marker){
+									return <Marker key={`(${result.marker.location.lat()}, ${result.marker.location.lng()})`} title={result.marker.title} position={result.marker.location} icon={{
+										path: pinSVGFilled,
+										anchor: new google.maps.Point(12,17),
+										fillOpacity: 1,
+										fillColor: "lightblue",
+										strokeWeight: 2,
+										strokeColor: "gray",
+										scale: 2
+									}}/>;
+								}
+							})
+						}
 					</GoogleMap>
 				</div> :
 				<div>Loading...</div>

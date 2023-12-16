@@ -1,6 +1,6 @@
-interface SearchResProps {
+interface PlaceCardProps {
     mapRef: React.MutableRefObject<google.maps.Map | undefined>
-    placeId: string
+    place_id: string
     title: string
     isOpen: boolean | undefined
     addr: string
@@ -8,9 +8,10 @@ interface SearchResProps {
     ratingsTotal?: number | undefined
     priceLevel?: number | undefined
     img?: string
+    isResult?: boolean
 }
 
-interface SearchResState {
+interface PlaceCardState {
     showDetails: boolean,
     phone: string,
     website: string
@@ -18,4 +19,4 @@ interface SearchResState {
     date: number
 }
 
-export type { SearchResProps, SearchResState }
+export type { PlaceCardProps, PlaceCardState }

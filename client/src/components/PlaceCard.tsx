@@ -4,11 +4,12 @@ import KeyboardArrowUpIcon from '@mui/icons-material/KeyboardArrowUp';
 import { Button } from "@mui/material";
 import React from "react";
 import noImage from "../assets/noImage.png";
-import { SearchResProps, SearchResState } from "../types/SearchResTypes";
+import { PlaceCardProps, PlaceCardState } from "../types/PlaceCardType";
+import { FaCircle, FaCircleInfo } from "react-icons/fa6";
 
 
-export class PlaceCard extends React.Component<SearchResProps, SearchResState>{
-    state: SearchResState = {
+export class PlaceCard extends React.Component<PlaceCardProps, PlaceCardState>{
+    state: PlaceCardState = {
       showDetails: false,
       phone: "",
       website: "",
@@ -16,7 +17,7 @@ export class PlaceCard extends React.Component<SearchResProps, SearchResState>{
       date: new Date().getDay()
     }
 
-    constructor(props: SearchResProps){
+    constructor(props: PlaceCardProps){
       super(props);
       this.state = {
         showDetails: false,
@@ -39,7 +40,7 @@ export class PlaceCard extends React.Component<SearchResProps, SearchResState>{
 
       const service = new google.maps.places.PlacesService(map);
       service.getDetails({
-          placeId: this.props.placeId
+          placeId: this.props.place_id
       }, (place, status) => {
           if(status === google.maps.places.PlacesServiceStatus.OK && place){
             console.log(place);

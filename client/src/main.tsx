@@ -6,6 +6,7 @@ import './index.css'
 import { initializeApp } from "firebase/app";
 import React from 'react';
 import { AuthProvider } from './contexts/AuthContext.tsx';
+import { TripProvider } from './contexts/TripContext.tsx';
 
 const config = JSON.parse(import.meta.env.VITE_FIREBASE_CONFIG);
 const app = initializeApp(config);
@@ -14,7 +15,9 @@ ReactDOM.createRoot(document.getElementById('root')!).render(
 	<React.StrictMode>
 		<BrowserRouter>
 			<AuthProvider>
-				<App />
+				<TripProvider>
+					<App />
+				</TripProvider>
 			</AuthProvider>
 		</BrowserRouter>
 	</React.StrictMode>,

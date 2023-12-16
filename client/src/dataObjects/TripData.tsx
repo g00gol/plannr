@@ -4,8 +4,10 @@ export class TripData {
     //private markerStyle;
 
     constructor(
-        public places: TripData[]
+        public name: string,
+        public places: PlaceData[]
     ) {
+        this.name = name;
         this.places = places;
     }
 }

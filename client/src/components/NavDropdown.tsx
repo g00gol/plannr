@@ -20,8 +20,21 @@ const NavDropdown = (): React.ReactElement => {
     setAnchorEl(null);
   };
 
+  // const blam = async (): Promise<void> => {
+  //   try {
+  //     const token = await currentUser?.getIdToken();
+  //     console.log(token);
+  //     console.log("uid", currentUser?.uid);
+  //   } catch (e) {
+  //     console.log("err");
+  //     console.log(e);
+  //   }
+  // };
+
   return (
     <div className="hidden lg:flex lg:flex-1 lg:justify-end justify-between p-4">
+      {/* <button onClick={blam}>Test Token</button> */}
+
       <p className="text-lg leading-6 text-gray-900 pr-4 pt-4">Hello, <span className="font-bold">{currentUser ? currentUser.email : "Guest"}</span></p>
       <Button
         id="basic-button"
