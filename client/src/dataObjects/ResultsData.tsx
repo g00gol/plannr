@@ -4,6 +4,7 @@ export class ResultsData {
     //private markerStyle;
 
     constructor(
+        public placeId : string,
         public title : string,
         public addr : string,
         public priceLevel : number | undefined,

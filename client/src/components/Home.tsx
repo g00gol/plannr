@@ -171,6 +171,7 @@ function Home(props: HomeProps): React.ReactElement {
 						if(status === google.maps.places.PlacesServiceStatus.OK && res !== null){
 							console.log(res);
 							const data : Array<ResultsData> = res.map((r) => {
+								const placeId = r.place_id;
 								const isOpen = r.opening_hours?.isOpen();
 								const location = r.geometry?.location;
 								const name = r.name ? r.name : "Invalid Name";
@@ -179,6 +180,7 @@ function Home(props: HomeProps): React.ReactElement {
 								const ratingsTotal = r.user_ratings_total;
 
 								return new ResultsData(
+									placeId ? placeId : "Invalid Place ID",
 									name,
 									r.vicinity ? r.vicinity : "Invalid Address",
 									priceLevel ? priceLevel : undefined,
