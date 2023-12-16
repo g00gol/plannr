@@ -17,6 +17,10 @@ body {
     animation: 0.25s ease-out 0s 1 slideInFromLeft;
 }
 
+.load-slide-right {
+    animation: 1s ease-out 0s 1 slideInFromRight;
+}
+
 .unload-slide {
     animation: 1s ease-out 0s 1 slideOutToLeft;
 }
@@ -101,6 +105,15 @@ body {
 @keyframes slideInFromLeft {
     0% {
         transform: translateX(-100%);
+    }
+    100% {
+        transform: translateX(0);
+    }
+}
+
+@keyframes slideInFromRight {
+    0% {
+        transform: translateX(100%);
     }
     100% {
         transform: translateX(0);

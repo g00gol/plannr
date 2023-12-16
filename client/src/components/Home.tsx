@@ -1,13 +1,13 @@
 import { Circle, GoogleMap, Marker, useJsApiLoader } from "@react-google-maps/api";
 import React, { FormEvent, useCallback, useEffect, useRef, useState } from "react";
 import 'react-simple-typewriter/dist/index';
+import { TripContext } from "../contexts/TripContext";
 import { CircleData } from "../dataObjects/CircleData";
-import { PlanMarkerData } from "../dataObjects/PlanMarkerData";
 import { PlaceData } from "../dataObjects/PlaceData";
+import { PlanMarkerData } from "../dataObjects/PlanMarkerData";
 import { HomeProps } from "../types/HomeTypes";
 import Navbar from "./Navbar";
 import { PlaceCard } from "./PlaceCard";
-import { TripContext } from "../contexts/TripContext";
 
 const DEFAULT_RADIUS = 1500;
 enum PLACES_TYPES {
@@ -176,7 +176,6 @@ function Home(props: HomeProps): React.ReactElement {
 						if(status === google.maps.places.PlacesServiceStatus.OK && res !== null){
 							console.log(res);
 							const data : Array<PlaceData> = res.map((r) => {
-								console.log(r)
 								const place_id = r.place_id;
 								const name = r.name ? r.name : "Invalid Name";
 								const address = r.vicinity ? r.vicinity : "Invalid Address";
@@ -322,7 +321,7 @@ function Home(props: HomeProps): React.ReactElement {
 									<ul className="px-3 py-4 flex-grow overflow-y-scroll">
 										{
 											placeData.map((result) => {
-												return <PlaceCard key={`${result.addr}-result`} place_id={result.place_id} title={result.title} addr={result.addr} isOpen={result.isOpen} img={result.img?.getUrl()} rating={result.rating} priceLevel={result.priceLevel} ratingsTotal={result.ratingsTotal} isResult={true}/>;
+												return <PlaceCard key={`${result.addr}-result`} mapRef={mapRef} place_id={result.place_id} title={result.title} addr={result.addr} isOpen={result.isOpen} img={result.img?.getUrl()} rating={result.rating} priceLevel={result.priceLevel} ratingsTotal={result.ratingsTotal} isResult={true}/>;
 											})
 										}
 									</ul>
@@ -334,7 +333,7 @@ function Home(props: HomeProps): React.ReactElement {
 						{	!tripToggle &&
 							<aside
 								id="tripWindow"
-								className="fixed pb-10 pl-10 opacity-90 top-inherit left-inherit right-14 mr-2 z-20 h-4/5 w-1/3 load-slide-fast rounded-lg shadow-md"
+								className="fixed  pb-10 pl-10 opacity-90 top-inherit left-inherit right-12 mr-2 z-20 h-4/5 w-1/3 load-slide-fast rounded-lg shadow-md"
 								>
 								<div className="flex flex-col z-20 h-full bg-white dark:bg-gray-150 rounded-lg shadow-md">
 									<div className="px-5 py-4 flex justify-between">
@@ -347,12 +346,20 @@ function Home(props: HomeProps): React.ReactElement {
 									<h3 className="text-1xl px-5"><span className="font-bold">Places in Trip</span>: {placeData.length}</h3>
 									<ul className="px-3 py-4 flex-grow overflow-y-scroll">
 										{
-											tripData.map((result) => {
-												return <PlaceCard key={`${result.addr}-trip`} place_id={result.place_id} title={result.title} addr={result.addr} isOpen={result.isOpen} img={result.img?.getUrl()} rating={result.rating} priceLevel={result.priceLevel} ratingsTotal={result.ratingsTotal} isResult={false}/>;
+											placeData.map((result) => {
+												return <PlaceCard key={result.addr} mapRef={mapRef} place_id={result.place_id} title={result.title} addr={result.addr} isOpen={result.isOpen} img={result.img?.getUrl()} rating={result.rating} priceLevel={result.priceLevel} ratingsTotal={result.ratingsTotal} isResult={true}/>;
 											})
 										}
 									</ul>
 								</div>
+								<h3 className="text-1xl px-5"><span className="font-bold">Places in Trip</span>: {placeData.length}</h3>
+								<ul className="px-3 py-4 flex-grow overflow-y-scroll">
+									{
+										tripData.map((result) => {
+											return <PlaceCard key={`${result.addr}-trip`} mapRef={mapRef} place_id={result.place_id} title={result.title} addr={result.addr} isOpen={result.isOpen} img={result.img?.getUrl()} rating={result.rating} priceLevel={result.priceLevel} ratingsTotal={result.ratingsTotal} isResult={false}/>;
+										})
+									}
+								</ul>
 							</aside>						
 						}
 
