@@ -4,6 +4,7 @@ export class PlaceData {
     //private markerStyle;
 
     constructor(
+        public place_id: string | undefined,
         public title : string,
         public addr : string,
         public priceLevel : number | undefined,
@@ -13,6 +14,7 @@ export class PlaceData {
         public marker? : PlanMarkerData,
         public img? : google.maps.places.PlacePhoto
     ) {
+        this.place_id = place_id;
         this.title = title;
         this.addr = addr;
         this.priceLevel = priceLevel;

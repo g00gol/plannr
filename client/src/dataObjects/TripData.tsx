@@ -5,9 +5,9 @@ export class TripData {
 
     constructor(
         public name: string,
-        public places: PlaceData[]
+        public place_ids: string[]
     ) {
         this.name = name;
-        this.places = places;
+        this.place_ids = place_ids;
     }
 }

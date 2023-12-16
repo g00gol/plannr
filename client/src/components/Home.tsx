@@ -176,22 +176,27 @@ function Home(props: HomeProps): React.ReactElement {
 						if(status === google.maps.places.PlacesServiceStatus.OK && res !== null){
 							console.log(res);
 							const data : Array<PlaceData> = res.map((r) => {
+								console.log(r)
+								const place_id = r.place_id;
+								const name = r.name ? r.name : "Invalid Name";
+								const address = r.vicinity ? r.vicinity : "Invalid Address";
 								const isOpen = r.opening_hours?.isOpen();
 								const location = r.geometry?.location;
-								const name = r.name ? r.name : "Invalid Name";
 								const priceLevel = r.price_level;
 								const rating = r.rating;
 								const ratingsTotal = r.user_ratings_total;
+								const thumbnail = r.photos ? r.photos[0] : undefined
 
 								return new PlaceData(
+									place_id,
 									name,
-									r.vicinity ? r.vicinity : "Invalid Address",
+									address,
 									priceLevel ? priceLevel : undefined,
 									rating ? rating : undefined,
 									ratingsTotal ? ratingsTotal : undefined,
 									isOpen ? isOpen : false,
 									location ? new PlanMarkerData(name, location) : undefined,
-									r.photos ? r.photos[0] : undefined
+									thumbnail
 								)
 							});
 							setPlaceData([...data]);
@@ -211,10 +216,50 @@ function Home(props: HomeProps): React.ReactElement {
 
 	useEffect(() => {
 		async function fetchData() {
+			try {
+				if(mapRef && mapRef.current){
+					setTripData([]);
+					const placesService = new google.maps.places.PlacesService(mapRef.current);
+					currentTrip.place_ids.forEach((place_id) => {
+						const request = {
+							placeId: place_id,
+							fields: ["name", "vicinity", "place_id", "opening_hours", "geometry", "price_level", "rating", "user_ratings_total", "photos"]
+						};
+
+						placesService.getDetails(request, (place, status) => {
+							if (status === google.maps.places.PlacesServiceStatus.OK && place != null){
+								const place_id = place.place_id;
+								const name = place.name ? place.name : "Invalid Name";
+								const address = place.vicinity ? place.vicinity : "Invalid Address";
+								const isOpen = place.opening_hours?.isOpen();
+								const location = place.geometry?.location;
+								const priceLevel = place.price_level;
+								const rating = place.rating;
+								const ratingsTotal = place.user_ratings_total;
+								const thumbnail = place.photos ? place.photos[0] : undefined	
+
+								setTripData([...tripData, 
+									new PlaceData(
+										place_id,
+										name,
+										address,
+										priceLevel ? priceLevel : undefined,
+										rating ? rating : undefined,
+										ratingsTotal ? ratingsTotal : undefined,
+										isOpen ? isOpen : false,
+										location ? new PlanMarkerData(name, location) : undefined,
+										thumbnail
+									)
+								]);
+							}
+						});
+
+					});
+				}
+			} catch (e) {
+				console.log(e);
+			}
 			// fetch data from currentTrip
-			currentTrip.places.forEach((place) => {
-				setTripData([...tripData, place]);
-			});
 		}
 		if(tripToggle) {
 			fetchData();
@@ -277,7 +322,7 @@ function Home(props: HomeProps): React.ReactElement {
 									<ul className="px-3 py-4 flex-grow overflow-y-scroll">
 										{
 											placeData.map((result) => {
-												return <PlaceCard key={`${result.addr}-result`} title={result.title} addr={result.addr} isOpen={result.isOpen} img={result.img?.getUrl()} rating={result.rating} priceLevel={result.priceLevel} ratingsTotal={result.ratingsTotal} isResult={true}/>;
+												return <PlaceCard key={`${result.addr}-result`} place_id={result.place_id} title={result.title} addr={result.addr} isOpen={result.isOpen} img={result.img?.getUrl()} rating={result.rating} priceLevel={result.priceLevel} ratingsTotal={result.ratingsTotal} isResult={true}/>;
 											})
 										}
 									</ul>
@@ -302,8 +347,8 @@ function Home(props: HomeProps): React.ReactElement {
 									<h3 className="text-1xl px-5"><span className="font-bold">Places in Trip</span>: {placeData.length}</h3>
 									<ul className="px-3 py-4 flex-grow overflow-y-scroll">
 										{
-											placeData.map((result) => {
-												return <PlaceCard key={`${result.addr}-trip`} title={result.title} addr={result.addr} isOpen={result.isOpen} img={result.img?.getUrl()} rating={result.rating} priceLevel={result.priceLevel} ratingsTotal={result.ratingsTotal} isResult={false}/>;
+											tripData.map((result) => {
+												return <PlaceCard key={`${result.addr}-trip`} place_id={result.place_id} title={result.title} addr={result.addr} isOpen={result.isOpen} img={result.img?.getUrl()} rating={result.rating} priceLevel={result.priceLevel} ratingsTotal={result.ratingsTotal} isResult={false}/>;
 											})
 										}
 									</ul>

@@ -1,4 +1,5 @@
 interface PlaceCardProps {
+    place_id: string | undefined
     title: string
     isOpen: boolean | undefined
     addr: string
