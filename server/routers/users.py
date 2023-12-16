@@ -1,6 +1,8 @@
 from fastapi import APIRouter, Body
+
 from db import get_users
 from models import User
+from dependencies import firebase_auth
 
 
 router = APIRouter(
@@ -17,7 +19,7 @@ async def get_users() -> list[User]:
     users = await get_users()
     return users
 
-
+    
 @router.get("/{user_id}")
 async def get_users(user_id: str) -> User:
     """
@@ -27,17 +29,17 @@ async def get_users(user_id: str) -> User:
     return user
 
 
-@router.get("/history")
-async def get_history(user_id: str) -> list[User]:
+@router.get("/{user_id}/saved-routes")
+async def get_saved_routes(user_id: str) -> list[dict]:
     """
-    Gets all history for a user.
+    Gets all saved routes for a user.
     """
     return
 
 
-@router.get("/saved-routes")
-async def get_saved_routes(user_id: str) -> list[User]:
+@router.post("/{user_id}/saved-routes")
+async def save_route(user_id: str, route: dict) -> dict:
     """
-    Gets all saved routes for a user.
+    Saves a route for a user.
     """
     return

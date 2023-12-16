@@ -1,6 +1,6 @@
 import os
 from dotenv import load_dotenv
-from fastapi import Depends, HTTPException, status
+from fastapi import Depends, HTTPException, Request, status
 from fastapi.security import HTTPBearer, HTTPAuthorizationCredentials
 import firebase_admin
 from firebase_admin import credentials, auth
@@ -31,16 +31,27 @@ if not firebase_admin._apps:
 token_auth_scheme = HTTPBearer()
 
 
-def firebase_auth_dependency(token: HTTPAuthorizationCredentials = Depends(token_auth_scheme)):
+async def firebase_auth_dependency(request: Request, token: HTTPAuthorizationCredentials = Depends(token_auth_scheme)) -> str:
     """
-    Checks if the token is valid and returns the decoded token if it is.
+    Checks if the token is valid and if the user ID in the token matches the user ID in the request path.
     """
+    # Extract user_id from path parameters
+    user_id = request.path_params.get("user_id")
+
+    # Verify the Firebase ID token
     try:
-        # Verify the Firebase ID token
         decoded_token = auth.verify_id_token(token.credentials)
-        return decoded_token
     except Exception as e:
         raise HTTPException(
             status_code=status.HTTP_401_UNAUTHORIZED,
             detail=str(e),
         )
+
+    # Check if the user ID in the token matches the user ID in the request path
+    if user_id and user_id != decoded_token.get("uid"):
+        raise HTTPException(
+            status_code=status.HTTP_401_UNAUTHORIZED,
+            detail="User ID does not match the one in the token",
+        )
+
+    return decoded_token
