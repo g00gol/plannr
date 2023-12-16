@@ -47,7 +47,7 @@ body {
     transition: 0.5s;
 }
 
-.results-img {
+.place-img {
     width: 100px;
     height: 100px;
     object-fit: cover;
@@ -55,7 +55,7 @@ body {
     border-radius: 10px;
 }
 
-.results-img-container {
+.place-img-container {
     width: 100px;
     height: 100px;
     overflow: hidden;
@@ -65,7 +65,7 @@ body {
     justify-content: right;
 }
 
-.results-card {
+.place-card {
     margin: 10px;
     padding: 5px;
     border-radius: 10px;
@@ -92,7 +92,7 @@ body {
     transition: 0.5s;
 }
 
-.results-card:hover {
+.place-card:hover {
     box-shadow: 0 0 5px 0 rgba(0, 0, 0, 0.5);
     transition: 0.5s;
     background-color: #f5f5f5;
