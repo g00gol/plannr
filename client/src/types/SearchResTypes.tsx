@@ -14,6 +14,7 @@ interface SearchResState {
     showDetails: boolean,
     phone: string,
     website: string
+    hours: string[] | undefined
 }
 
 export type { SearchResProps, SearchResState }

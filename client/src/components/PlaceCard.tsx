@@ -11,6 +11,7 @@ export class PlaceCard extends React.Component<SearchResProps, SearchResState>{
       showDetails: false,
       phone: "",
       website: "",
+      hours: [],
     }
 
     constructor(props: SearchResProps){
@@ -19,6 +20,7 @@ export class PlaceCard extends React.Component<SearchResProps, SearchResState>{
         showDetails: false,
         phone: "",
         website: "",
+        hours: [],
       }
 
       this.showDetails = this.showDetails.bind(this);
@@ -42,6 +44,7 @@ export class PlaceCard extends React.Component<SearchResProps, SearchResState>{
             this.setState({
               phone: place.formatted_phone_number ? place.formatted_phone_number : "",
               website: place.website ? place.website : "",
+              hours: place.opening_hours ? place.opening_hours.weekday_text : []
             });
           }
       });
@@ -100,10 +103,24 @@ export class PlaceCard extends React.Component<SearchResProps, SearchResState>{
 
           {this.state.showDetails ? (
               <div className="row-span-2 col-span-1 place-details">
-                <p className="text-lg font-bold card-title">{this.props.title.length > 30 ? this.props.title.substring(0, 25) + "..." : this.props.title}</p>
-                <p>{`${this.props.addr}`}</p>
-                <p><span className="font-bold">Price Level: </span>{this.props.priceLevel ? this.convertPriceLevel(this.props.priceLevel) : "N/A"} | <span className="font-bold">Rating: </span>{this.props.rating? this.props.rating : "N/A"} ☆ ({this.props.ratingsTotal? this.props.ratingsTotal : 0})</p>
-                <p><span className="font-bold">Open: </span>{this.props.isOpen ? "Yes" : "No"}</p>
+                <hr className="border-1 pb-2"></hr>
+                <p><span className="font-bold">Phone: </span>{this.state.phone}</p>
+                <p><span className="font-bold">Website: </span><a className="text-blue-500" href={this.state.website}>{this.state.website}</a></p>
+                <p><span className="font-bold pt-5">Hours: </span></p>
+                { this.state.hours ? (
+                  <table className="table-auto">
+                    <tbody>
+                      {this.state.hours.map((day, index) => (
+                        <tr key={index}>
+                          <td className="italic">{day.substring(0, day.indexOf(":"))}</td>
+                          <td className='pl-2'>{day.substring(day.indexOf(":") + 1)}</td>
+                        </tr>
+                      ))}
+                    </tbody>
+                  </table>
+                ) : (
+                  <p>No hours available.</p>
+                )}
               </div>
             ) : (
               <></>
