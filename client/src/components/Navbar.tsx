@@ -1,13 +1,10 @@
 import React from "react";
 import { Link } from "react-router-dom";
-import { FaCircleUser } from "react-icons/fa6";
 import { Typewriter } from "react-simple-typewriter";
 import logo_cropped from "../assets/logo_cropped.png";
-import { AuthContext } from "../contexts/AuthContext";
 import NavDropdown from "./NavDropdown";
 
 const NavBar = (): React.ReactElement => {
-  const currentUser = React.useContext(AuthContext);
   const wordsList: string[] = [
     " go on a date",
     " take a hike",
@@ -19,17 +16,6 @@ const NavBar = (): React.ReactElement => {
     " get some boba",
     " explore the city",
   ];
-
-  const blam = async (): Promise<void> => {
-    try {
-      const token = await currentUser?.getIdToken();
-      console.log(token);
-      console.log("uid", currentUser?.uid);
-    } catch (e) {
-      console.log("err");
-      console.log(e);
-    }
-  };
 
   return (
     <header className="bg-white">
@@ -46,13 +32,6 @@ const NavBar = (): React.ReactElement => {
               alt=""
             ></img>
           </Link>
-        </div>
-        <div className="hidden lg:flex lg:flex-1 lg:justify-end">
-          <button onClick={blam}>Test Token</button>
-          <Link to="/signin">
-            <FaCircleUser size={35} />
-          </Link>
-          {/* <a href="#" className="text-lg font-semibold leading-6 text-gray-900">Log in</a> */}
         </div>
         <div>
           <h1 className="text-3xl">
