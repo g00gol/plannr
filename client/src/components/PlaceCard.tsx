@@ -1,9 +1,10 @@
 import React from "react";
 import noImage from "../assets/noImage.png";
-import { SearchResProps, SearchResState } from "../types/SearchResTypes";
+import { PlaceCardProps, PlaceCardState } from "../types/PlaceCardType";
+import { FaCircle, FaCircleInfo } from "react-icons/fa6";
 
-export class PlaceCard extends React.Component<SearchResProps, SearchResState>{
-    state: SearchResState = {
+export class PlaceCard extends React.Component<PlaceCardProps, PlaceCardState>{
+    state: PlaceCardState = {
         
     }
 
@@ -32,6 +33,10 @@ export class PlaceCard extends React.Component<SearchResProps, SearchResState>{
                   : "Closed"
                 }`}</p>
               <p><span className="font-bold">Price Level: </span>{this.props.priceLevel ? this.convertPriceLevel(this.props.priceLevel) : "N/A"} | <span className="font-bold">Rating: </span>{this.props.rating? this.props.rating : "N/A"} ☆ ({this.props.ratingsTotal? this.props.ratingsTotal : 0})</p>
+							{	this.props.isResult ?
+								<p className="flex flex-row"><span className="font-bold cursor-pointer" onClick={() => console.log("add")}>+ Add To Plan</span> <span className="font-bold inline-block flex items-center"> <FaCircleInfo/> Info</span></p> :
+								<p className="font-bold cursor-pointer" onClick={() => console.log("add")}>- Remove</p>
+							}
             </div>
             <div className="row-span-2 col-span-1 place-img-container">
               <img className="place-img" src={

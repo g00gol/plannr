@@ -1,4 +1,4 @@
-interface SearchResProps {
+interface PlaceCardProps {
     title: string
     isOpen: boolean | undefined
     addr: string
@@ -6,10 +6,11 @@ interface SearchResProps {
     ratingsTotal?: number | undefined
     priceLevel?: number | undefined
     img?: string
+    isResult?: boolean
 }
 
-interface SearchResState {
+interface PlaceCardState {
 
 }
 
-export type { SearchResProps, SearchResState }
+export type { PlaceCardProps, PlaceCardState }
