@@ -1,130 +1,129 @@
 #TEST_MAP {
-    height: 100%;
+  height: 100%;
 }
 
 html,
 body {
-    height: 100%;
-    margin: 0;
-    padding: 0;
+  height: 100%;
+  margin: 0;
+  padding: 0;
 }
 
 .load-slide {
-    animation: 1s ease-out 0s 1 slideInFromLeft;
+  animation: 1s ease-out 0s 1 slideInFromLeft;
 }
 
 .load-slide-fast {
-    animation: 0.25s ease-out 0s 1 slideInFromLeft;
+  animation: 0.25s ease-out 0s 1 slideInFromLeft;
 }
 
 .load-slide-right {
-    animation: 1s ease-out 0s 1 slideInFromRight;
+  animation: 1s ease-out 0s 1 slideInFromRight;
 }
 
 .unload-slide {
-    animation: 1s ease-out 0s 1 slideOutToLeft;
+  animation: 1s ease-out 0s 1 slideOutToLeft;
 }
 
 .back-link {
-    color: #000000;
-    font-size: large;
-    text-decoration: none;
-    transition: 0.5s;
-
+  color: #000000;
+  font-size: large;
+  text-decoration: none;
+  transition: 0.5s;
 }
 
 .back-link:hover {
-    font-size: larger;
-    transition: 0.5s;
-    color: #4182dc;
+  font-size: larger;
+  transition: 0.5s;
+  color: #4182dc;
 }
 
 .login-link {
-    color: #4182dc;
-    text-decoration: none;
-    transition: 0.5s;
+  color: #4182dc;
+  text-decoration: none;
+  transition: 0.5s;
 }
 
 .login-link:hover {
-    color: #37465f;
-    text-decoration: underline;
-    transition: 0.5s;
+  color: #37465f;
+  text-decoration: underline;
+  transition: 0.5s;
 }
 
 .place-img {
-    width: 100px;
-    height: 100px;
-    object-fit: cover;
-    overflow: hidden;
-    border-radius: 10px;
+  width: 100px;
+  height: 100px;
+  object-fit: cover;
+  overflow: hidden;
+  border-radius: 10px;
 }
 
 .place-img-container {
-    width: 100px;
-    height: 100px;
-    overflow: hidden;
-    border-radius: 10px;
-    text-align: right;
-    display: flex;
-    justify-content: right;
+  width: 100px;
+  height: 100px;
+  overflow: hidden;
+  border-radius: 10px;
+  text-align: right;
+  display: flex;
+  justify-content: right;
 }
 
 .place-card {
-    margin: 10px;
-    padding: 5px;
-    border-radius: 10px;
-    transition: 0.5s;
-    animation: 0.5s ease-out 0s 1 slideInFromLeft;
+  margin: 10px;
+  padding: 5px;
+  border-radius: 10px;
+  transition: 0.5s;
+  animation: 0.5s ease-out 0s 1 slideInFromLeft;
 }
 
 .card-grid {
-    display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
-    grid-gap: 10px;
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+  grid-gap: 10px;
 }
 
 .card-title {
-    font-weight: bold;
-    margin: 0;
-    padding: 0;
-    transition: 0.5s;
+  font-weight: bold;
+  margin: 0;
+  padding: 0;
+  transition: 0.5s;
 }
 
 .card-title:hover {
-    font-size: 20px;
-    color: #4182dc;
-    transition: 0.5s;
+  font-size: 20px;
+  color: #4182dc;
+  transition: 0.5s;
 }
 
 .place-card:hover {
-    box-shadow: 0 0 5px 0 rgba(0, 0, 0, 0.5);
-    transition: 0.5s;
-    background-color: #f5f5f5;
+  box-shadow: 0 0 5px 0 rgba(0, 0, 0, 0.5);
+  transition: 0.5s;
+  background-color: #f5f5f5;
 }
 
 @keyframes slideInFromLeft {
-    0% {
-        transform: translateX(-100%);
-    }
-    100% {
-        transform: translateX(0);
-    }
+  0% {
+    transform: translateX(-100%);
+  }
+  100% {
+    transform: translateX(0);
+  }
 }
 
 @keyframes slideInFromRight {
-    0% {
-        transform: translateX(100%);
-    }
-    100% {
-        transform: translateX(0);
-    }
+  0% {
+    transform: translateX(100%);
+  }
+  100% {
+    transform: translateX(0);
+  }
 }
 
 @keyframes slideOutToLeft {
-    0% {
-        transform: translateX(0);
-    }
-    100% {
-        transform: translateX(-100%);
-    }
+  0% {
+    transform: translateX(0);
+  }
+  100% {
+    transform: translateX(-100%);
+  }
 }

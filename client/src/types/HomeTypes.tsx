@@ -1,8 +1,7 @@
 interface HomeProps {
-    children: React.ReactNode
+  children: React.ReactNode;
 }
 
-interface HomeState {
-}
+interface HomeState {}
 
-export type { HomeProps, HomeState }
+export type { HomeProps, HomeState };

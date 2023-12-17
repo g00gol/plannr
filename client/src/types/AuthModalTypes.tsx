@@ -1,8 +1,7 @@
 interface AuthModalProps {
-    children: React.ReactNode
+  children: React.ReactNode;
 }
 
-interface AuthModalState {
-}
+interface AuthModalState {}
 
-export type { AuthModalProps, AuthModalState }
+export type { AuthModalProps, AuthModalState };

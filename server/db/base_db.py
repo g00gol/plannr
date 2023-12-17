@@ -9,7 +9,10 @@ MONGO_URI = cast(str, os.getenv("MONGO_URI"))
 
 async def startup():
     global client
-    client = AsyncIOMotorClient(MONGO_URI)
+    try:
+        client = AsyncIOMotorClient(MONGO_URI)
+    except Exception as e:
+        raise Exception(e)
 
 
 async def shutdown():
@@ -20,6 +23,5 @@ async def shutdown():
 
 async def get_db_async(db_name: str) -> AsyncIOMotorDatabase:
     if client is None:
-        raise RuntimeError(
-            "Must initialize database with startup() before accessing!")
+        raise Exception("Database client not initialized.")
     return client[db_name]
