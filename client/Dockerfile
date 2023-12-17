@@ -4,6 +4,7 @@ WORKDIR /client
 
 COPY package*.json ./
 RUN npm install
+COPY .env.local ./
 COPY . .
 
 RUN npm run build

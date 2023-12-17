@@ -54,7 +54,7 @@ async def get_user(user_id: str, authorization=Depends(firebase_auth.authorize))
 
 
 @router.get("/{user_id}/saved-routes")
-async def get_saved_routes(user_id: str, authorization=Depends(firebase_auth.authorize)) -> list[dict]:
+async def get_saved_routes(user_id: str, authorization=Depends(firebase_auth.authorize)) -> List[dict]:
     """
     Gets all saved routes for a user.
     """
