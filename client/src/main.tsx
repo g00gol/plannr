@@ -11,11 +11,9 @@ const config = JSON.parse(import.meta.env.VITE_FIREBASE_CONFIG);
 initializeApp(config);
 
 ReactDOM.createRoot(document.getElementById("root")!).render(
-  <React.StrictMode>
     <BrowserRouter>
       <ContextProvider>
         <App />
       </ContextProvider>
-    </BrowserRouter>
-  </React.StrictMode>,
+    </BrowserRouter>,
 );
