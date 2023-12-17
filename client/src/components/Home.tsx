@@ -8,6 +8,7 @@ import { PlanMarkerData } from "../dataObjects/PlanMarkerData";
 import { HomeProps } from "../types/HomeTypes";
 import Navbar from "./Navbar";
 import { PlaceCard } from "./PlaceCard";
+import SortableList, { SortableItem } from 'react-easy-sort'
 
 const DEFAULT_RADIUS = 1500;
 enum PLACES_TYPES {
@@ -125,7 +126,7 @@ function Home(props: HomeProps): React.ReactElement {
 	const [searchText, setSearchText] = useState<string>("");
 	const pinSVGFilled = "M 12,2 C 8.1340068,2 5,5.1340068 5,9 c 0,5.25 7,13 7,13 0,0 7,-7.75 7,-13 0,-3.8659932 -3.134007,-7 -7,-7 z";
 
-	const { currentTrip } = React.useContext(TripContext);
+	const { currentTrip, onSortEnd } = React.useContext(TripContext);
 
 	const { isLoaded } = useJsApiLoader({
 		id: 'google-map-script',
@@ -293,12 +294,16 @@ function Home(props: HomeProps): React.ReactElement {
 									</div>
 									<h3 className="text-1xl px-5"><span className="font-bold">Places in Trip</span>: {currentTrip.length}</h3>
 									<ul className="px-3 py-4 flex-grow overflow-y-scroll">
-										{
-											// current bug: does not remove existing placecards but tacks on new list of placecards. 
-											currentTrip.map((result) => {
-												return <PlaceCard key={result.addr} mapRef={mapRef}  place={result} isResult={false}/>;
-											})
-										}
+										<SortableList onSortEnd={onSortEnd} className="list" draggedItemClassName="dragged">
+											{
+												// current bug: does not remove existing placecards but tacks on new list of placecards. 
+												currentTrip.map((result) => 
+													<SortableItem key={result.addr}>
+														<PlaceCard key={`${result.addr}-trip`} mapRef={mapRef} place={result} isResult={false}/>;
+													</SortableItem>
+												)
+											}
+										</SortableList>
 									</ul>
 								</div>
 							</aside>						
