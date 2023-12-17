@@ -1,5 +1,6 @@
-import { Marker } from "@react-google-maps/api";
 import React from "react";
+import { Marker } from "@react-google-maps/api";
+
 import { PlanMarkerProps, PlanMarkerState } from "../types/PlanMarkerTypes";
 
 export class PlanMarker extends React.Component<

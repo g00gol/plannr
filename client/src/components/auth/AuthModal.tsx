@@ -1,9 +1,10 @@
 import React from "react";
 import { Link } from "react-router-dom";
+
 import "../../App.css";
 import { AuthModalProps } from "../../types/AuthModalTypes";
 
-const AuthModal = (props: AuthModalProps): React.ReactElement => {
+export default function AuthModal(props: AuthModalProps): React.ReactElement {
   window.onbeforeunload = () => {
     document.body.classList.remove("load-slide");
     document.body.classList.add("unload-slide");
@@ -21,6 +22,4 @@ const AuthModal = (props: AuthModalProps): React.ReactElement => {
       </div>
     </div>
   );
-};
-
-export default AuthModal;
+}

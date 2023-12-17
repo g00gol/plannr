@@ -5,10 +5,10 @@ import "../../App.css";
 import { signin } from "../../api/auth.js";
 import logo from "../../assets/logo_cropped.png";
 
-const Signin = (): React.ReactElement => {
+export default function Signin(): React.ReactElement {
   const [checked, setChecked] = useState(false);
   const [error, setError] = useState("");
-  const [forgot, setForgot] = useState(false);
+  // const [forgot, setForgot] = useState(false);
   const navigate = useNavigate();
 
   const doSignIn = async (e: React.FormEvent) => {
@@ -79,6 +79,4 @@ const Signin = (): React.ReactElement => {
       </form>
     </div>
   );
-};
-
-export default Signin;
+}

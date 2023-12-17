@@ -8,7 +8,7 @@ import { FaCircleUser } from "react-icons/fa6";
 import { Link } from "react-router-dom";
 import { AuthContext } from "../contexts/AuthContext";
 
-const NavDropdown = (): React.ReactElement => {
+export default function NavDropdown(): React.ReactElement {
   const currentUser = React.useContext(AuthContext);
 
   const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null);
@@ -79,6 +79,4 @@ const NavDropdown = (): React.ReactElement => {
       </Menu>
     </div>
   );
-};
-
-export default NavDropdown;
+}

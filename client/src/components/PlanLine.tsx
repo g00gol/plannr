@@ -1,6 +1,7 @@
+import React from "react";
+
 import { PlanMarker } from "./PlanMarker";
 import { PlanLineState, PlanLineProps } from "../types/PlanLineTypes";
-import React from "react";
 import { PlanMarkerData } from "../dataObjects/PlanMarkerData";
 
 export class PlanLine extends React.Component<PlanLineProps, PlanLineState> {
