@@ -93,11 +93,12 @@ export class PlaceCard extends React.Component<PlaceCardProps, PlaceCardState>{
 
     render() {
       return (
-        <li className="place-card p-2 rounded-md">
-          <div className="grid grid-flow-col grid-rows-2 gap-4 card-grid">
-            <div className="row-span-2">
-              <p className="text-lg font-bold card-title">{this.props.place.title.length > 30 ? this.props.place.title.substring(0, 25) + "..." : this.props.place.title}</p>
-              <p>{`${this.props.place.addr}`}</p>
+        <div className="place-card p-2 rounded-md">
+          <div className={`grid grid-flow-col grid-rows-2 ${this.props.isResult ? "grid-cols-9" : "grid-cols-10"} gap-4 card-grid`}>
+            <div className="row-span-2 col-span-6">
+              {/* EXTRA FEATURE: instead of truncate, scroll text on hover */}
+              <p className="text-lg font-bold card-title truncate">{this.props.place.title.length > 30 ? this.props.place.title.substring(0, 25) + "..." : this.props.place.title}</p>
+              <p className='truncate'>{`${this.props.place.addr}`}</p>
               <p><span className="font-bold">Price Level: </span>{this.props.place.priceLevel ? this.convertPriceLevel(this.props.place.priceLevel) : "N/A"} | <span className="font-bold">Rating: </span>{this.props.place.rating? this.props.place.rating : "N/A"} ☆ ({this.props.place.ratingsTotal? this.props.place.ratingsTotal : 0})</p>
               <div className="flex flex-row gap-2 pt-2">
 								{	this.props.isResult ?
@@ -121,15 +122,16 @@ export class PlaceCard extends React.Component<PlaceCardProps, PlaceCardState>{
                 }
               </div>
             </div>
-            <div className="row-span-2 col-span-1 place-img-container">
+            <div className={`row-span-2 h-full w-full ${this.props.isResult ? "col-span-4" : "col-span-3"} flex justify-center items-center place-img-container`}>
               <img className="place-img" src={
                   this.props.place.img?.getUrl() ?? noImage
               }/>
             </div>
+            {this.props.children}
           </div>
 
           {this.state.showDetails ? (
-              <div className="row-span-2 col-span-1 place-details">
+              <div className="row-span-2 col-span-6 place-details">
                 <hr className="border-1 pb-2 border-gray-300"/>
                 <p><span className="font-bold">Phone: </span>{this.state.phone}</p>
                 <p><span className="font-bold">Website: </span><a className="text-blue-500" href={this.state.website} rel="noopener noreferrer" target="_blank">{this.state.website}</a></p>
@@ -160,8 +162,17 @@ export class PlaceCard extends React.Component<PlaceCardProps, PlaceCardState>{
             ) : (
               <></>
             )}
-        </li>
+        </div>
       )
     }
-
 }
+
+interface PlaceCardRefProps {
+  children?: React.ReactNode
+}
+
+export const PlaceCardRef = React.forwardRef((props: PlaceCardRefProps, ref: React.Ref<HTMLDivElement>) => (
+  <div ref={ref}>
+    {props.children}
+  </div>
+))
