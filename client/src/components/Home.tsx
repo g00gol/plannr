@@ -10,6 +10,7 @@ import { FaGripLines } from "react-icons/fa6";
 import Navbar from "./Navbar";
 import { PlaceCard, PlaceCardRef } from "./PlaceCard";
 import SortableList, { SortableItem, SortableKnob} from 'react-easy-sort'
+import Directions from "./Directions";
 
 const DEFAULT_RADIUS = 1500;
 enum PLACES_TYPES {
@@ -322,6 +323,17 @@ function Home(props: HomeProps): React.ReactElement {
 						{
 							markerData.map((result) => {
 								return <Marker key={`(${result.location.lat()}, ${result.location.lng()})`} title={result.title} position={result.location}/>;
+							})
+						}
+
+						{
+							currentTrip.map((result1, ind) => {
+								return ind != currentTrip.length - 1 
+								?
+								<Directions place1={result1} place2={currentTrip[ind + 1]} travelMode={google.maps.TravelMode.WALKING} mapRef={mapRef}  >
+
+								</Directions>
+								: <></>
 							})
 						}
 						
