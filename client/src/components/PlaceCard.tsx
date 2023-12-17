@@ -101,11 +101,6 @@ export class PlaceCard extends React.Component<PlaceCardProps, PlaceCardState>{
               <p><span className="font-bold">Price Level: </span>{this.props.place.priceLevel ? this.convertPriceLevel(this.props.place.priceLevel) : "N/A"} | <span className="font-bold">Rating: </span>{this.props.place.rating? this.props.place.rating : "N/A"} ☆ ({this.props.place.ratingsTotal? this.props.place.ratingsTotal : 0})</p>
               <div className="flex flex-row gap-2 pt-2">
 								{	this.props.isResult ?
-                    // FINALLY FUCKING WORKS
-                    // there's still this bug where if u add a bunch of shit and delete some, remove becomes adding for some??? like what idk
-                    // to recreate -> add muteki, then shokudo, then muteki, then shokudo. remove second shokudo (deletes last shokudo) then remove last muteki (deletes both).
-                    // if you remove the remaining shokudo, it creates two mutekis. NO CLUE HOW
-                    // prolly gets fixed once i prevent duplicates.
 									<Button variant="text" startIcon={<AddIcon />} onClick={() => this.addToTrip(this.props.place)}>
 										Add to Plan
 									</Button> :

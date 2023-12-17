@@ -56,13 +56,15 @@ export const TripProvider = ({ children }: React.PropsWithChildren<{}>) => {
 		// });
   }, []);
 
-    //   TODO: make currentTrip array of PlaceData and update one by one here. So we don't have to leave it to Home to fetch all the data at once and have it be spaghetti code; more reactive, one by one changes.
   const addPlace = (place: PlaceData) => {
 		//add placeid to user's trip
+		if(currentTrip.includes(place)) return console.log(`${place.title} is already in your trip!`);
     setCurrentTrip([...currentTrip, place]);
   };
-
+	
   const removePlace = (place: PlaceData) => {
+		//remove placeid to user's trip
+		if(!currentTrip.includes(place)) return console.log(`${place.title} isn't in your trip!`);
 		const filtered = currentTrip.filter((p) => p.place_id !== place.place_id);
     setCurrentTrip(filtered);
   };
