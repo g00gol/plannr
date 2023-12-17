@@ -1,95 +1,100 @@
-import AddIcon from '@mui/icons-material/Add';
-import RemoveIcon from '@mui/icons-material/Remove';
-import KeyboardArrowDownIcon from '@mui/icons-material/KeyboardArrowDown';
-import KeyboardArrowUpIcon from '@mui/icons-material/KeyboardArrowUp';
+import AddIcon from "@mui/icons-material/Add";
+import RemoveIcon from "@mui/icons-material/Remove";
+import KeyboardArrowDownIcon from "@mui/icons-material/KeyboardArrowDown";
+import KeyboardArrowUpIcon from "@mui/icons-material/KeyboardArrowUp";
 import { Button } from "@mui/material";
 import React from "react";
 import noImage from "../assets/noImage.png";
 import { PlaceCardProps, PlaceCardState } from "../types/PlaceCardType";
 import { FaCircle, FaCircleInfo } from "react-icons/fa6";
-import { TripContext } from '../contexts/TripContext';
-import { TripData } from '../dataObjects/TripData';
-import { PlaceData } from '../dataObjects/PlaceData';
-export class PlaceCard extends React.Component<PlaceCardProps, PlaceCardState>{
-		static contextType = TripContext;
-		declare context: React.ContextType<typeof TripContext>
-	
-    state: PlaceCardState = {
+import { TripContext } from "../contexts/TripContext";
+import { TripData } from "../dataObjects/TripData";
+import { PlaceData } from "../dataObjects/PlaceData";
+export class PlaceCard extends React.Component<PlaceCardProps, PlaceCardState> {
+  static contextType = TripContext;
+  declare context: React.ContextType<typeof TripContext>;
+
+  state: PlaceCardState = {
+    showDetails: false,
+    phone: "",
+    website: "",
+    hours: [],
+    date: new Date().getDay(),
+  };
+
+  constructor(props: PlaceCardProps) {
+    super(props);
+    this.state = {
       showDetails: false,
       phone: "",
       website: "",
       hours: [],
-      date: new Date().getDay()
+      date: new Date().getDay(),
+    };
+
+    this.showDetails = this.showDetails.bind(this);
+    this.hideDetails = this.hideDetails.bind(this);
+  }
+
+  showDetails() {
+    this.setState({ showDetails: true });
+    const map = this.props.mapRef.current;
+    if (map == undefined) {
+      return;
     }
 
-    constructor(props: PlaceCardProps){
-      super(props);
-      this.state = {
-        showDetails: false,
-        phone: "",
-        website: "",
-        hours: [],
-        date: new Date().getDay()
-      }
+    const service = new google.maps.places.PlacesService(map);
 
-      this.showDetails = this.showDetails.bind(this);
-      this.hideDetails = this.hideDetails.bind(this);
+    if (this.props.place.place_id == undefined)
+      return console.log("missing place id for " + this.props.place.title);
+
+    service.getDetails(
+      {
+        placeId: this.props.place.place_id,
+      },
+      (place, status) => {
+        if (status === google.maps.places.PlacesServiceStatus.OK && place) {
+          console.log(place);
+
+          this.setState({
+            phone: place.formatted_phone_number
+              ? place.formatted_phone_number
+              : "",
+            website: place.website ? place.website : "",
+            hours: place.opening_hours ? place.opening_hours.weekday_text : [],
+          });
+        }
+      },
+    );
+  }
+
+  hideDetails() {
+    this.setState({ showDetails: false });
+  }
+
+  convertPriceLevel(priceLevel: number | undefined): string {
+    if (priceLevel == undefined) {
+      return "N/A";
     }
 
-    showDetails() {
-      this.setState({showDetails: true});
-      const map = this.props.mapRef.current;
-      if(map == undefined){
-          return;
-      }
-
-      const service = new google.maps.places.PlacesService(map);
-
-			if(this.props.place.place_id == undefined) return console.log("missing place id for " + this.props.place.title);
-
-      service.getDetails({
-          placeId: this.props.place.place_id
-      }, (place, status) => {
-          if(status === google.maps.places.PlacesServiceStatus.OK && place){
-            console.log(place);
-
-            this.setState({
-              phone: place.formatted_phone_number ? place.formatted_phone_number : "",
-              website: place.website ? place.website : "",
-              hours: place.opening_hours ? place.opening_hours.weekday_text : []
-            });
-          }
-      });
+    let priceStr = "";
+    for (let i = 0; i < priceLevel; i++) {
+      priceStr += "$";
     }
 
-    hideDetails() {
-      this.setState({showDetails: false});
-    }
+    return priceStr;
+  }
 
-    convertPriceLevel(priceLevel: number | undefined) : string {
-      if(priceLevel == undefined){
-          return "N/A"
-      }
+  addToTrip = (place: PlaceData) => {
+    const { addPlace } = this.context;
 
-      let priceStr = "";
-      for(let i = 0; i < priceLevel; i++){
-          priceStr += "$";
-      }
+    addPlace(place);
+  };
 
-      return priceStr;
-    }
-
-		addToTrip = (place: PlaceData) => {
-			const { addPlace } = this.context; 
-
-
-			addPlace(place);
-		}
-
-		removeFromTrip = (place: PlaceData) => {
-			const { removePlace } = this.context;
-			removePlace(place);
-		}
+  removeFromTrip = (place: PlaceData) => {
+    const { removePlace } = this.context;
+    removePlace(place);
+  };
 
     render() {
       return (

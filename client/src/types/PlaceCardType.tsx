@@ -1,18 +1,18 @@
-import { PlaceData } from "../dataObjects/PlaceData"
+import { PlaceData } from "../dataObjects/PlaceData";
 
 interface PlaceCardProps {
-    mapRef: React.MutableRefObject<google.maps.Map | undefined>
-    place: PlaceData
-    isResult: boolean
-    children?: React.ReactNode
+  mapRef: React.MutableRefObject<google.maps.Map | undefined>;
+  place: PlaceData;
+  isResult: boolean;
+  children?: React.ReactNode
 }
 
 interface PlaceCardState {
-    showDetails: boolean,
-    phone: string,
-    website: string
-    hours: string[] | undefined
-    date: number
+  showDetails: boolean;
+  phone: string;
+  website: string;
+  hours: string[] | undefined;
+  date: number;
 }
 
-export type { PlaceCardProps, PlaceCardState }
+export type { PlaceCardProps, PlaceCardState };

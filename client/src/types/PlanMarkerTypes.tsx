@@ -1,12 +1,12 @@
 interface PlanMarkerProps {
-    title?: string
-    latitude?: number
-    longitude?: number
+  title?: string;
+  latitude?: number;
+  longitude?: number;
 }
 
 interface PlanMarkerState {
-    title: string,
-    location : google.maps.LatLng
+  title: string;
+  location: google.maps.LatLng;
 }
 
-export type { PlanMarkerProps, PlanMarkerState }
+export type { PlanMarkerProps, PlanMarkerState };

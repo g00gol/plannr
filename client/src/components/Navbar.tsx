@@ -36,7 +36,7 @@ const NavBar = (): React.ReactElement => {
         <div>
           <h1 className="text-3xl">
             Today, I want to
-            <span className="font-bold text-blue-500 text-3xl">
+            <span className="text-3xl font-bold text-blue-500">
               <Typewriter
                 words={wordsList}
                 loop={Infinity}
