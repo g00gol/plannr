@@ -319,30 +319,14 @@ function Home(props: HomeProps): React.ReactElement {
 								</div>
 							</aside>						
 						}
-
-						{
-							markerData.map((result) => {
-								return <Marker key={`(${result.location.lat()}, ${result.location.lng()})`} title={result.title} position={result.location}/>;
-							})
-						}
-
-						{
-							currentTrip.map((result1, ind) => {
-								return ind != currentTrip.length - 1 
-								?
-								<Directions place1={result1} place2={currentTrip[ind + 1]} travelMode={google.maps.TravelMode.WALKING} mapRef={mapRef}  >
-
-								</Directions>
-								: <></>
-							})
-						}
-						
-						{
+					{
 							circleData &&
 							<Circle
+							
 							center={centerData}
 							radius={circleData.radius}
 							options={{
+								map: mapRef.current,
 								strokeColor: "#FF0000",
 								strokeOpacity: 0.8,
 								strokeWeight: 2,
@@ -351,6 +335,20 @@ function Home(props: HomeProps): React.ReactElement {
 							}}
 							/>
 						}
+						{
+							currentTrip.map((result1, ind) => {
+								return ind != (currentTrip.length - 1)
+								?
+								<Directions place1={result1} place2={currentTrip[ind + 1]} travelMode={google.maps.TravelMode.WALKING} mapRef={mapRef}/>
+								: <></>
+							})
+						}
+						{
+							markerData.map((result) => {
+								return <Marker key={`(${result.location.lat()}, ${result.location.lng()})`} title={result.title} position={result.location}/>;
+							})
+						}
+						
 						{
 							placeData.map((result) => {
 								if(result.marker){
