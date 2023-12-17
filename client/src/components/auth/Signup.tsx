@@ -1,10 +1,10 @@
 import React, { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { TextField } from "@mui/material";
-
 import "../../App.css";
 import { signup } from "../../api/auth.js";
 import logo from "../../assets/logo_cropped.png";
+import { signupSchema } from "../../helpers/validation.js";
 
 export default function Signup(): React.ReactElement {
   const [error, setError] = useState("");
@@ -13,12 +13,11 @@ export default function Signup(): React.ReactElement {
   const doSignUp = async (e: React.FormEvent) => {
     e.preventDefault();
     const email = (document.getElementById("email") as HTMLInputElement).value;
-    const username = (document.getElementById("username") as HTMLInputElement)
-      .value;
-    const password = (document.getElementById("password") as HTMLInputElement)
-      .value;
+    const username = (document.getElementById("username") as HTMLInputElement).value;
+    const password = (document.getElementById("password") as HTMLInputElement).value;
+    const confirmPassword = (document.getElementById("confirmPassword") as HTMLInputElement).value;
     try {
-      // TODO: VALIDATION
+      await signupSchema.validateAsync({ email, username, password, confirmPassword });
       await signup(email, username, password);
       navigate("/signin");
     } catch (error: any) {
@@ -58,6 +57,16 @@ export default function Signup(): React.ReactElement {
           type="password"
           label="Password"
           placeholder="Password"
+          variant="outlined"
+          required
+          fullWidth
+          margin="normal"
+        />
+        <TextField
+          id="confirmPassword"
+          type="confirmPassword"
+          label="ConfirmPassword"
+          placeholder="Confirm Password"
           variant="outlined"
           required
           fullWidth

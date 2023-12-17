@@ -4,6 +4,7 @@ import { Link, useNavigate } from "react-router-dom";
 import "../../App.css";
 import { signin } from "../../api/auth.js";
 import logo from "../../assets/logo_cropped.png";
+import { signinSchema } from "../../helpers/validation.js";
 
 export default function Signin(): React.ReactElement {
   const [checked, setChecked] = useState(false);
@@ -14,10 +15,9 @@ export default function Signin(): React.ReactElement {
   const doSignIn = async (e: React.FormEvent) => {
     e.preventDefault();
     const email = (document.getElementById("email") as HTMLInputElement).value;
-    const password = (document.getElementById("password") as HTMLInputElement)
-      .value;
+    const password = (document.getElementById("password") as HTMLInputElement).value;
     try {
-      // TODO: VALIDATION
+      await signinSchema.validateAsync({ email, password });
       await signin(email, password);
       navigate("/");
     } catch (error: any) {
@@ -29,7 +29,7 @@ export default function Signin(): React.ReactElement {
     <div className="flex flex-col items-center justify-center">
       <img src={logo} alt="logo" className="mb-4 h-1/4 w-1/4 rounded-full" />
       <h1 className="text-3xl font-bold"> Sign In </h1>
-      <form onSubmit={doSignIn}>
+      <form onSubmit={doSignIn} className="w-full">
         <TextField
           id="email"
           type="email"
@@ -51,7 +51,7 @@ export default function Signin(): React.ReactElement {
           fullWidth
           margin="normal"
         />
-        {error && <span>{error}</span>}
+        {error ? <div className="text-red-500">{error}</div> : <div></div>}
         <button
           type="submit"
           className="mb-2 me-2 rounded-lg bg-blue-700 px-5 py-2.5 text-sm font-medium text-white hover:bg-blue-800 focus:outline-none focus:ring-4 focus:ring-blue-300 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800"
