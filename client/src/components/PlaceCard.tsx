@@ -1,4 +1,5 @@
 import AddIcon from '@mui/icons-material/Add';
+import RemoveIcon from '@mui/icons-material/Remove';
 import KeyboardArrowDownIcon from '@mui/icons-material/KeyboardArrowDown';
 import KeyboardArrowUpIcon from '@mui/icons-material/KeyboardArrowUp';
 import { Button } from "@mui/material";
@@ -6,9 +7,13 @@ import React from "react";
 import noImage from "../assets/noImage.png";
 import { PlaceCardProps, PlaceCardState } from "../types/PlaceCardType";
 import { FaCircle, FaCircleInfo } from "react-icons/fa6";
-
-
+import { TripContext } from '../contexts/TripContext';
+import { TripData } from '../dataObjects/TripData';
+import { PlaceData } from '../dataObjects/PlaceData';
 export class PlaceCard extends React.Component<PlaceCardProps, PlaceCardState>{
+		static contextType = TripContext;
+		declare context: React.ContextType<typeof TripContext>
+	
     state: PlaceCardState = {
       showDetails: false,
       phone: "",
@@ -40,10 +45,10 @@ export class PlaceCard extends React.Component<PlaceCardProps, PlaceCardState>{
 
       const service = new google.maps.places.PlacesService(map);
 
-			if(this.props.place_id == undefined) return console.log("missing place id for " + this.props.title);
+			if(this.props.place.place_id == undefined) return console.log("missing place id for " + this.props.place.title);
 
       service.getDetails({
-          placeId: this.props.place_id
+          placeId: this.props.place.place_id
       }, (place, status) => {
           if(status === google.maps.places.PlacesServiceStatus.OK && place){
             console.log(place);
@@ -74,18 +79,40 @@ export class PlaceCard extends React.Component<PlaceCardProps, PlaceCardState>{
       return priceStr;
     }
 
+		addToTrip = (place: PlaceData) => {
+			const { addPlace } = this.context; 
+
+
+			addPlace(place);
+		}
+
+		removeFromTrip = (place: PlaceData) => {
+			const { removePlace } = this.context;
+			removePlace(place);
+		}
+
     render() {
       return (
         <li className="place-card p-2 rounded-md">
           <div className="grid grid-flow-col grid-rows-2 gap-4 card-grid">
             <div className="row-span-2">
-              <p className="text-lg font-bold card-title">{this.props.title.length > 30 ? this.props.title.substring(0, 25) + "..." : this.props.title}</p>
-              <p>{`${this.props.addr}`}</p>
-              <p><span className="font-bold">Price Level: </span>{this.props.priceLevel ? this.convertPriceLevel(this.props.priceLevel) : "N/A"} | <span className="font-bold">Rating: </span>{this.props.rating? this.props.rating : "N/A"} ☆ ({this.props.ratingsTotal? this.props.ratingsTotal : 0})</p>
+              <p className="text-lg font-bold card-title">{this.props.place.title.length > 30 ? this.props.place.title.substring(0, 25) + "..." : this.props.place.title}</p>
+              <p>{`${this.props.place.addr}`}</p>
+              <p><span className="font-bold">Price Level: </span>{this.props.place.priceLevel ? this.convertPriceLevel(this.props.place.priceLevel) : "N/A"} | <span className="font-bold">Rating: </span>{this.props.place.rating? this.props.place.rating : "N/A"} ☆ ({this.props.place.ratingsTotal? this.props.place.ratingsTotal : 0})</p>
               <div className="flex flex-row gap-2 pt-2">
-                <Button variant="text" startIcon={<AddIcon />}>
-                  Add to Plan
-                </Button>
+								{	this.props.isResult ?
+                    // FINALLY FUCKING WORKS
+                    // there's still this bug where if u add a bunch of shit and delete some, remove becomes adding for some??? like what idk
+                    // to recreate -> add muteki, then shokudo, then muteki, then shokudo. remove second shokudo (deletes last shokudo) then remove last muteki (deletes both).
+                    // if you remove the remaining shokudo, it creates two mutekis. NO CLUE HOW
+                    // prolly gets fixed once i prevent duplicates.
+									<Button variant="text" startIcon={<AddIcon />} onClick={() => this.addToTrip(this.props.place)}>
+										Add to Plan
+									</Button> :
+									<Button variant="text" startIcon={<RemoveIcon />} onClick={() => this.removeFromTrip(this.props.place)}>
+										Remove
+									</Button>
+								}
                 {
                   this.state.showDetails ? (
                     <Button variant="text" color='inherit' startIcon={<KeyboardArrowUpIcon />} onClick={() => this.hideDetails()}>
@@ -101,9 +128,7 @@ export class PlaceCard extends React.Component<PlaceCardProps, PlaceCardState>{
             </div>
             <div className="row-span-2 col-span-1 place-img-container">
               <img className="place-img" src={
-                  this.props.img
-                  ? this.props.img
-                  : noImage
+                  this.props.place.img?.getUrl() ?? noImage
               }/>
             </div>
           </div>

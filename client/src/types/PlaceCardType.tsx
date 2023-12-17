@@ -1,13 +1,8 @@
+import { PlaceData } from "../dataObjects/PlaceData"
+
 interface PlaceCardProps {
-    place_id: string | undefined
     mapRef: React.MutableRefObject<google.maps.Map | undefined>
-    title: string
-    isOpen: boolean | undefined
-    addr: string
-    rating?: number | undefined
-    ratingsTotal?: number | undefined
-    priceLevel?: number | undefined
-    img?: string
+    place: PlaceData
     isResult?: boolean
 }
 

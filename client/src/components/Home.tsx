@@ -119,14 +119,13 @@ function Home(props: HomeProps): React.ReactElement {
 	const [resultsToggle, toggleResults] = useState(false);
 	const [placeData, setPlaceData] = useState<Array<PlaceData>>([]);
 	const [tripToggle, toggleTrip] = useState(false);
-	const [tripData, setTripData] = useState<Array<PlaceData>>([]);
 	const [markerData, setMarkerData] = useState<Array<PlanMarkerData>>([]);
 	const [typeData, setTypeData] = useState<string>("");
 	const [keyWordData, setKeyWordData] = useState<string>("");
 	const [searchText, setSearchText] = useState<string>("");
 	const pinSVGFilled = "M 12,2 C 8.1340068,2 5,5.1340068 5,9 c 0,5.25 7,13 7,13 0,0 7,-7.75 7,-13 0,-3.8659932 -3.134007,-7 -7,-7 z";
 
-	const currentTrip = React.useContext(TripContext);
+	const { currentTrip } = React.useContext(TripContext);
 
 	const { isLoaded } = useJsApiLoader({
 		id: 'google-map-script',
@@ -158,6 +157,7 @@ function Home(props: HomeProps): React.ReactElement {
 		}
 
 		toggleResults(true);
+		toggleTrip(true);
 	});
 
 	useEffect(() => {
@@ -174,7 +174,7 @@ function Home(props: HomeProps): React.ReactElement {
 						type: typeData.toUpperCase().trim() == "NONE" ? undefined : typeData.trim()
 					}, (res, status) => {
 						if(status === google.maps.places.PlacesServiceStatus.OK && res !== null){
-							console.log(res);
+							// console.log(res);
 							const data : Array<PlaceData> = res.map((r) => {
 								const place_id = r.place_id;
 								const name = r.name ? r.name : "Invalid Name";
@@ -212,58 +212,6 @@ function Home(props: HomeProps): React.ReactElement {
 			fetchData();
 		}
 	}, [keyWordData, centerData]);
-
-	useEffect(() => {
-		async function fetchData() {
-			try {
-				if(mapRef && mapRef.current){
-					setTripData([]);
-					const placesService = new google.maps.places.PlacesService(mapRef.current);
-					currentTrip.place_ids.forEach((place_id) => {
-						const request = {
-							placeId: place_id,
-							fields: ["name", "vicinity", "place_id", "opening_hours", "geometry", "price_level", "rating", "user_ratings_total", "photos"]
-						};
-
-						placesService.getDetails(request, (place, status) => {
-							if (status === google.maps.places.PlacesServiceStatus.OK && place != null){
-								const place_id = place.place_id;
-								const name = place.name ? place.name : "Invalid Name";
-								const address = place.vicinity ? place.vicinity : "Invalid Address";
-								const isOpen = place.opening_hours?.isOpen();
-								const location = place.geometry?.location;
-								const priceLevel = place.price_level;
-								const rating = place.rating;
-								const ratingsTotal = place.user_ratings_total;
-								const thumbnail = place.photos ? place.photos[0] : undefined	
-
-								setTripData([...tripData, 
-									new PlaceData(
-										place_id,
-										name,
-										address,
-										priceLevel ? priceLevel : undefined,
-										rating ? rating : undefined,
-										ratingsTotal ? ratingsTotal : undefined,
-										isOpen ? isOpen : false,
-										location ? new PlanMarkerData(name, location) : undefined,
-										thumbnail
-									)
-								]);
-							}
-						});
-
-					});
-				}
-			} catch (e) {
-				console.log(e);
-			}
-			// fetch data from currentTrip
-		}
-		if(tripToggle) {
-			fetchData();
-		}
-	}, [tripData]);
 
 	return (
 		<div className="flex flex-col h-screen">
@@ -321,7 +269,7 @@ function Home(props: HomeProps): React.ReactElement {
 									<ul className="px-3 py-4 flex-grow overflow-y-scroll">
 										{
 											placeData.map((result) => {
-												return <PlaceCard key={`${result.addr}-result`} mapRef={mapRef} place_id={result.place_id} title={result.title} addr={result.addr} isOpen={result.isOpen} img={result.img?.getUrl()} rating={result.rating} priceLevel={result.priceLevel} ratingsTotal={result.ratingsTotal} isResult={true}/>;
+												return <PlaceCard key={`${result.addr}-result`} mapRef={mapRef} place={result} isResult={true}/>;
 											})
 										}
 									</ul>
@@ -330,7 +278,7 @@ function Home(props: HomeProps): React.ReactElement {
 						}
 
 						{/* Trip Window pretend-component */}
-						{	!tripToggle &&
+						{	tripToggle &&
 							<aside
 								id="tripWindow"
 								className="fixed  pb-10 pl-10 opacity-90 top-inherit left-inherit right-12 mr-2 z-20 h-4/5 w-1/3 load-slide-fast rounded-lg shadow-md"
@@ -343,23 +291,16 @@ function Home(props: HomeProps): React.ReactElement {
 											className="hover:text-red-500 font-bold rounded-md text-md px-4 py-2 text-center"
 											onClick={() => toggleTrip(!tripToggle)}>X</button>
 									</div>
-									<h3 className="text-1xl px-5"><span className="font-bold">Places in Trip</span>: {placeData.length}</h3>
+									<h3 className="text-1xl px-5"><span className="font-bold">Places in Trip</span>: {currentTrip.length}</h3>
 									<ul className="px-3 py-4 flex-grow overflow-y-scroll">
 										{
-											placeData.map((result) => {
-												return <PlaceCard key={result.addr} mapRef={mapRef} place_id={result.place_id} title={result.title} addr={result.addr} isOpen={result.isOpen} img={result.img?.getUrl()} rating={result.rating} priceLevel={result.priceLevel} ratingsTotal={result.ratingsTotal} isResult={true}/>;
+											// current bug: does not remove existing placecards but tacks on new list of placecards. 
+											currentTrip.map((result) => {
+												return <PlaceCard key={result.addr} mapRef={mapRef}  place={result} isResult={false}/>;
 											})
 										}
 									</ul>
 								</div>
-								<h3 className="text-1xl px-5"><span className="font-bold">Places in Trip</span>: {placeData.length}</h3>
-								<ul className="px-3 py-4 flex-grow overflow-y-scroll">
-									{
-										tripData.map((result) => {
-											return <PlaceCard key={`${result.addr}-trip`} mapRef={mapRef} place_id={result.place_id} title={result.title} addr={result.addr} isOpen={result.isOpen} img={result.img?.getUrl()} rating={result.rating} priceLevel={result.priceLevel} ratingsTotal={result.ratingsTotal} isResult={false}/>;
-										})
-									}
-								</ul>
 							</aside>						
 						}
 
