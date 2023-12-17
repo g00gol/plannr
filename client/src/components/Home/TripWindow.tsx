@@ -1,9 +1,8 @@
-import React, { useContext } from "react";
+import React from "react";
 import { FaGripLines } from "react-icons/fa6";
 import SortableList, { SortableItem, SortableKnob } from "react-easy-sort";
 
 import { TripContext } from "../../contexts/TripContext";
-import { PlaceData } from "../../dataObjects/PlaceData";
 import PlaceCard, { PlaceCardRef } from "../PlaceCard";
 
 interface TripWindowProps {
