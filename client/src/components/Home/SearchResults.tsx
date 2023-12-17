@@ -2,7 +2,7 @@ import React from "react";
 import {} from "@react-google-maps/api";
 
 import { PlaceData } from "../../dataObjects/PlaceData";
-import { PlaceCard } from "../PlaceCard";
+import PlaceCard from "../PlaceCard";
 
 interface SearchProps {
   mapRef: React.MutableRefObject<google.maps.Map | undefined>;
