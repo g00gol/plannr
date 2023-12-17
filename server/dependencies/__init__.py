@@ -1,1 +1,1 @@
-from .firebase_auth import firebase_auth_dependency
+from .firebase_auth import authenticate, authorize

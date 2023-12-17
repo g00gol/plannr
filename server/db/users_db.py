@@ -1,6 +1,6 @@
 from typing import List
 
-from .base_db import get_db_async
+from db import get_db_async
 from models import User
 
 
@@ -8,21 +8,48 @@ async def get_users() -> List[User]:
     """
     Gets all users from the database.
     """
-    db = await get_db_async("users")
-    users = await list(db.users.find({}))
-    return users
+    try:
+        db = await get_db_async("plannr")
+        users = db["users"]
+        all_users: List[User] = await users.find({}).to_list(length=9999)
+        return all_users
+    except Exception as e:
+        raise Exception(e)
 
 
-async def get_users(user_id: str) -> User:
+async def get_user(user_id: str) -> User:
     """
     Gets a user from the database.
     """
-    db = await get_db_async("users")
-    user = await db.users.find_one({"_id": user_id})
-    return user
+    try:
+        db = await get_db_async("plannr")
+        users = db["users"]
+        user = await users.find_one({"user_id": user_id}, {"_id": 0})
+        return user
+    except Exception as e:
+        raise Exception(e)
+
+
+async def get_user_by_value(key: str, value: str) -> User:
+    """
+    Gets a user from the database.
+    """
+    try:
+        db = await get_db_async("plannr")
+        users = db["users"]
+        user = await users.find_one({key: value})
+        return user
+    except Exception as e:
+        raise Exception(e)
 
 
 async def create_user(user: User) -> str:
-    db = await get_db_async("users")
-    user_id = await db.users.insert_one(user)
-    return user_id
+    """
+    Creates a new user in the database.
+    """
+    try:
+        db = await get_db_async("plannr")
+        res = await db.users.insert_one(user)
+        return str(res.inserted_id)
+    except Exception as e:
+        raise Exception(e)

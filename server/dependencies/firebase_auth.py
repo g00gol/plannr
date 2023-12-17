@@ -31,27 +31,20 @@ if not firebase_admin._apps:
 token_auth_scheme = HTTPBearer()
 
 
-async def firebase_auth_dependency(request: Request, token: HTTPAuthorizationCredentials = Depends(token_auth_scheme)) -> str:
-    """
-    Checks if the token is valid and if the user ID in the token matches the user ID in the request path.
-    """
-    # Extract user_id from path parameters
-    user_id = request.path_params.get("user_id")
-
-    # Verify the Firebase ID token
+def authenticate(request: Request, token: HTTPAuthorizationCredentials = Depends(token_auth_scheme)) -> str:
     try:
         decoded_token = auth.verify_id_token(token.credentials)
+        request.state.uid = decoded_token["uid"]
     except Exception as e:
         raise HTTPException(
             status_code=status.HTTP_401_UNAUTHORIZED,
             detail=str(e),
         )
 
-    # Check if the user ID in the token matches the user ID in the request path
-    if user_id and user_id != decoded_token.get("uid"):
+
+def authorize(request: Request) -> None:
+    if request.state.uid != request.path_params.get("user_id", ""):
         raise HTTPException(
             status_code=status.HTTP_401_UNAUTHORIZED,
-            detail="User ID does not match the one in the token",
+            detail="You are not authorized to access this resource.",
         )
-
-    return decoded_token
