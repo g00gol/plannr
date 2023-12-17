@@ -14,7 +14,6 @@ import React, {
 import "react-simple-typewriter/dist/index";
 
 import Navbar from "../components/Navbar";
-import { TripContext } from "../contexts/TripContext";
 import { CircleData } from "../dataObjects/CircleData";
 import { PlaceData } from "../dataObjects/PlaceData";
 import { PlanMarkerData } from "../dataObjects/PlanMarkerData";
@@ -45,8 +44,6 @@ export default function Home(props: HomeProps): React.ReactElement {
   const [searchText, setSearchText] = useState<string>("");
   const pinSVGFilled =
     "M 12,2 C 8.1340068,2 5,5.1340068 5,9 c 0,5.25 7,13 7,13 0,0 7,-7.75 7,-13 0,-3.8659932 -3.134007,-7 -7,-7 z";
-
-  const { currentTrip } = React.useContext(TripContext);
 
   const { isLoaded } = useJsApiLoader({
     id: "google-map-script",
@@ -160,7 +157,6 @@ export default function Home(props: HomeProps): React.ReactElement {
             {tripToggle && (
               <TripWindow
                 mapRef={mapRef}
-                currentTrip={currentTrip}
                 tripToggle={tripToggle}
                 toggleTrip={toggleTrip}
               />

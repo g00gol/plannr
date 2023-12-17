@@ -1,4 +1,4 @@
-import React, { useState, useContext } from "react";
+import React, { useState, useContext, useEffect } from "react";
 import AddIcon from "@mui/icons-material/Add";
 import RemoveIcon from "@mui/icons-material/Remove";
 import KeyboardArrowDownIcon from "@mui/icons-material/KeyboardArrowDown";
@@ -8,10 +8,21 @@ import noImage from "../assets/noImage.png";
 import { PlaceCardProps } from "../types/PlaceCardType";
 import { TripContext } from "../contexts/TripContext";
 
+interface PlaceCardRefProps {
+  children?: React.ReactNode;
+}
+
+export const PlaceCardRef = React.forwardRef<HTMLDivElement, PlaceCardRefProps>(
+  (props, ref) => {
+    return <div ref={ref}>{props.children}</div>;
+  },
+);
+
 export default function PlaceCard({
   place,
   isResult,
   mapRef,
+  children,
 }: PlaceCardProps): React.ReactElement {
   const [showDetails, setShowDetails] = useState<boolean>(false);
   const [phone, setPhone] = useState<string>("");
@@ -19,11 +30,9 @@ export default function PlaceCard({
   const [hours, setHours] = useState<string[]>([]);
 
   const date: number = new Date().getDay();
-
   const { addPlace, removePlace } = useContext(TripContext);
 
-  const showDetailsHandler = () => {
-    setShowDetails(true);
+  const fetchPlaceDetails = () => {
     const map = mapRef.current;
     if (!map || !place.place_id) {
       console.log("Map or place ID is undefined");
@@ -43,33 +52,42 @@ export default function PlaceCard({
     });
   };
 
+  useEffect(() => {
+    if (showDetails) {
+      fetchPlaceDetails();
+    }
+  }, [showDetails, place.place_id, mapRef]);
+
+  const showDetailsHandler = () => {
+    setShowDetails(true);
+  };
+
   const hideDetailsHandler = () => {
     setShowDetails(false);
   };
 
   const convertPriceLevel = (priceLevel: number | undefined) => {
-    if (priceLevel === undefined) {
-      return "N/A";
-    }
-
-    return "$".repeat(priceLevel);
+    return priceLevel === undefined ? "N/A" : "$".repeat(priceLevel);
   };
 
   return (
-    <li className="place-card rounded-md p-2">
-      <div className="card-grid grid grid-flow-col grid-rows-2 gap-4">
-        <div className="row-span-2">
-          <p className="card-title text-lg font-bold">
+    <div className="place-card rounded-md p-2">
+      <div
+        className={`grid grid-flow-col grid-rows-2 ${
+          isResult ? "grid-cols-9" : "grid-cols-10"
+        } card-grid gap-4`}
+      >
+        <div className="col-span-6 row-span-2">
+          <p className="card-title truncate text-lg font-bold">
             {place.title.length > 30
               ? `${place.title.substring(0, 25)}...`
               : place.title}
           </p>
-          <p>{place.addr}</p>
+          <p className="truncate">{place.addr}</p>
           <p>
             <span className="font-bold">Price Level: </span>
-            {place.priceLevel
-              ? convertPriceLevel(place.priceLevel)
-              : "N/A"} | <span className="font-bold">Rating: </span>
+            {convertPriceLevel(place.priceLevel)} |{" "}
+            <span className="font-bold">Rating: </span>
             {place.rating ? place.rating : "N/A"} ☆ (
             {place.ratingsTotal ? place.ratingsTotal : 0})
           </p>
@@ -112,17 +130,22 @@ export default function PlaceCard({
             )}
           </div>
         </div>
-        <div className="place-img-container col-span-1 row-span-2">
+        <div
+          className={`row-span-2 h-full w-full ${
+            isResult ? "col-span-4" : "col-span-3"
+          } place-img-container flex items-center justify-center`}
+        >
           <img
             className="place-img"
             src={place.img?.getUrl() ?? noImage}
             alt="Place"
           />
         </div>
+        {children}
       </div>
 
       {showDetails && (
-        <div className="place-details col-span-1 row-span-2">
+        <div className="place-details col-span-6 row-span-2">
           <hr className="border-1 border-gray-300 pb-2" />
           <p>
             <span className="font-bold">Phone: </span>
@@ -139,7 +162,6 @@ export default function PlaceCard({
               {website}
             </a>
           </p>
-
           <p>
             <span className="pt-5 font-bold">Hours: </span>
           </p>
@@ -164,6 +186,6 @@ export default function PlaceCard({
           )}
         </div>
       )}
-    </li>
+    </div>
   );
 }

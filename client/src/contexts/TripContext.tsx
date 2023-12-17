@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 
 import { PlaceData } from "../dataObjects/PlaceData";
-// import { AuthContext } from "./AuthContext";
+import { arrayMoveImmutable } from "array-move";
 
 interface TripContextType {
   currentTrip: PlaceData[];
@@ -9,6 +9,7 @@ interface TripContextType {
   setTripName: (name: string) => void;
   addPlace: (place: PlaceData) => void;
   removePlace: (place: PlaceData) => void;
+  onSortEnd: (oldIndex: number, newIndex: number) => void;
 }
 
 export const TripContext = React.createContext<TripContextType>(null!);
@@ -86,9 +87,20 @@ export const TripProvider = ({ children }: React.PropsWithChildren<{}>) => {
     setCurrentTrip(filtered);
   };
 
+  const onSortEnd = (oldIndex: number, newIndex: number) => {
+    setCurrentTrip((array) => arrayMoveImmutable(array, oldIndex, newIndex));
+  };
+
   return (
     <TripContext.Provider
-      value={{ currentTrip, tripName, setTripName, addPlace, removePlace }}
+      value={{
+        currentTrip,
+        tripName,
+        setTripName,
+        addPlace,
+        removePlace,
+        onSortEnd,
+      }}
     >
       {children}
     </TripContext.Provider>
