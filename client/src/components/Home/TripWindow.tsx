@@ -21,7 +21,7 @@ export default function TripWindow({
   return (
     <aside
       id="tripWindow"
-      className="trip top-inherit left-inherit load-slide-fast fixed right-12 z-20 mr-2 h-4/5 w-1/3 rounded-lg pb-10 pl-10 opacity-90 shadow-md"
+      className="trip top-inherit left-inherit load-slide-fast fixed right-12 z-20 mr-2 h-4/5 w-3/12 rounded-lg pb-10 pl-10 opacity-90 shadow-md"
     >
       <div className="dark:bg-gray-150 z-20 flex h-full flex-col rounded-lg bg-white shadow-md">
         <div className="flex justify-between px-5 py-4">
