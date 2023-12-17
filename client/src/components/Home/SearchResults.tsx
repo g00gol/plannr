@@ -22,7 +22,7 @@ export default function SearchResults({
   return (
     <aside
       id="searchResults"
-      className="top-inherit left-inherit load-slide-fast fixed left-2 z-20 ml-2 h-4/5 w-1/3 rounded-lg pb-10 pl-10 opacity-90 shadow-md"
+      className="results top-inherit left-inherit load-slide-fast fixed left-2 z-20 ml-2 h-4/5 w-1/3 rounded-lg pb-10 pl-10 opacity-90 shadow-md"
     >
       <div className="dark:bg-gray-150 z-20 flex h-full flex-col rounded-lg bg-white shadow-md">
         <div className="flex justify-between px-5 py-4">
@@ -44,18 +44,13 @@ export default function SearchResults({
           </span>
           : {placeData.length}
         </h3>
-        <ul className="flex-grow overflow-y-scroll px-3 py-4">
-          {placeData.map((result) => {
-            return (
-              <PlaceCard
-                key={`${result.addr}-result`}
-                mapRef={mapRef}
-                place={result}
-                isResult={true}
-              />
-            );
-          })}
-        </ul>
+        <div className="flex-grow overflow-y-scroll px-3 py-4">
+          {placeData.map((result) => (
+            <div key={`${result.addr}-result`}>
+              <PlaceCard mapRef={mapRef} place={result} isResult={true} />
+            </div>
+          ))}
+        </div>
       </div>
     </aside>
   );

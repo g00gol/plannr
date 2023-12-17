@@ -72,6 +72,9 @@ body {
   margin: 10px;
   padding: 5px;
   border-radius: 10px;
+}
+
+.results.place-card {
   transition: 0.5s;
   animation: 0.5s ease-out 0s 1 slideInFromLeft;
 }
@@ -82,18 +85,18 @@ body {
   grid-gap: 10px;
 }
 
-.card-title {
-  font-weight: bold;
-  margin: 0;
-  padding: 0;
-  transition: 0.5s;
+/* .card-title {
+    font-weight: bold;
+    margin: 0;
+    padding: 0;
+    transition: 0.5s;
 }
 
 .card-title:hover {
-  font-size: 20px;
-  color: #4182dc;
-  transition: 0.5s;
-}
+    font-size: 20px;
+    color: #4182dc;
+    transition: 0.5s;
+} */
 
 .place-card:hover {
   box-shadow: 0 0 5px 0 rgba(0, 0, 0, 0.5);
