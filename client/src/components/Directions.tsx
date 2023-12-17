@@ -1,20 +1,15 @@
-import React, { useState, useContext, useMemo, useCallback } from "react";
+import React, { useState, useMemo, useCallback } from "react";
 import { DirectionsProps } from "../types/DirectionsType";
-import { DirectionsContext } from "../contexts/DirectionsContext";
 import { DirectionsRenderer, DirectionsService } from "@react-google-maps/api";
 
 export default function Directions({
   place1,
   place2,
   travelMode,
-  mapRef,
+  mapRef
 }: DirectionsProps): React.ReactElement {
-  const [polyline, setPolyLine] = useState<string>("");
   const [dirResult, setDirectionsResult] = useState<google.maps.DirectionsResult | null>(null);
-
-
-  //const { addPlace, removePlace } = useContext(DirectionsContext);
-
+  
   const directionsCallback = useCallback(
     (
       result: google.maps.DirectionsResult | null,
@@ -34,7 +29,7 @@ export default function Directions({
             {
                 destination: place1.marker.location,
                 origin: place2.marker.location,
-                travelMode: travelMode
+                travelMode: travelMode,
             }
         :
             null
@@ -43,8 +38,16 @@ export default function Directions({
   return ( directionsOpts ?
             <>
             <DirectionsService options={directionsOpts} callback={directionsCallback}/>
-            { dirResult ?
-                <DirectionsRenderer options={{directions: dirResult}}/>
+            { dirResult !== null ?
+                <DirectionsRenderer options={{ 
+                    map: mapRef.current,               
+                    directions: dirResult,
+                    suppressMarkers: true,
+                    preserveViewport: true,
+                    polylineOptions: {
+                        zIndex: 5,
+                        strokeColor: "blue" 
+                    }}}/>
                 : <></>
             }
             </>
