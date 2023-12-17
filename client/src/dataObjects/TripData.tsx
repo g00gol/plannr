@@ -1,5 +1,3 @@
-import { PlaceData } from "./PlaceData";
-
 export class TripData {
   //private markerStyle;
 
