@@ -1,6 +1,6 @@
 import os
 from dotenv import load_dotenv
-from fastapi import Depends, HTTPException, status
+from fastapi import Depends, HTTPException, Request, status
 from fastapi.security import HTTPBearer, HTTPAuthorizationCredentials
 import firebase_admin
 from firebase_admin import credentials, auth
@@ -31,16 +31,20 @@ if not firebase_admin._apps:
 token_auth_scheme = HTTPBearer()
 
 
-def firebase_auth_dependency(token: HTTPAuthorizationCredentials = Depends(token_auth_scheme)):
-    """
-    Checks if the token is valid and returns the decoded token if it is.
-    """
+def authenticate(request: Request, token: HTTPAuthorizationCredentials = Depends(token_auth_scheme)) -> str:
     try:
-        # Verify the Firebase ID token
         decoded_token = auth.verify_id_token(token.credentials)
-        return decoded_token
+        request.state.uid = decoded_token["uid"]
     except Exception as e:
         raise HTTPException(
             status_code=status.HTTP_401_UNAUTHORIZED,
             detail=str(e),
+        )
+
+
+def authorize(request: Request) -> None:
+    if request.state.uid != request.path_params.get("user_id", ""):
+        raise HTTPException(
+            status_code=status.HTTP_401_UNAUTHORIZED,
+            detail="You are not authorized to access this resource.",
         )
