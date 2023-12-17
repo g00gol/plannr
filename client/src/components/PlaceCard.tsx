@@ -1,99 +1,58 @@
-import React from "react";
+import React, { useState, useContext } from "react";
 import AddIcon from "@mui/icons-material/Add";
 import RemoveIcon from "@mui/icons-material/Remove";
 import KeyboardArrowDownIcon from "@mui/icons-material/KeyboardArrowDown";
 import KeyboardArrowUpIcon from "@mui/icons-material/KeyboardArrowUp";
 import { Button } from "@mui/material";
-
 import noImage from "../assets/noImage.png";
-import { PlaceCardProps, PlaceCardState } from "../types/PlaceCardType";
+import { PlaceCardProps } from "../types/PlaceCardType";
 import { TripContext } from "../contexts/TripContext";
-import { PlaceData } from "../dataObjects/PlaceData";
 
-export class PlaceCard extends React.Component<PlaceCardProps, PlaceCardState> {
-  static contextType = TripContext;
-  declare context: React.ContextType<typeof TripContext>;
+export default function PlaceCard({
+  place,
+  isResult,
+  mapRef,
+}: PlaceCardProps): React.ReactElement {
+  const [showDetails, setShowDetails] = useState<boolean>(false);
+  const [phone, setPhone] = useState<string>("");
+  const [website, setWebsite] = useState<string>("");
+  const [hours, setHours] = useState<string[]>([]);
 
-  state: PlaceCardState = {
-    showDetails: false,
-    phone: "",
-    website: "",
-    hours: [],
-    date: new Date().getDay(),
-  };
+  const date: number = new Date().getDay();
 
-  constructor(props: PlaceCardProps) {
-    super(props);
-    this.state = {
-      showDetails: false,
-      phone: "",
-      website: "",
-      hours: [],
-      date: new Date().getDay(),
-    };
+  const { addPlace, removePlace } = useContext(TripContext);
 
-    this.showDetails = this.showDetails.bind(this);
-    this.hideDetails = this.hideDetails.bind(this);
-  }
-
-  showDetails() {
-    this.setState({ showDetails: true });
-    const map = this.props.mapRef.current;
-    if (map == undefined) {
+  const showDetailsHandler = () => {
+    setShowDetails(true);
+    const map = mapRef.current;
+    if (!map || !place.place_id) {
+      console.log("Map or place ID is undefined");
       return;
     }
 
     const service = new google.maps.places.PlacesService(map);
+    service.getDetails({ placeId: place.place_id }, (placeDetails, status) => {
+      if (
+        status === google.maps.places.PlacesServiceStatus.OK &&
+        placeDetails
+      ) {
+        setPhone(placeDetails.formatted_phone_number || "");
+        setWebsite(placeDetails.website || "");
+        setHours(placeDetails?.opening_hours?.weekday_text ?? []);
+      }
+    });
+  };
 
-    if (this.props.place.place_id == undefined)
-      return console.log("missing place id for " + this.props.place.title);
+  const hideDetailsHandler = () => {
+    setShowDetails(false);
+  };
 
-    service.getDetails(
-      {
-        placeId: this.props.place.place_id,
-      },
-      (place, status) => {
-        if (status === google.maps.places.PlacesServiceStatus.OK && place) {
-          console.log(place);
-
-          this.setState({
-            phone: place.formatted_phone_number
-              ? place.formatted_phone_number
-              : "",
-            website: place.website ? place.website : "",
-            hours: place.opening_hours ? place.opening_hours.weekday_text : [],
-          });
-        }
-      },
-    );
-  }
-
-  hideDetails() {
-    this.setState({ showDetails: false });
-  }
-
-  convertPriceLevel(priceLevel: number | undefined): string {
-    if (priceLevel == undefined) {
+  const convertPriceLevel = (priceLevel: number | undefined) => {
+    if (priceLevel === undefined) {
       return "N/A";
     }
 
-    let priceStr = "";
-    for (let i = 0; i < priceLevel; i++) {
-      priceStr += "$";
-    }
-
-    return priceStr;
-  }
-
-  addToTrip = (place: PlaceData) => {
-    const { addPlace } = this.context;
-
-    addPlace(place);
-  };
-
-  removeFromTrip = (place: PlaceData) => {
-    const { removePlace } = this.context;
-    removePlace(place);
+    return "$".repeat(priceLevel);
   };
 
     render() {

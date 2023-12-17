@@ -1,7 +1,7 @@
 import React from "react";
 
 import { PlaceData } from "../../dataObjects/PlaceData";
-import { PlaceCard } from "../PlaceCard";
+import PlaceCard from "../PlaceCard";
 
 interface TripWindowProps {
   mapRef: React.MutableRefObject<google.maps.Map | undefined>;
