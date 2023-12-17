@@ -1,9 +1,8 @@
-import React, { useEffect, useState } from "react";
 import { useSearchParams } from "react-router-dom";
 import { confirmresetpassword } from "../../api/auth.js";
 
 const ResetPassword = (): React.ReactElement => {
-  const [searchParams, setSearchParams] = useSearchParams();
+  const [searchParams] = useSearchParams();
   console.log("hi");
   const doResetPassword = (e: React.FormEvent) => {
     e.preventDefault();

@@ -1,11 +1,12 @@
-import { TextField } from "@mui/material";
 import React, { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
+import { TextField } from "@mui/material";
+
 import "../../App.css";
 import { signup } from "../../api/auth.js";
 import logo from "../../assets/logo_cropped.png";
 
-const Signup = (): React.ReactElement => {
+export default function Signup(): React.ReactElement {
   const [error, setError] = useState("");
   const navigate = useNavigate();
 
@@ -78,6 +79,4 @@ const Signup = (): React.ReactElement => {
       {error && <span className="py-2 text-red-500">{error}</span>}
     </div>
   );
-};
-
-export default Signup;
+}

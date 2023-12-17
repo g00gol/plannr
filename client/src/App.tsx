@@ -1,12 +1,13 @@
 import React from "react";
 import { Routes, Route } from "react-router-dom";
-import Home from "./components/Home";
+
+import Home from "./pages/Home";
 import AuthModal from "./components/auth/AuthModal";
 import Signin from "./components/auth/Signin";
 import Signup from "./components/auth/Signup";
 import "./App.css";
 
-function App(): React.ReactElement {
+export default function App(): React.ReactElement {
   return (
     <Routes>
       <Route
@@ -49,5 +50,3 @@ function App(): React.ReactElement {
     </Routes>
   );
 }
-
-export default App;

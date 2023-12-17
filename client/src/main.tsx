@@ -1,12 +1,11 @@
+import React from "react";
 import ReactDOM from "react-dom/client";
 import { BrowserRouter } from "react-router-dom";
+import { initializeApp } from "firebase/app";
+
 import App from "./App.tsx";
 import "./index.css";
-
-import { initializeApp } from "firebase/app";
-import React from "react";
-import { AuthProvider } from "./contexts/AuthContext.tsx";
-import { TripProvider } from "./contexts/TripContext.tsx";
+import { ContextProvider } from "./contexts/Context.tsx";
 
 const config = JSON.parse(import.meta.env.VITE_FIREBASE_CONFIG);
 const app = initializeApp(config);
@@ -14,11 +13,9 @@ const app = initializeApp(config);
 ReactDOM.createRoot(document.getElementById("root")!).render(
   <React.StrictMode>
     <BrowserRouter>
-      <AuthProvider>
-        <TripProvider>
-          <App />
-        </TripProvider>
-      </AuthProvider>
+      <ContextProvider>
+        <App />
+      </ContextProvider>
     </BrowserRouter>
   </React.StrictMode>,
 );

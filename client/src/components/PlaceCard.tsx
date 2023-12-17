@@ -1,15 +1,15 @@
+import React from "react";
 import AddIcon from "@mui/icons-material/Add";
 import RemoveIcon from "@mui/icons-material/Remove";
 import KeyboardArrowDownIcon from "@mui/icons-material/KeyboardArrowDown";
 import KeyboardArrowUpIcon from "@mui/icons-material/KeyboardArrowUp";
 import { Button } from "@mui/material";
-import React from "react";
+
 import noImage from "../assets/noImage.png";
 import { PlaceCardProps, PlaceCardState } from "../types/PlaceCardType";
-import { FaCircle, FaCircleInfo } from "react-icons/fa6";
 import { TripContext } from "../contexts/TripContext";
-import { TripData } from "../dataObjects/TripData";
 import { PlaceData } from "../dataObjects/PlaceData";
+
 export class PlaceCard extends React.Component<PlaceCardProps, PlaceCardState> {
   static contextType = TripContext;
   declare context: React.ContextType<typeof TripContext>;

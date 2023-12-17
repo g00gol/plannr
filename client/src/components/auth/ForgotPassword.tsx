@@ -1,8 +1,9 @@
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
+
 import { resetpassword } from "../../api/auth";
 
-const ForgotPassword = (): React.ReactElement => {
+export default function ForgotPassword(): React.ReactElement {
   const [error, setError] = useState("");
   const navigate = useNavigate();
 
@@ -18,6 +19,7 @@ const ForgotPassword = (): React.ReactElement => {
       setError(error.message);
     }
   };
+
   return (
     <form onSubmit={doResetPassword}>
       <label>
@@ -28,6 +30,4 @@ const ForgotPassword = (): React.ReactElement => {
       <Link to="/signin">Cancel</Link>
     </form>
   );
-};
-
-export default ForgotPassword;
+}
