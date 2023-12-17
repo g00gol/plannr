@@ -1,14 +1,14 @@
-import InfoIcon from '@mui/icons-material/Info';
-import LoginIcon from '@mui/icons-material/Login';
-import Button from '@mui/material/Button';
-import Menu from '@mui/material/Menu';
-import MenuItem from '@mui/material/MenuItem';
-import * as React from 'react';
-import { FaCircleUser } from 'react-icons/fa6';
-import { Link } from 'react-router-dom';
-import { AuthContext } from '../contexts/AuthContext';
+import InfoIcon from "@mui/icons-material/Info";
+import LoginIcon from "@mui/icons-material/Login";
+import Button from "@mui/material/Button";
+import Menu from "@mui/material/Menu";
+import MenuItem from "@mui/material/MenuItem";
+import * as React from "react";
+import { FaCircleUser } from "react-icons/fa6";
+import { Link } from "react-router-dom";
+import { AuthContext } from "../contexts/AuthContext";
 
-const NavDropdown = (): React.ReactElement => {
+export default function NavDropdown(): React.ReactElement {
   const currentUser = React.useContext(AuthContext);
 
   const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null);
@@ -32,15 +32,20 @@ const NavDropdown = (): React.ReactElement => {
   // };
 
   return (
-    <div className="hidden lg:flex lg:flex-1 lg:justify-end justify-between p-4">
+    <div className="hidden justify-between p-4 lg:flex lg:flex-1 lg:justify-end">
       {/* <button onClick={blam}>Test Token</button> */}
 
-      <p className="text-lg leading-6 text-gray-900 pr-4 pt-4">Hello, <span className="font-bold">{currentUser ? currentUser.email : "Guest"}</span></p>
+      <p className="pr-4 pt-4 text-lg leading-6 text-gray-900">
+        Hello,{" "}
+        <span className="font-bold">
+          {currentUser ? currentUser.email : "Guest"}
+        </span>
+      </p>
       <Button
         id="basic-button"
         aria-controls="basic-menu"
         aria-haspopup="true"
-        aria-expanded={open ? 'true' : undefined}
+        aria-expanded={open ? "true" : undefined}
         onClick={handleClick}
       >
         <FaCircleUser size={40} />
@@ -51,7 +56,7 @@ const NavDropdown = (): React.ReactElement => {
         open={open}
         onClose={handleClose}
         MenuListProps={{
-          'aria-labelledby': 'basic-button',
+          "aria-labelledby": "basic-button",
         }}
       >
         {currentUser ? (
@@ -73,7 +78,5 @@ const NavDropdown = (): React.ReactElement => {
         )}
       </Menu>
     </div>
-  )
+  );
 }
-
-export default NavDropdown;

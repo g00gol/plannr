@@ -4,7 +4,7 @@ import { Typewriter } from "react-simple-typewriter";
 import logo_cropped from "../assets/logo_cropped.png";
 import NavDropdown from "./NavDropdown";
 
-const NavBar = (): React.ReactElement => {
+export default function NavBar(): React.ReactElement {
   const wordsList: string[] = [
     " go on a date",
     " take a hike",
@@ -36,7 +36,7 @@ const NavBar = (): React.ReactElement => {
         <div>
           <h1 className="text-3xl">
             Today, I want to
-            <span className="font-bold text-blue-500 text-3xl">
+            <span className="text-3xl font-bold text-blue-500">
               <Typewriter
                 words={wordsList}
                 loop={Infinity}
@@ -53,6 +53,4 @@ const NavBar = (): React.ReactElement => {
       </nav>
     </header>
   );
-};
-
-export default NavBar;
+}
