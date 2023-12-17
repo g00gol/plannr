@@ -6,8 +6,7 @@ const ResetPassword = (): React.ReactElement => {
   const doResetPassword = (e: React.FormEvent) => {
     e.preventDefault();
     const oobCode = searchParams.get("oobCode") || "";
-    const password = (document.getElementById("password") as HTMLInputElement)
-      .value;
+    const password = (document.getElementById("password") as HTMLInputElement).value;
     confirmresetpassword(oobCode, password);
   };
   return (

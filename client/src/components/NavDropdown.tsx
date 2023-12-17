@@ -38,7 +38,7 @@ export default function NavDropdown(): React.ReactElement {
       <p className="pr-4 pt-4 text-lg leading-6 text-gray-900">
         Hello,{" "}
         <span className="font-bold">
-          {currentUser ? currentUser.email : "Guest"}
+          {currentUser ? (currentUser.displayName || currentUser.email) : "Guest"}
         </span>
       </p>
       <Button
