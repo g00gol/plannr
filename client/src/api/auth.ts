@@ -16,8 +16,6 @@ import {
 const signup = async (email: string, username: string, password: string) => {
   //create
   const auth = getAuth() as Auth;
-  // const userCredentials = await createUserWithEmailAndPassword(auth, email, password);
-  // await updateProfile(userCredentials.user, {displayName: username});
   await createUserWithEmailAndPassword(auth, email, password);
 
   const user = auth.currentUser;
