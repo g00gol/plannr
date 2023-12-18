@@ -21,8 +21,8 @@ import { HomeProps } from "../types/HomeTypes";
 import {
   radius as DEFAULT_RADIUS,
   EPlaces,
+  pinSVGFilled,
   placeKeys,
-  TravelMode,
   travelModeKeys
 } from "../constants/GoogleMaps/config";
 import nearbySearch from "../api/GoogleMaps/nearbySearch";
@@ -43,11 +43,9 @@ export default function Home(props: HomeProps): React.ReactElement {
   const [tripToggle, toggleTrip] = useState(false);
   const [markerData, setMarkerData] = useState<Array<PlanMarkerData>>([]);
   const [typeData, setTypeData] = useState<string>("");
-  const [travelMode, setTravelMode] = useState<google.maps.TravelMode>(google.maps.TravelMode["WALKING"]);
+  const [travelMode, setTravelMode] = useState<google.maps.TravelMode>();
   const [keyWordData, setKeyWordData] = useState<string>("");
   const [searchText, setSearchText] = useState<string>("");
-  const pinSVGFilled =
-    "M 12,2 C 8.1340068,2 5,5.1340068 5,9 c 0,5.25 7,13 7,13 0,0 7,-7.75 7,-13 0,-3.8659932 -3.134007,-7 -7,-7 z";
 
   const { isLoaded } = useJsApiLoader({
     id: "google-map-script",
@@ -187,7 +185,7 @@ export default function Home(props: HomeProps): React.ReactElement {
               />
             )}
 
-            <Directions travelMode={travelMode} mapRef={mapRef}/>
+            <Directions travelMode={travelMode ? travelMode : google.maps.TravelMode.WALKING} mapRef={mapRef}/>
 
             {markerData.map((result) => {
               return (
