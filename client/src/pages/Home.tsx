@@ -1,12 +1,14 @@
 import {
   Circle,
   GoogleMap,
+  InfoWindow,
   Marker,
   useJsApiLoader,
 } from "@react-google-maps/api";
 import React, {
   FormEvent,
   useCallback,
+  useContext,
   useEffect,
   useRef,
   useState,
@@ -29,6 +31,8 @@ import nearbySearch from "../api/GoogleMaps/nearbySearch";
 import SearchResults from "../components/Home/SearchResults";
 import TripWindow from "../components/Home/TripWindow";
 import Directions from "../components/Directions/Directions";
+import { SearchResultContext } from "../contexts/SearchResultContext";
+import { TripContext } from "../contexts/TripContext";
 
 const underScoreRegex = new RegExp("_", "g");
 
@@ -46,6 +50,8 @@ export default function Home(props: HomeProps): React.ReactElement {
   const [travelMode, setTravelMode] = useState<google.maps.TravelMode>();
   const [keyWordData, setKeyWordData] = useState<string>("");
   const [searchText, setSearchText] = useState<string>("");
+  const { currentInfoWindow, setInfoWindow} = useContext(SearchResultContext);
+  const { currentTrip } = useContext(TripContext);
 
   const { isLoaded } = useJsApiLoader({
     id: "google-map-script",
@@ -191,6 +197,21 @@ export default function Home(props: HomeProps): React.ReactElement {
 
             <Directions travelMode={travelMode ? travelMode : google.maps.TravelMode.WALKING} mapRef={mapRef}/>
 
+            {currentInfoWindow != -1 ?
+              <InfoWindow
+                onCloseClick={() => setInfoWindow(-1)}
+                options={{
+                  ariaLabel: placeData[currentInfoWindow].title,
+                  position: placeData[currentInfoWindow].marker?.location,
+                }}>
+                  <div className="text-center">
+                    <h1 className="font-bold">{placeData[currentInfoWindow].title}</h1>
+                    <p>{placeData[currentInfoWindow].addr}</p>
+                  </div>
+                </InfoWindow>
+                : <></>
+            }
+            
             {markerData.map((result) => {
               return (
                 <Marker
@@ -214,16 +235,22 @@ export default function Home(props: HomeProps): React.ReactElement {
                 }}
               />
             )}
-            {placeData.map((result) => {
-              if (result.marker) {
+            {placeData.map((result, ind) => {
+              if (result.marker && !currentTrip.some(({ place_id }) => place_id === result.place_id)) {
                 return (
                   <Marker
                     key={`(${result.marker.location.lat()}, ${result.marker.location.lng()})`}
                     title={result.marker.title}
                     position={result.marker.location}
+                    label={{
+                      color: "black",
+                      text: String(ind),
+                    }}
+                    onClick={() => setInfoWindow(ind)}
                     icon={{
                       path: pinSVGFilled,
                       anchor: new google.maps.Point(12, 17),
+                      labelOrigin: new google.maps.Point(12.5, 10),
                       fillOpacity: 1,
                       fillColor: "lightblue",
                       strokeWeight: 2,

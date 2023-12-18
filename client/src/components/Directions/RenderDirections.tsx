@@ -1,7 +1,8 @@
-import React, { useState, useMemo, useCallback } from "react";
+import React, { useState, useMemo, useCallback, useContext } from "react";
 import { RenderDirectionsProps } from "../../types/RenderDirectionsType";
 import { DirectionsRenderer, DirectionsService, Marker } from "@react-google-maps/api";
 import { pinSVGFilled } from "../../constants/GoogleMaps/config";
+import { TripContext } from "../../contexts/TripContext";
 
 export default function RenderDirections({
   place1,
@@ -11,6 +12,7 @@ export default function RenderDirections({
   mapRef
 }: RenderDirectionsProps): React.ReactElement {
   const [dirResult, setDirectionsResult] = useState<google.maps.DirectionsResult | null>(null);
+  const { setInfoWindow } = useContext(TripContext);
 
   const directionsCallback = useCallback(
     (
@@ -62,6 +64,7 @@ export default function RenderDirections({
                 color: "white",
                 text: String(markerInd + 1)
               }}
+              onClick={() => setInfoWindow(markerInd)}
               icon={{
                 path: pinSVGFilled,
                 anchor: new google.maps.Point(12, 17),
