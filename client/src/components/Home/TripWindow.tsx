@@ -49,7 +49,7 @@ export default function TripWindow({
             {
               // current bug: does not remove existing placecards but tacks on new list of placecards.
               currentTrip.map((result, i) => (
-                <SortableItem key={`${result.addr}-trip`}>
+                <SortableItem key={result.place_id}>
                   <PlaceCardRef>
                     {/* wraps a div around placecard */}
                     <PlaceCard mapRef={mapRef} place={result} isResult={false}>
