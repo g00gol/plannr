@@ -9,8 +9,8 @@ body {
   padding: 0;
 }
 
-.load-slide {
-  animation: 1s ease-out 0s 1 slideInFromLeft;
+.load-slide-left {
+  animation: 0.75s ease-out 0s 1 slideInFromLeft;
 }
 
 .load-slide-fast {
@@ -18,11 +18,11 @@ body {
 }
 
 .load-slide-right {
-  animation: 1s ease-out 0s 1 slideInFromRight;
+  animation: 0.75s ease-out 0s 1 slideInFromRight;
 }
 
 .unload-slide {
-  animation: 1s ease-out 0s 1 slideOutToLeft;
+  animation: 0.75s ease-out 0s 1 slideOutToLeft;
 }
 
 .unload-slide-fast {

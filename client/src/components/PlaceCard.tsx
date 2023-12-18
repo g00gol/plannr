@@ -1,12 +1,12 @@
-import React, { useState, useContext, useEffect } from "react";
 import AddIcon from "@mui/icons-material/Add";
-import RemoveIcon from "@mui/icons-material/Remove";
 import KeyboardArrowDownIcon from "@mui/icons-material/KeyboardArrowDown";
 import KeyboardArrowUpIcon from "@mui/icons-material/KeyboardArrowUp";
+import RemoveIcon from "@mui/icons-material/Remove";
 import { Button } from "@mui/material";
+import React, { useContext, useEffect, useState } from "react";
 import noImage from "../assets/noImage.png";
-import { PlaceCardProps } from "../types/PlaceCardType";
 import { TripContext } from "../contexts/TripContext";
+import { PlaceCardProps } from "../types/PlaceCardType";
 
 interface PlaceCardRefProps {
   children?: React.ReactNode;
@@ -71,7 +71,7 @@ export default function PlaceCard({
   };
 
   return (
-    <div className="place-card rounded-md p-2">
+    <div className={isResult ? "place-card rounded-md p-2 load-slide-left" : "place-card rounded-md p-2 load-slide-right"}>
       <div
         className={`grid grid-flow-col grid-rows-2 ${
           isResult ? "grid-cols-9" : "grid-cols-10"
@@ -104,6 +104,7 @@ export default function PlaceCard({
               <Button
                 variant="text"
                 startIcon={<RemoveIcon />}
+                color="error"
                 onClick={() => removePlace(place)}
               >
                 Remove
