@@ -202,7 +202,7 @@ export default function Home(props: HomeProps): React.ReactElement {
             ) : (
               <aside
                 id="showTripWindowButton"
-                className="trip top-inherit left-inherit load-slide-right fixed right-12 z-20 mr-2 h-4/5 w-1/7 rounded-lg pb-10 opacity-90"
+                className="trip top-inherit left-inherit load-slide-right fixed right-12 z-20 h-4/5 w-1/7 rounded-lg pb-10 opacity-90"
               >
                 <div className={`dark:bg-gray-150 z-20 flex flex-col rounded-lg bg-white shadow-md p-5 justify-items-end`}>
                   <MapIcon className="text-2xl text-blue-500"/>
