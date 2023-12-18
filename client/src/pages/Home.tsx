@@ -29,10 +29,12 @@ import {
   placeKeys,
   travelModeKeys
 } from "../constants/GoogleMaps/config";
-import { CircleData } from "../dataObjects/CircleData";
-import { PlaceData } from "../dataObjects/PlaceData";
-import { PlanMarkerData } from "../dataObjects/PlanMarkerData";
-import { HomeProps } from "../types/HomeTypes";
+import nearbySearch from "../api/GoogleMaps/nearbySearch";
+import SearchResults from "../components/Home/SearchResults";
+import TripWindow from "../components/Home/TripWindow";
+import Directions from "../components/Directions/Directions";
+import { SearchResultContext } from "../contexts/SearchResultContext";
+import { TripContext } from "../contexts/TripContext";
 
 const underScoreRegex = new RegExp("_", "g");
 
@@ -50,6 +52,8 @@ export default function Home(props: HomeProps): React.ReactElement {
   const [travelMode, setTravelMode] = useState<google.maps.TravelMode>();
   const [keyWordData, setKeyWordData] = useState<string>("");
   const [searchText, setSearchText] = useState<string>("");
+  const { currentInfoWindow, setInfoWindow : setSearchWindow } = useContext(SearchResultContext);
+  const { currentTrip, setInfoWindow : setTripWindow } = useContext(TripContext);
   const { currentInfoWindow, setInfoWindow : setSearchWindow } = useContext(SearchResultContext);
   const { currentTrip, setInfoWindow : setTripWindow } = useContext(TripContext);
 

@@ -98,10 +98,10 @@ body {
 }
 
 .card-title {
-    font-weight: bold;
-    margin: 0;
-    padding: 0;
-    transition: 0.5s;
+  font-weight: bold;
+  margin: 0;
+  padding: 0;
+  transition: 0.5s;
 }
 
 .card-title:hover {
