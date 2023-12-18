@@ -65,23 +65,26 @@ export default function Home(props: HomeProps): React.ReactElement {
 
   const search = (event: FormEvent<HTMLFormElement>) => {
     event.preventDefault();
-
-    setSearchText(event.currentTarget.searchBar.value);
-    setKeyWordData(event.currentTarget.searchBar.value);
-    setTypeData(event.currentTarget.categories.value);
-    setTravelMode(event.currentTarget.travel_mode.value);
-    setCircleData(undefined);
-    setPlaceData([]);
-    setMarkerData([]);
-
     const center = mapRef.current?.getCenter();
-    if (center) {
-      setCenterData(center);
-      setCircleData(new CircleData(centerData, DEFAULT_RADIUS));
+
+    if(event.currentTarget.searchBar.value != keyWordData || center != centerData){
+      setSearchText(event.currentTarget.searchBar.value);
+      setKeyWordData(event.currentTarget.searchBar.value);
+      setTypeData(event.currentTarget.categories.value);
+      setTravelMode(event.currentTarget.travel_mode.value);
+      setCircleData(undefined);
+      setPlaceData([]);
+      setMarkerData([]);
+  
+      if (center) {
+        setCenterData(center);
+        setCircleData(new CircleData(centerData, DEFAULT_RADIUS));
+      }
+  
+      toggleResults(true);
+      toggleTrip(true);
     }
 
-    toggleResults(true);
-    toggleTrip(true);
   };
 
   useEffect(() => {
