@@ -22,10 +22,10 @@ export default function SearchResults({
   return (
     <aside
       id="searchResults"
-      className="results top-inherit left-inherit load-slide-left fixed left-2 z-20 ml-2 h-4/5 w-1/3 rounded-lg pb-10 pl-10 opacity-90 shadow-md"
+      className="results top-inherit left-inherit load-slide-left fixed left-2 z-20 ml-2 h-4/5 w-1/3 rounded-lg pb-10 pl-10 opacity-90"
     >
       { placeData.length !== 0 ? (
-      <div className="dark:bg-gray-150 z-20 flex h-full flex-col rounded-lg bg-white shadow-md">
+      <div className={`dark:bg-gray-150 z-20 flex ${placeData.length < 4 ? "h-fit" : "h-full"} flex-col rounded-lg bg-white shadow-md`}>
         <div className="flex justify-between px-5 py-4">
           <h2 className="pt-2 text-2xl font-bold text-blue-500">
             Search Results
@@ -65,10 +65,10 @@ export default function SearchResults({
             &lt; Close Search Results
           </button>
         </div>
-        <h3 className="text-1xl px-5">
+        {/* <h3 className="text-1xl px-5">
           <span className="font-bold">Number of Results</span>:{" "}
           {placeData.length}
-        </h3>
+        </h3> */}
         <div className="flex-grow overflow-y-scroll px-3 py-4">
           <p className="text-center text-xl">No results {searchText ? ` for "${searchText}"` : ""} found in this area.</p>
         </div>
