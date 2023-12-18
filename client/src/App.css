@@ -21,6 +21,10 @@ body {
   animation: 0.75s ease-out 0s 1 slideInFromRight;
 }
 
+.load-slide-right-fast {
+  animation: 0.25s ease-out 0s 1 slideInFromRight;
+}
+
 .unload-slide {
   animation: 0.75s ease-out 0s 1 slideOutToLeft;
 }
