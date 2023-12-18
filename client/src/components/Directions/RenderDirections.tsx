@@ -1,8 +1,8 @@
-import React, { useState, useMemo, useCallback, useContext } from "react";
+import React, { useState, useMemo, useCallback } from "react";
 import { RenderDirectionsProps } from "../../types/RenderDirectionsType";
 import { DirectionsRenderer, DirectionsService, Marker } from "@react-google-maps/api";
 import { pinSVGFilled } from "../../constants/GoogleMaps/config";
-import { TripContext } from "../../contexts/TripContext";
+import { routeColors } from "../../constants/GoogleMaps/config";
 
 export default function RenderDirections({
   place1,
@@ -26,6 +26,16 @@ export default function RenderDirections({
       }
     },
     []);
+
+  const getColor = useCallback(
+    () => {
+      const index = markerInd - 1;
+      if(index >= routeColors.length){
+        return "red"
+      }
+      return routeColors[index];
+    },
+  []);
 
   const directionsOpts = useMemo<google.maps.DirectionsRequest | null>(() => {
     return place1.marker && place2.marker && place1.marker.location && place2.marker.location
@@ -52,7 +62,7 @@ export default function RenderDirections({
                     preserveViewport: true,
                     polylineOptions: {
                         zIndex: 5,
-                        strokeColor: "blue" 
+                        strokeColor: getColor()
                     }}}/>
                 : <></>
             }

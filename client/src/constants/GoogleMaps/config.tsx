@@ -100,6 +100,8 @@ enum EPlaces {
   zoo,
 }
 
+const routeColors = ["blue", "darkcyan", "dodgerblue", "deepskyblue", "mediumturquoise", "lightskyblue", "midnightblue", "paleturquoise", "royalblue", "cyan"]
+
 enum TravelMode {
     BICYCLING = 'BICYCLING',
     DRIVING = 'DRIVING',
@@ -121,4 +123,4 @@ const travelModeKeys = (Object.keys(TravelMode) as (keyof typeof TravelMode)[]).
   },
 );
 
-export { radius, pinSVGFilled, EPlaces, placeKeys, TravelMode, travelModeKeys };
+export { radius, pinSVGFilled, EPlaces, placeKeys, TravelMode, travelModeKeys, routeColors };
