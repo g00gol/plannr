@@ -18,6 +18,13 @@ export default function TripWindow({
 }: TripWindowProps): React.ReactElement {
   const { currentTrip, onSortEnd } = React.useContext(TripContext);
 
+  // Not working - intent is to unload window with slide animation
+  const unloadWindow = () => {
+    document.getElementById("tripWindow")?.classList.remove("load-slide-right");
+    document.getElementById("tripWindow")?.classList.add("unload-slide-right");
+    toggleTrip(!tripToggle);
+  }
+
   return (
     <aside
       id="tripWindow"
@@ -29,10 +36,10 @@ export default function TripWindow({
           {/* trip name? */}
           <button
             type="button"
-            className="text-md rounded-md px-4 py-2 text-center font-bold hover:text-red-500"
-            onClick={() => toggleTrip(!tripToggle)}
+            className="text-md rounded-md px-4 py-2 text-center hover:text-red-500 hover:font-bold hover:transition hover:duration-300"
+            onClick={() => unloadWindow()}
           >
-            X
+            Close Trip Window &gt;
           </button>
         </div>
         <h3 className="text-1xl px-5">

@@ -71,14 +71,14 @@ export default function PlaceCard({
   };
 
   return (
-    <div className={isResult ? "place-card rounded-md p-2 load-slide-left" : "place-card rounded-md p-2 load-slide-right"}>
+    <div className={isResult ? "place-card rounded-md p-2 load-slide-left" : "place-card rounded-md p-2 load-slide-right-fast"}>
       <div
         className={`grid grid-flow-col grid-rows-2 ${
           isResult ? "grid-cols-9" : "grid-cols-10"
         } card-grid gap-4`}
       >
         <div className="col-span-6 row-span-2">
-          <p className="card-title truncate text-lg font-bold">
+          <p className="card-title truncate text-lg font-bold" onClick={showDetailsHandler} onDoubleClick={hideDetailsHandler}>
             {place.title.length > 30
               ? `${place.title.substring(0, 25)}...`
               : place.title}
