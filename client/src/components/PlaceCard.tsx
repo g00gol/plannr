@@ -1,12 +1,12 @@
-import React, { useState, useContext, useEffect } from "react";
 import AddIcon from "@mui/icons-material/Add";
-import RemoveIcon from "@mui/icons-material/Remove";
 import KeyboardArrowDownIcon from "@mui/icons-material/KeyboardArrowDown";
 import KeyboardArrowUpIcon from "@mui/icons-material/KeyboardArrowUp";
+import RemoveIcon from "@mui/icons-material/Remove";
 import { Button } from "@mui/material";
+import React, { useContext, useEffect, useState } from "react";
 import noImage from "../assets/noImage.png";
-import { PlaceCardProps } from "../types/PlaceCardType";
 import { TripContext } from "../contexts/TripContext";
+import { PlaceCardProps } from "../types/PlaceCardType";
 
 interface PlaceCardRefProps {
   children?: React.ReactNode;
@@ -31,6 +31,7 @@ export default function PlaceCard({
 
   const date: number = new Date().getDay();
   const { addPlace, removePlace } = useContext(TripContext);
+  //const { setPlace, currentPlaceId } = useContext(PlaceContext);
 
   const fetchPlaceDetails = () => {
     const map = mapRef.current;
@@ -58,11 +59,16 @@ export default function PlaceCard({
     }
   }, [showDetails, place.place_id, mapRef]);
 
+  const toggleShowDetails = () => {
+    setShowDetails(!showDetails);
+  }
+
   const showDetailsHandler = () => {
     setShowDetails(true);
   };
 
   const hideDetailsHandler = () => {
+    //setPlace(null);
     setShowDetails(false);
   };
 
@@ -71,14 +77,14 @@ export default function PlaceCard({
   };
 
   return (
-    <div className="place-card rounded-md p-2">
+    <div className={isResult ? "place-card rounded-md p-2 load-slide-left" : "place-card rounded-md p-2 load-slide-right-fast"}>
       <div
         className={`grid grid-flow-col grid-rows-2 ${
           isResult ? "grid-cols-9" : "grid-cols-10"
         } card-grid gap-4`}
       >
         <div className="col-span-6 row-span-2">
-          <p className="card-title truncate text-lg font-bold">
+          <p className="card-title truncate text-lg font-bold" onClick={toggleShowDetails}>
             {place.title.length > 30
               ? `${place.title.substring(0, 25)}...`
               : place.title}
@@ -104,6 +110,7 @@ export default function PlaceCard({
               <Button
                 variant="text"
                 startIcon={<RemoveIcon />}
+                color="error"
                 onClick={() => removePlace(place)}
               >
                 Remove
@@ -149,18 +156,22 @@ export default function PlaceCard({
           <hr className="border-1 border-gray-300 pb-2" />
           <p>
             <span className="font-bold">Phone: </span>
-            {phone}
+            {phone ? phone : "N/A"}
           </p>
           <p>
             <span className="font-bold">Website: </span>
-            <a
-              className="text-blue-500"
-              href={website}
-              rel="noopener noreferrer"
-              target="_blank"
-            >
-              {website}
-            </a>
+            {website ? (
+              <a
+                className="text-blue-500 hover:underline"
+                href={website}
+                rel="noopener noreferrer"
+                target="_blank"
+              >
+                {website}
+              </a>
+            ) : (
+              "N/A"
+            )}
           </p>
           <p>
             <span className="pt-5 font-bold">Hours: </span>
@@ -171,7 +182,7 @@ export default function PlaceCard({
                 {hours.map((day, index) => (
                   <tr
                     key={index}
-                    className={index === date - 1 ? "font-bold" : ""}
+                    className={index === date - 1 ? "font-bold text-blue-600" : ""}
                   >
                     <td className="pr-2">
                       {day.substring(0, day.indexOf(":"))}

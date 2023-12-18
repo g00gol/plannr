@@ -74,14 +74,14 @@ export const TripProvider = ({ children }: React.PropsWithChildren<{}>) => {
 
   const addPlace = (place: PlaceData) => {
     //add placeid to user's trip
-    if (currentTrip.includes(place))
+    if (currentTrip.some((p) => p.place_id === place.place_id))
       return console.log(`${place.title} is already in your trip!`);
     setCurrentTrip([...currentTrip, place]);
   };
 
   const removePlace = (place: PlaceData) => {
     //remove placeid to user's trip
-    if (!currentTrip.includes(place))
+    if (!currentTrip.some((p) => p.place_id === place.place_id))
       return console.log(`${place.title} isn't in your trip!`);
     const filtered = currentTrip.filter((p) => p.place_id !== place.place_id);
     setCurrentTrip(filtered);
