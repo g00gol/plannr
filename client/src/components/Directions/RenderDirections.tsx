@@ -9,10 +9,10 @@ export default function RenderDirections({
   place2,
   travelMode,
   markerInd,
+  windowFunc,
   mapRef
 }: RenderDirectionsProps): React.ReactElement {
   const [dirResult, setDirectionsResult] = useState<google.maps.DirectionsResult | null>(null);
-  const { setInfoWindow } = useContext(TripContext);
 
   const directionsCallback = useCallback(
     (
@@ -64,7 +64,7 @@ export default function RenderDirections({
                 color: "white",
                 text: String(markerInd + 1)
               }}
-              onClick={() => setInfoWindow(markerInd)}
+              onClick={() => windowFunc(markerInd)}
               icon={{
                 path: pinSVGFilled,
                 anchor: new google.maps.Point(12, 17),

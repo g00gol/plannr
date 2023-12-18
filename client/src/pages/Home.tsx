@@ -64,6 +64,11 @@ export default function Home(props: HomeProps): React.ReactElement {
     mapRef.current = map;
   }, []);
 
+  const updateWindows = useCallback((index: number) => {
+    setSearchWindow(index);
+    setTripWindow(-1);
+  }, []);
+
   const search = (event: FormEvent<HTMLFormElement>) => {
     event.preventDefault();
     const center = mapRef.current?.getCenter();
@@ -217,7 +222,7 @@ export default function Home(props: HomeProps): React.ReactElement {
 
             {currentInfoWindow != -1 ?
               <InfoWindow
-                onCloseClick={() => setInfoWindow(-1)}
+                onCloseClick={() => setSearchWindow(-1)}
                 options={{
                   ariaLabel: placeData[currentInfoWindow].title,
                   position: placeData[currentInfoWindow].marker?.location,
@@ -264,7 +269,7 @@ export default function Home(props: HomeProps): React.ReactElement {
                       color: "black",
                       text: String(ind),
                     }}
-                    onClick={() => setInfoWindow(ind)}
+                    onClick={() => updateWindows(ind)}
                     icon={{
                       path: pinSVGFilled,
                       anchor: new google.maps.Point(12, 17),
