@@ -92,7 +92,11 @@ export default function TripWindow({
             {currentTrip.length}
           </h3> */}
           <div className="flex-grow overflow-y-scroll px-3 py-4">
-            <p className="text-center text-xl">No places in trip yet!</p>
+            <p className="text-center text-xl">
+            No places in trip yet!
+            <br />
+            Use the search results on the left to build an itinerary.
+            </p>
           </div>
         </div>
       )}
