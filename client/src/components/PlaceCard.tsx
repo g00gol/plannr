@@ -31,6 +31,7 @@ export default function PlaceCard({
 
   const date: number = new Date().getDay();
   const { addPlace, removePlace } = useContext(TripContext);
+  //const { setPlace, currentPlaceId } = useContext(PlaceContext);
 
   const fetchPlaceDetails = () => {
     const map = mapRef.current;
@@ -58,11 +59,16 @@ export default function PlaceCard({
     }
   }, [showDetails, place.place_id, mapRef]);
 
+  const toggleShowDetails = () => {
+    setShowDetails(!showDetails);
+  }
+
   const showDetailsHandler = () => {
     setShowDetails(true);
   };
 
   const hideDetailsHandler = () => {
+    //setPlace(null);
     setShowDetails(false);
   };
 
@@ -78,7 +84,7 @@ export default function PlaceCard({
         } card-grid gap-4`}
       >
         <div className="col-span-6 row-span-2">
-          <p className="card-title truncate text-lg font-bold" onClick={showDetailsHandler} onDoubleClick={hideDetailsHandler}>
+          <p className="card-title truncate text-lg font-bold" onClick={toggleShowDetails}>
             {place.title.length > 30
               ? `${place.title.substring(0, 25)}...`
               : place.title}
@@ -150,18 +156,22 @@ export default function PlaceCard({
           <hr className="border-1 border-gray-300 pb-2" />
           <p>
             <span className="font-bold">Phone: </span>
-            {phone}
+            {phone ? phone : "N/A"}
           </p>
           <p>
             <span className="font-bold">Website: </span>
-            <a
-              className="text-blue-500"
-              href={website}
-              rel="noopener noreferrer"
-              target="_blank"
-            >
-              {website}
-            </a>
+            {website ? (
+              <a
+                className="text-blue-500 hover:underline"
+                href={website}
+                rel="noopener noreferrer"
+                target="_blank"
+              >
+                {website}
+              </a>
+            ) : (
+              "N/A"
+            )}
           </p>
           <p>
             <span className="pt-5 font-bold">Hours: </span>
@@ -172,7 +182,7 @@ export default function PlaceCard({
                 {hours.map((day, index) => (
                   <tr
                     key={index}
-                    className={index === date - 1 ? "font-bold" : ""}
+                    className={index === date - 1 ? "font-bold text-blue-600" : ""}
                   >
                     <td className="pr-2">
                       {day.substring(0, day.indexOf(":"))}
