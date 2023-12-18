@@ -13,7 +13,6 @@ export default function RenderDirections({
   mapRef
 }: RenderDirectionsProps): React.ReactElement {
   const [dirResult, setDirectionsResult] = useState<google.maps.DirectionsResult | null>(null);
-  const { setInfoWindow } = useContext(TripContext);
 
   const directionsCallback = useCallback(
     (
