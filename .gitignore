@@ -1,1 +1,6 @@
+<<<<<<< HEAD
 *.code-workspace
+=======
+*.code-workspace
+git rm -r --cached 
+>>>>>>> 729074a (Fixing an oopsie)
