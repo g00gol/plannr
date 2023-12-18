@@ -1,5 +1,5 @@
 import React, { useState, useMemo, useCallback } from "react";
-import { DirectionsProps } from "../../types/RenderDirectionsType";
+import { RenderDirectionsProps } from "../../types/RenderDirectionsType";
 import { DirectionsRenderer, DirectionsService } from "@react-google-maps/api";
 
 export default function RenderDirections({
@@ -7,7 +7,7 @@ export default function RenderDirections({
   place2,
   travelMode,
   mapRef
-}: DirectionsProps): React.ReactElement {
+}: RenderDirectionsProps): React.ReactElement {
   const [dirResult, setDirectionsResult] = useState<google.maps.DirectionsResult | null>(null);
   
   const directionsCallback = useCallback(
@@ -33,7 +33,7 @@ export default function RenderDirections({
             }
         :
             null
-    }, []);
+    }, [dirResult]);
 
   return ( directionsOpts ?
             <>

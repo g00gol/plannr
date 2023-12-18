@@ -22,7 +22,9 @@ import { HomeProps } from "../types/HomeTypes";
 import {
   radius as DEFAULT_RADIUS,
   EPlaces,
-  keys,
+  placeKeys,
+  TravelMode,
+  travelModeKeys
 } from "../constants/GoogleMaps/config";
 import nearbySearch from "../api/GoogleMaps/nearbySearch";
 import SearchResults from "../components/Home/SearchResults";
@@ -42,6 +44,7 @@ export default function Home(props: HomeProps): React.ReactElement {
   const [tripToggle, toggleTrip] = useState(false);
   const [markerData, setMarkerData] = useState<Array<PlanMarkerData>>([]);
   const [typeData, setTypeData] = useState<string>("");
+  const [travelMode, setTravelMode] = useState<google.maps.TravelMode>(google.maps.TravelMode["WALKING"]);
   const [keyWordData, setKeyWordData] = useState<string>("");
   const [searchText, setSearchText] = useState<string>("");
   const pinSVGFilled =
@@ -68,6 +71,7 @@ export default function Home(props: HomeProps): React.ReactElement {
     setSearchText(event.currentTarget.searchBar.value);
     setKeyWordData(event.currentTarget.searchBar.value);
     setTypeData(event.currentTarget.categories.value);
+    setTravelMode(event.currentTarget.travel_mode.value);
     setCircleData(undefined);
     setPlaceData([]);
     setMarkerData([]);
@@ -112,7 +116,7 @@ export default function Home(props: HomeProps): React.ReactElement {
             mapContainerStyle={{ width: "100vw" }}
             center={centerData}
             zoom={15}
-            id={"TEST_MAP"}
+            id={"WEBSITE_MAP"}
             onLoad={onLoad}
           >
             <form className="flex justify-center" onSubmit={search}>
@@ -128,7 +132,7 @@ export default function Home(props: HomeProps): React.ReactElement {
                 id="categories"
                 className="w-1/8 bg-gray-40 p-50 z-10 m-3 block rounded-xl border border-gray-600 p-4 ps-10 text-lg opacity-90"
               >
-                {keys.map((key) => {
+                {placeKeys.map((key) => {
                   const val = EPlaces[key];
                   const text = (
                     key[0].toUpperCase() + key.substring(1, key.length)
@@ -138,6 +142,26 @@ export default function Home(props: HomeProps): React.ReactElement {
                       key={val.toString()}
                       id={val.toString()}
                       value={key}
+                    >
+                      {text}
+                    </option>
+                  );
+                })}
+              </select>
+              <select
+                name="travel_mode"
+                id="travel_mode"
+                className="w-1/8 bg-gray-40 p-50 z-10 m-3 block rounded-xl border border-gray-600 p-4 ps-10 text-lg opacity-90"
+              >
+                {travelModeKeys.map((key) => {
+                  const val = google.maps.TravelMode[key];
+                  const text = (key[0].toUpperCase() + key.substring(1, key.length).toLowerCase());
+                  return (
+                    <option
+                      key={val.toString()}
+                      id={val.toString()}
+                      value={key}
+                      selected={val === google.maps.TravelMode.WALKING}
                     >
                       {text}
                     </option>
@@ -167,7 +191,7 @@ export default function Home(props: HomeProps): React.ReactElement {
               />
             )}
 
-            <Directions travelMode={google.maps.TravelMode.WALKING} mapRef={mapRef}/>
+            <Directions travelMode={travelMode} mapRef={mapRef}/>
 
             {markerData.map((result) => {
               return (
