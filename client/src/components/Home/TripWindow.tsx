@@ -37,21 +37,33 @@ export default function TripWindow({
           <span className="font-bold">Places in Trip</span>:{" "}
           {currentTrip.length}
         </h3>
-        <ul className="flex-grow overflow-y-scroll px-3 py-4">
-          {
-            // current bug: does not remove existing placecards but tacks on new list of placecards.
-            currentTrip.map((result) => {
-              return (
-                <PlaceCard
-                  key={result.addr}
-                  mapRef={mapRef}
-                  place={result}
-                  isResult={false}
-                />
-              );
-            })
-          }
-        </ul>
+        <div className="flex-grow overflow-y-scroll px-3 py-4">
+          <SortableList
+            onSortEnd={onSortEnd}
+            className="list"
+            draggedItemClassName="dragged"
+            lockAxis="y"
+          >
+            {
+              // current bug: does not remove existing placecards but tacks on new list of placecards.
+              currentTrip.map((result, i) => (
+                <SortableItem key={result.place_id}>
+                  <PlaceCardRef>
+                    {/* wraps a div around placecard */}
+                    <PlaceCard mapRef={mapRef} place={result} isResult={false}>
+                      <SortableKnob>
+                        <div className="col-span-1 row-span-2 flex cursor-pointer select-none flex-col items-center justify-center">
+                          <FaGripLines size={20} />
+                          {i + 1}
+                        </div>
+                      </SortableKnob>
+                    </PlaceCard>
+                  </PlaceCardRef>
+                </SortableItem>
+              ))
+            }
+          </SortableList>
+        </div>
       </div>
     </aside>
   );
