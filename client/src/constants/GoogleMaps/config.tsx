@@ -100,10 +100,25 @@ enum EPlaces {
   zoo,
 }
 
-const keys = (Object.keys(EPlaces) as (keyof typeof EPlaces)[]).filter(
+enum TravelMode {
+    BICYCLING = 'BICYCLING',
+    DRIVING = 'DRIVING',
+    TRANSIT = 'TRANSIT',
+    WALKING = 'WALKING',
+}
+
+const pinSVGFilled = "M 12,2 C 8.1340068,2 5,5.1340068 5,9 c 0,5.25 7,13 7,13 0,0 7,-7.75 7,-13 0,-3.8659932 -3.134007,-7 -7,-7 z";
+
+const placeKeys = (Object.keys(EPlaces) as (keyof typeof EPlaces)[]).filter(
   (val) => {
     return isNaN(Number(val));
   },
 );
 
-export { radius, EPlaces, keys };
+const travelModeKeys = (Object.keys(TravelMode) as (keyof typeof TravelMode)[]).filter(
+  (val) => {
+    return isNaN(Number(val));
+  },
+);
+
+export { radius, pinSVGFilled, EPlaces, placeKeys, TravelMode, travelModeKeys };

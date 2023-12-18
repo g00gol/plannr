@@ -21,11 +21,14 @@ import { HomeProps } from "../types/HomeTypes";
 import {
   radius as DEFAULT_RADIUS,
   EPlaces,
-  keys,
+  pinSVGFilled,
+  placeKeys,
+  travelModeKeys
 } from "../constants/GoogleMaps/config";
 import nearbySearch from "../api/GoogleMaps/nearbySearch";
 import SearchResults from "../components/Home/SearchResults";
 import TripWindow from "../components/Home/TripWindow";
+import Directions from "../components/Directions/Directions";
 
 const underScoreRegex = new RegExp("_", "g");
 
@@ -40,10 +43,9 @@ export default function Home(props: HomeProps): React.ReactElement {
   const [tripToggle, toggleTrip] = useState(false);
   const [markerData, setMarkerData] = useState<Array<PlanMarkerData>>([]);
   const [typeData, setTypeData] = useState<string>("");
+  const [travelMode, setTravelMode] = useState<google.maps.TravelMode>();
   const [keyWordData, setKeyWordData] = useState<string>("");
   const [searchText, setSearchText] = useState<string>("");
-  const pinSVGFilled =
-    "M 12,2 C 8.1340068,2 5,5.1340068 5,9 c 0,5.25 7,13 7,13 0,0 7,-7.75 7,-13 0,-3.8659932 -3.134007,-7 -7,-7 z";
 
   const { isLoaded } = useJsApiLoader({
     id: "google-map-script",
@@ -60,22 +62,26 @@ export default function Home(props: HomeProps): React.ReactElement {
 
   const search = (event: FormEvent<HTMLFormElement>) => {
     event.preventDefault();
-
-    setSearchText(event.currentTarget.searchBar.value);
-    setKeyWordData(event.currentTarget.searchBar.value);
-    setTypeData(event.currentTarget.categories.value);
-    setCircleData(undefined);
-    setPlaceData([]);
-    setMarkerData([]);
-
     const center = mapRef.current?.getCenter();
-    if (center) {
-      setCenterData(center);
-      setCircleData(new CircleData(centerData, DEFAULT_RADIUS));
+
+    if(event.currentTarget.searchBar.value != keyWordData || center != centerData || event.currentTarget.travel_mode.value != travelMode){
+      setSearchText(event.currentTarget.searchBar.value);
+      setKeyWordData(event.currentTarget.searchBar.value);
+      setTypeData(event.currentTarget.categories.value);
+      setTravelMode(event.currentTarget.travel_mode.value);
+      setCircleData(undefined);
+      setPlaceData([]);
+      setMarkerData([]);
+  
+      if (center) {
+        setCenterData(center);
+        setCircleData(new CircleData(centerData, DEFAULT_RADIUS));
+      }
+  
+      toggleResults(true);
+      toggleTrip(true);
     }
 
-    toggleResults(true);
-    toggleTrip(true);
   };
 
   useEffect(() => {
@@ -93,10 +99,11 @@ export default function Home(props: HomeProps): React.ReactElement {
         console.log(e);
       }
     }
+
     if (resultsToggle) {
       fetchData();
     }
-  }, [keyWordData, centerData]);
+  }, [keyWordData, centerData, travelMode]);
 
   return (
     <div className="flex h-screen flex-col">
@@ -108,7 +115,7 @@ export default function Home(props: HomeProps): React.ReactElement {
             mapContainerStyle={{ width: "100vw" }}
             center={centerData}
             zoom={15}
-            id={"TEST_MAP"}
+            id={"WEBSITE_MAP"}
             onLoad={onLoad}
           >
             <form className="flex justify-center" onSubmit={search}>
@@ -124,11 +131,31 @@ export default function Home(props: HomeProps): React.ReactElement {
                 id="categories"
                 className="w-1/8 bg-gray-40 p-50 z-10 m-3 block rounded-xl border border-gray-600 p-4 ps-10 text-lg opacity-90"
               >
-                {keys.map((key) => {
+                {placeKeys.map((key) => {
                   const val = EPlaces[key];
                   const text = (
                     key[0].toUpperCase() + key.substring(1, key.length)
                   ).replace(underScoreRegex, " ");
+                  return (
+                    <option
+                      key={val.toString()}
+                      id={val.toString()}
+                      value={key}
+                    >
+                      {text}
+                    </option>
+                  );
+                })}
+              </select>
+              <select
+                name="travel_mode"
+                id="travel_mode"
+                className="w-1/8 bg-gray-40 p-50 z-10 m-3 block rounded-xl border border-gray-600 p-4 ps-10 text-lg opacity-90"
+                defaultValue={google.maps.TravelMode.WALKING}
+              >
+                {travelModeKeys.map((key) => {
+                  const val = google.maps.TravelMode[key];
+                  const text = (key[0].toUpperCase() + key.substring(1, key.length).toLowerCase());
                   return (
                     <option
                       key={val.toString()}
@@ -161,6 +188,8 @@ export default function Home(props: HomeProps): React.ReactElement {
                 toggleTrip={toggleTrip}
               />
             )}
+
+            <Directions travelMode={travelMode ? travelMode : google.maps.TravelMode.WALKING} mapRef={mapRef}/>
 
             {markerData.map((result) => {
               return (
