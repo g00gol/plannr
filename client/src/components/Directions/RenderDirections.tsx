@@ -1,4 +1,4 @@
-import React, { useState, useMemo, useCallback } from "react";
+import React, { useState, useMemo, useCallback, useContext } from "react";
 import { RenderDirectionsProps } from "../../types/RenderDirectionsType";
 import { DirectionsRenderer, DirectionsService, Marker } from "@react-google-maps/api";
 import { pinSVGFilled } from "../../constants/GoogleMaps/config";
@@ -13,6 +13,7 @@ export default function RenderDirections({
   mapRef
 }: RenderDirectionsProps): React.ReactElement {
   const [dirResult, setDirectionsResult] = useState<google.maps.DirectionsResult | null>(null);
+  const { setInfoWindow } = useContext(TripContext);
 
   const directionsCallback = useCallback(
     (

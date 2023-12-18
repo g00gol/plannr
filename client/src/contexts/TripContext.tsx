@@ -99,7 +99,9 @@ export const TripProvider = ({ children }: React.PropsWithChildren<{}>) => {
       value={{
         currentTrip,
         tripName,
+        currentInfoWindow,
         setTripName,
+        setInfoWindow,
         addPlace,
         removePlace,
         onSortEnd,

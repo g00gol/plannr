@@ -50,6 +50,8 @@ export default function Home(props: HomeProps): React.ReactElement {
   const [travelMode, setTravelMode] = useState<google.maps.TravelMode>();
   const [keyWordData, setKeyWordData] = useState<string>("");
   const [searchText, setSearchText] = useState<string>("");
+  const { currentInfoWindow, setInfoWindow} = useContext(SearchResultContext);
+  const { currentTrip } = useContext(TripContext);
 
   const { isLoaded } = useJsApiLoader({
     id: "google-map-script",
