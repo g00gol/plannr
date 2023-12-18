@@ -1,8 +1,8 @@
 import React, { useState, useMemo, useCallback } from "react";
-import { DirectionsProps } from "../types/DirectionsType";
+import { DirectionsProps } from "../../types/RenderDirectionsType";
 import { DirectionsRenderer, DirectionsService } from "@react-google-maps/api";
 
-export default function Directions({
+export default function RenderDirections({
   place1,
   place2,
   travelMode,
