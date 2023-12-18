@@ -1,4 +1,5 @@
 import {
+  Auth,
   getAuth,
   createUserWithEmailAndPassword,
   signOut,
@@ -14,18 +15,20 @@ import {
 
 const signup = async (email: string, username: string, password: string) => {
   //create
-  const auth = getAuth() as any;
-  // const userCredentials = await createUserWithEmailAndPassword(auth, email, password);
-  // await updateProfile(userCredentials.user, {displayName: username});
+  const auth = getAuth() as Auth;
   await createUserWithEmailAndPassword(auth, email, password);
-  await updateProfile(auth.currentUser, { displayName: username });
+
+  const user = auth.currentUser;
+  if(!user) throw new Error('Error creating user');
+
+  await updateProfile(user, { displayName: username });
 
   console.log(`Signup successful for ${username}`);
 };
 
 const signin = async (email: string, password: string) => {
   //read
-  const auth = getAuth() as any;
+  const auth = getAuth() as Auth;
   await signInWithEmailAndPassword(auth, email, password);
   console.log(`Signin successful for ${email}`);
 };
@@ -36,12 +39,16 @@ const changepassword = async (
   newPassword: string,
 ) => {
   //update
-  const auth = getAuth() as any;
+  const auth = getAuth() as Auth;
 
   const credential = EmailAuthProvider.credential(email, oldPassword);
-  await reauthenticateWithCredential(auth.currentUser, credential);
 
+  const user = auth.currentUser;
+  if(!user) throw new Error('Error updating password');
+
+  await reauthenticateWithCredential(auth.currentUser, credential);
   await updatePassword(auth.currentUser, newPassword);
+
   console.log(`Password changed for ${email}`);
   await logout();
 };
@@ -60,7 +67,11 @@ const confirmresetpassword = async (oob: string, newPass: string) => {
 
 const logout = async () => {
   //delete
-  const auth = getAuth() as any;
+  const auth = getAuth() as Auth;
+
+  const user = auth.currentUser;
+  if(!user) throw new Error('Error logging out');
+
   console.log(`Logout successful for ${auth.currentUser.email}`);
   await signOut(auth);
 };
