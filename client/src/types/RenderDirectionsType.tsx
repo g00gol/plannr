@@ -5,6 +5,7 @@ interface RenderDirectionsProps {
     place1: PlaceData
     place2: PlaceData
     travelMode: google.maps.TravelMode
+    markerInd: number
     children?: React.ReactNode
 }
 

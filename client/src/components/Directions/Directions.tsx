@@ -17,9 +17,14 @@ export default function Directions({
             key={`(${currentTrip[0].marker.location.lat()}, ${currentTrip[0].marker.location.lng()})`}
             title={currentTrip[0].marker.title}
             position={currentTrip[0].marker.location}
+            label={{
+                color: "white",
+                text: "1"
+            }}
             icon={{
                 path: pinSVGFilled,
                 anchor: new google.maps.Point(12, 17),
+                labelOrigin: new google.maps.Point(12.5, 10),
                 fillOpacity: 1,
                 fillColor: "crimson",
                 strokeWeight: 2,
@@ -37,6 +42,7 @@ export default function Directions({
                             place1={currentTrip[ind - 1]} 
                             place2={result} 
                             travelMode={travelMode} 
+                            markerInd={ind}
                             mapRef={mapRef}/>
                 })
             }
