@@ -1,21 +1,29 @@
-import React, { useContext } from "react";
+import React, { useCallback, useContext } from "react";
 import { DirectionsProps } from "../../types/DirectionsType";
 import { TripContext } from "../../contexts/TripContext";
 import RenderDirections from "./RenderDirections";
 import { pinSVGFilled } from "../../constants/GoogleMaps/config";
 import { InfoWindow, Marker } from "@react-google-maps/api";
+import { SearchResultContext } from "../../contexts/SearchResultContext";
 
 export default function Directions({
   travelMode,
   mapRef
 }: DirectionsProps): React.ReactElement {
-    const { currentTrip, currentInfoWindow, setInfoWindow} = useContext(TripContext);
+    const { currentTrip, currentInfoWindow, setInfoWindow : setTripWindow } = useContext(TripContext);
+    const { setInfoWindow : setSearchWindow } = useContext(SearchResultContext);
+
+    
+    const updateWindows = useCallback((index: number) => {
+        setTripWindow(index);
+        setSearchWindow(-1);
+    }, []);
 
   return ( currentTrip.length > 0 && currentTrip[0] && currentTrip[0].marker  ?
         <>
         {currentInfoWindow != -1 ?
               <InfoWindow
-                onCloseClick={() => setInfoWindow(-1)}
+                onCloseClick={() => setTripWindow(-1)}
                 options={{
                   ariaLabel: currentTrip[currentInfoWindow].title,
                   position: currentTrip[currentInfoWindow].marker?.location,
@@ -35,7 +43,7 @@ export default function Directions({
                 color: "white",
                 text: "1"
             }}
-            onClick={() => setInfoWindow(0)}
+            onClick={() => updateWindows(0)}
             icon={{
                 path: pinSVGFilled,
                 anchor: new google.maps.Point(12, 17),
@@ -57,6 +65,7 @@ export default function Directions({
                             place1={currentTrip[ind - 1]} 
                             place2={result} 
                             travelMode={travelMode} 
+                            windowFunc={updateWindows}
                             markerInd={ind}
                             mapRef={mapRef}/>
                 })

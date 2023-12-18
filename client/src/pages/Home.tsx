@@ -50,8 +50,8 @@ export default function Home(props: HomeProps): React.ReactElement {
   const [travelMode, setTravelMode] = useState<google.maps.TravelMode>();
   const [keyWordData, setKeyWordData] = useState<string>("");
   const [searchText, setSearchText] = useState<string>("");
-  const { currentInfoWindow, setInfoWindow} = useContext(SearchResultContext);
-  const { currentTrip } = useContext(TripContext);
+  const { currentInfoWindow, setInfoWindow : setSearchWindow } = useContext(SearchResultContext);
+  const { currentTrip, setInfoWindow : setTripWindow } = useContext(TripContext);
 
   const { isLoaded } = useJsApiLoader({
     id: "google-map-script",
@@ -64,6 +64,11 @@ export default function Home(props: HomeProps): React.ReactElement {
     setPlaceData([]);
     setMarkerData([]);
     mapRef.current = map;
+  }, []);
+
+  const updateWindows = useCallback((index: number) => {
+    setSearchWindow(index);
+    setTripWindow(-1);
   }, []);
 
   const search = (event: FormEvent<HTMLFormElement>) => {
@@ -199,7 +204,7 @@ export default function Home(props: HomeProps): React.ReactElement {
 
             {currentInfoWindow != -1 ?
               <InfoWindow
-                onCloseClick={() => setInfoWindow(-1)}
+                onCloseClick={() => setSearchWindow(-1)}
                 options={{
                   ariaLabel: placeData[currentInfoWindow].title,
                   position: placeData[currentInfoWindow].marker?.location,
@@ -246,7 +251,7 @@ export default function Home(props: HomeProps): React.ReactElement {
                       color: "black",
                       text: String(ind),
                     }}
-                    onClick={() => setInfoWindow(ind)}
+                    onClick={() => updateWindows(ind)}
                     icon={{
                       path: pinSVGFilled,
                       anchor: new google.maps.Point(12, 17),
