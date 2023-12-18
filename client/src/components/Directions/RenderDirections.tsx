@@ -80,6 +80,7 @@ export default function RenderDirections({
                 color: "white",
                 text: String(markerInd + 1)
               }}
+              zIndex={markerInd}
               onClick={() => windowFunc(markerInd)}
               icon={{
                 path: pinSVGFilled,
