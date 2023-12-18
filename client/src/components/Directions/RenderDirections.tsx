@@ -41,20 +41,6 @@ export default function RenderDirections({
             place1.marker && place2.marker && 
             place1.marker.location && place2.marker.location ?
             <>
-            <Marker
-              key={`(${place1.marker.location.lat()}, ${place1.marker.location.lng()})`}
-              title={place1.marker.title}
-              position={place1.marker.location}
-              icon={{
-                path: pinSVGFilled,
-                anchor: new google.maps.Point(12, 17),
-                fillOpacity: 1,
-                fillColor: "crimson",
-                strokeWeight: 2,
-                strokeColor: "gray",
-                scale: 2,
-              }}
-            />
             <DirectionsService options={directionsOpts} callback={directionsCallback}/>
             { dirResult != null ?
                 <DirectionsRenderer options={{ 
