@@ -1,6 +1,7 @@
 import React, { useState, useMemo, useCallback } from "react";
 import { RenderDirectionsProps } from "../../types/RenderDirectionsType";
-import { DirectionsRenderer, DirectionsService } from "@react-google-maps/api";
+import { DirectionsRenderer, DirectionsService, Marker } from "@react-google-maps/api";
+import { pinSVGFilled } from "../../constants/GoogleMaps/config";
 
 export default function RenderDirections({
   place1,
@@ -35,8 +36,24 @@ export default function RenderDirections({
             null
     }, [dirResult]);
 
-  return ( directionsOpts ?
+  return ( directionsOpts != null && 
+            place1.marker && place2.marker && 
+            place1.marker.location && place2.marker.location ?
             <>
+            <Marker
+              key={`(${place1.marker.location.lat()}, ${place1.marker.location.lng()})`}
+              title={place1.marker.title}
+              position={place1.marker.location}
+              icon={{
+                path: pinSVGFilled,
+                anchor: new google.maps.Point(12, 17),
+                fillOpacity: 1,
+                fillColor: "crimson",
+                strokeWeight: 2,
+                strokeColor: "gray",
+                scale: 2,
+              }}
+            />
             <DirectionsService options={directionsOpts} callback={directionsCallback}/>
             { dirResult !== null ?
                 <DirectionsRenderer options={{ 
@@ -50,6 +67,20 @@ export default function RenderDirections({
                     }}}/>
                 : <></>
             }
+            <Marker
+              key={`(${place2.marker.location.lat()}, ${place2.marker.location.lng()})`}
+              title={place2.marker.title}
+              position={place2.marker.location}
+              icon={{
+                path: pinSVGFilled,
+                anchor: new google.maps.Point(12, 17),
+                fillOpacity: 1,
+                fillColor: "crimson",
+                strokeWeight: 2,
+                strokeColor: "gray",
+                scale: 2,
+              }}
+            />
             </>
         : 
             <></>
