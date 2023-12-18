@@ -27,6 +27,7 @@ import {
 import nearbySearch from "../api/GoogleMaps/nearbySearch";
 import SearchResults from "../components/Home/SearchResults";
 import TripWindow from "../components/Home/TripWindow";
+import Directions from "../components/Directions/Directions";
 
 const underScoreRegex = new RegExp("_", "g");
 
@@ -165,6 +166,8 @@ export default function Home(props: HomeProps): React.ReactElement {
                 toggleTrip={toggleTrip}
               />
             )}
+
+            <Directions travelMode={google.maps.TravelMode.WALKING} mapRef={mapRef}/>
 
             {markerData.map((result) => {
               return (
