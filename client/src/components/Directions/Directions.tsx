@@ -3,16 +3,30 @@ import { DirectionsProps } from "../../types/DirectionsType";
 import { TripContext } from "../../contexts/TripContext";
 import RenderDirections from "./RenderDirections";
 import { pinSVGFilled } from "../../constants/GoogleMaps/config";
-import { Marker } from "@react-google-maps/api";
+import { InfoWindow, Marker } from "@react-google-maps/api";
 
 export default function Directions({
   travelMode,
   mapRef
 }: DirectionsProps): React.ReactElement {
-    const { currentTrip } = useContext(TripContext);
+    const { currentTrip, currentInfoWindow, setInfoWindow} = useContext(TripContext);
 
   return ( currentTrip.length > 0 && currentTrip[0] && currentTrip[0].marker  ?
         <>
+        {currentInfoWindow != -1 ?
+              <InfoWindow
+                onCloseClick={() => setInfoWindow(-1)}
+                options={{
+                  ariaLabel: currentTrip[currentInfoWindow].title,
+                  position: currentTrip[currentInfoWindow].marker?.location,
+                }}>
+                  <div className="text-center">
+                    <h1 className="font-bold">{currentTrip[currentInfoWindow].title}</h1>
+                    <p>{currentTrip[currentInfoWindow].addr}</p>
+                  </div>
+                </InfoWindow>
+                : <></>
+        }
         <Marker
             key={`(${currentTrip[0].marker.location.lat()}, ${currentTrip[0].marker.location.lng()})`}
             title={currentTrip[0].marker.title}
@@ -21,6 +35,7 @@ export default function Directions({
                 color: "white",
                 text: "1"
             }}
+            onClick={() => setInfoWindow(0)}
             icon={{
                 path: pinSVGFilled,
                 anchor: new google.maps.Point(12, 17),
