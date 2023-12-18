@@ -2,7 +2,7 @@ import React, { useState, useMemo, useCallback } from "react";
 import { RenderDirectionsProps } from "../../types/RenderDirectionsType";
 import { DirectionsRenderer, DirectionsService, Marker } from "@react-google-maps/api";
 import { pinSVGFilled } from "../../constants/GoogleMaps/config";
-import { routeColors } from "../../constants/GoogleMaps/config";
+import { routeColors, hexVals } from "../../constants/GoogleMaps/config";
 
 export default function RenderDirections({
   place1,
@@ -31,7 +31,13 @@ export default function RenderDirections({
     () => {
       const index = markerInd - 1;
       if(index >= routeColors.length){
-        return "red"
+        let retStr = "#";
+
+        for(let i = 0; i < 6; ++i) {
+          retStr += hexVals[(Math.floor(Math.random() * 16))]
+        }
+
+        return retStr;
       }
       return routeColors[index];
     },
@@ -67,7 +73,7 @@ export default function RenderDirections({
                 : <></>
             }
             <Marker
-              key={`(${place2.marker.location.lat()}, ${place2.marker.location.lng()})`}
+              key={place2.place_id}
               title={place2.marker.title}
               position={place2.marker.location}
               label={{
