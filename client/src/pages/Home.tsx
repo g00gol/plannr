@@ -16,7 +16,6 @@ import React, {
 import "react-simple-typewriter/dist/index";
 
 import Navbar from "../components/Navbar";
-import { TripContext } from "../contexts/TripContext";
 import { CircleData } from "../dataObjects/CircleData";
 import { PlaceData } from "../dataObjects/PlaceData";
 import { PlanMarkerData } from "../dataObjects/PlanMarkerData";
@@ -53,8 +52,6 @@ export default function Home(props: HomeProps): React.ReactElement {
   const [searchText, setSearchText] = useState<string>("");
   const { currentInfoWindow, setInfoWindow : setSearchWindow } = useContext(SearchResultContext);
   const { currentTrip, setInfoWindow : setTripWindow } = useContext(TripContext);
-
-  const { currentTrip } = React.useContext(TripContext);
 
   const { isLoaded } = useJsApiLoader({
     id: "google-map-script",
@@ -198,7 +195,6 @@ export default function Home(props: HomeProps): React.ReactElement {
             {tripToggle && (
               <TripWindow
                 mapRef={mapRef}
-                currentTrip={currentTrip}
                 tripToggle={tripToggle}
                 toggleTrip={toggleTrip}
               />
