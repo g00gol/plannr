@@ -10,7 +10,7 @@ export default function RenderDirections({
   mapRef
 }: RenderDirectionsProps): React.ReactElement {
   const [dirResult, setDirectionsResult] = useState<google.maps.DirectionsResult | null>(null);
-  
+  console.log(place1.title + " " + place2.title)
   const directionsCallback = useCallback(
     (
       result: google.maps.DirectionsResult | null,
@@ -34,28 +34,14 @@ export default function RenderDirections({
             }
         :
             null
-    }, [dirResult]);
+    }, [place1.marker?.location, place2.marker?.location, travelMode]);
 
   return ( directionsOpts != null && 
             place1.marker && place2.marker && 
             place1.marker.location && place2.marker.location ?
             <>
-            <Marker
-              key={`(${place1.marker.location.lat()}, ${place1.marker.location.lng()})`}
-              title={place1.marker.title}
-              position={place1.marker.location}
-              icon={{
-                path: pinSVGFilled,
-                anchor: new google.maps.Point(12, 17),
-                fillOpacity: 1,
-                fillColor: "crimson",
-                strokeWeight: 2,
-                strokeColor: "gray",
-                scale: 2,
-              }}
-            />
             <DirectionsService options={directionsOpts} callback={directionsCallback}/>
-            { dirResult !== null ?
+            { dirResult != null ?
                 <DirectionsRenderer options={{ 
                     map: mapRef.current,               
                     directions: dirResult,

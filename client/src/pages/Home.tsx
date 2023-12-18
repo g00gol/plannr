@@ -67,7 +67,7 @@ export default function Home(props: HomeProps): React.ReactElement {
     event.preventDefault();
     const center = mapRef.current?.getCenter();
 
-    if(event.currentTarget.searchBar.value != keyWordData || center != centerData){
+    if(event.currentTarget.searchBar.value != keyWordData || center != centerData || event.currentTarget.travel_mode.value != travelMode){
       setSearchText(event.currentTarget.searchBar.value);
       setKeyWordData(event.currentTarget.searchBar.value);
       setTypeData(event.currentTarget.categories.value);
@@ -102,10 +102,11 @@ export default function Home(props: HomeProps): React.ReactElement {
         console.log(e);
       }
     }
+
     if (resultsToggle) {
       fetchData();
     }
-  }, [keyWordData, centerData]);
+  }, [keyWordData, centerData, travelMode]);
 
   return (
     <div className="flex h-screen flex-col">
@@ -153,6 +154,7 @@ export default function Home(props: HomeProps): React.ReactElement {
                 name="travel_mode"
                 id="travel_mode"
                 className="w-1/8 bg-gray-40 p-50 z-10 m-3 block rounded-xl border border-gray-600 p-4 ps-10 text-lg opacity-90"
+                defaultValue={google.maps.TravelMode.WALKING}
               >
                 {travelModeKeys.map((key) => {
                   const val = google.maps.TravelMode[key];
@@ -162,7 +164,6 @@ export default function Home(props: HomeProps): React.ReactElement {
                       key={val.toString()}
                       id={val.toString()}
                       value={key}
-                      selected={val === google.maps.TravelMode.WALKING}
                     >
                       {text}
                     </option>
