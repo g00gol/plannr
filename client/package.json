@@ -6,6 +6,7 @@
   "scripts": {
     "dev": "vite",
     "build": "tsc && vite build",
+    "serve": "serve dist",
     "lint": "eslint . --ext ts,tsx --report-unused-disable-directives --max-warnings 0",
     "preview": "vite preview"
   },
@@ -25,7 +26,8 @@
     "react-easy-sort": "^1.6.0",
     "react-icons": "^4.12.0",
     "react-router-dom": "^6.18.0",
-    "react-simple-typewriter": "^5.0.1"
+    "react-simple-typewriter": "^5.0.1",
+    "serve": "^14.2.1"
   },
   "devDependencies": {
     "@types/google.maps": "^3.54.7",
