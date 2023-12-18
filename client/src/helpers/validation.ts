@@ -28,6 +28,11 @@ const password = Joi.string()
         'string.pattern.base': 'Password must contain at least one uppercase letter, one lowercase letter, and one number',
         'string.empty': 'Please enter a password'
     });
+const signinPassword = Joi.string()
+    .required()
+    .messages({
+        'string.empty': 'Please enter your password'
+    });
 const confirmPassword = Joi.string()
     .valid(Joi.ref('password'))
     .required()
@@ -44,7 +49,7 @@ export const signupSchema = Joi.object().keys({
 
 export const signinSchema = Joi.object().keys({
     email,
-    password
+    signinPassword
 });
 
 export const forgotPasswordSchema = Joi.object().keys({

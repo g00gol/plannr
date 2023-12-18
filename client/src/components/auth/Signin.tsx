@@ -17,7 +17,7 @@ export default function Signin(): React.ReactElement {
     const email = (document.getElementById("email") as HTMLInputElement).value;
     const password = (document.getElementById("password") as HTMLInputElement).value;
     try {
-      await signinSchema.validateAsync({ email, password });
+      await signinSchema.validateAsync({ email: email, signinPassword: password });
       await signin(email, password);
       navigate("/");
     } catch (error: any) {
