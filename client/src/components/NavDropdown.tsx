@@ -7,6 +7,7 @@ import * as React from "react";
 import { FaCircleUser } from "react-icons/fa6";
 import { Link } from "react-router-dom";
 import { AuthContext } from "../contexts/AuthContext";
+import { logout } from "../api/auth";
 
 export default function NavDropdown(): React.ReactElement {
   const currentUser = React.useContext(AuthContext);
@@ -30,6 +31,15 @@ export default function NavDropdown(): React.ReactElement {
   //     console.log(e);
   //   }
   // };
+
+  const signOut = async (): Promise<void> => {
+    try {
+      await logout();
+      // refresh page?
+    } catch (error: any) {
+      console.log(`Error: ${error.message}`);
+    }
+  }
 
   return (
     <div className="hidden justify-between p-4 lg:flex lg:flex-1 lg:justify-end">
@@ -63,6 +73,7 @@ export default function NavDropdown(): React.ReactElement {
           <div>
             <MenuItem onClick={handleClose}>Profile</MenuItem>
             <MenuItem onClick={handleClose}>My account</MenuItem>
+            <MenuItem onClick={signOut}>Sign out</MenuItem>
           </div>
         ) : (
           <div>
