@@ -170,7 +170,7 @@ export default function Home(props: HomeProps): React.ReactElement {
                 id="travel_mode"
                 className="w-min bg-gray-40 p-50 z-10 m-3 block rounded-xl border border-gray-600 p-4 ps-10 text-lg opacity-90"
                 defaultValue={google.maps.TravelMode.WALKING}
-                onChange={() => search}
+                onChange={(e) => setTravelMode(e.target.value as google.maps.TravelMode)}
               >
                 {travelModeKeys.map((key) => {
                   const val = google.maps.TravelMode[key];

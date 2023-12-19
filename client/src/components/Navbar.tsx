@@ -15,6 +15,9 @@ export default function NavBar(): React.ReactElement {
     " try a new coffee shop",
     " get some boba",
     " explore the city",
+    " check out a museum",
+    " discover a new park",
+    " go to a concert",
   ];
 
   return (
