@@ -1,26 +1,49 @@
-import React, { useContext } from "react";
+import React, { useCallback, useContext } from "react";
 import { DirectionsProps } from "../../types/DirectionsType";
 import { TripContext } from "../../contexts/TripContext";
 import RenderDirections from "./RenderDirections";
 import { pinSVGFilled } from "../../constants/GoogleMaps/config";
-import { Marker } from "@react-google-maps/api";
+import { InfoWindow, Marker } from "@react-google-maps/api";
+import { SearchResultContext } from "../../contexts/SearchResultContext";
 
 export default function Directions({
   travelMode,
   mapRef
 }: DirectionsProps): React.ReactElement {
-    const { currentTrip } = useContext(TripContext);
+    const { currentTrip, currentInfoWindow, setInfoWindow : setTripWindow } = useContext(TripContext);
+    const { setInfoWindow : setSearchWindow } = useContext(SearchResultContext);
+
+    
+    const updateWindows = useCallback((index: number) => {
+        setTripWindow(index);
+        setSearchWindow(-1);
+    }, []);
 
   return ( currentTrip.length > 0 && currentTrip[0] && currentTrip[0].marker  ?
         <>
+        {currentInfoWindow != -1 ?
+              <InfoWindow
+                onCloseClick={() => setTripWindow(-1)}
+                options={{
+                  ariaLabel: currentTrip[currentInfoWindow].title,
+                  position: currentTrip[currentInfoWindow].marker?.location,
+                }}>
+                  <div className="text-center">
+                    <h1 className="font-bold">{currentTrip[currentInfoWindow].title}</h1>
+                    <p>{currentTrip[currentInfoWindow].addr}</p>
+                  </div>
+                </InfoWindow>
+                : <></>
+        }
         <Marker
-            key={`(${currentTrip[0].marker.location.lat()}, ${currentTrip[0].marker.location.lng()})`}
+            key={currentTrip[0].place_id}
             title={currentTrip[0].marker.title}
             position={currentTrip[0].marker.location}
             label={{
                 color: "white",
                 text: "1"
             }}
+            onClick={() => updateWindows(0)}
             icon={{
                 path: pinSVGFilled,
                 anchor: new google.maps.Point(12, 17),
@@ -38,10 +61,11 @@ export default function Directions({
                     }
 
                     return <RenderDirections 
-                            key={`(${currentTrip[ind - 1].marker?.location.lat()}, ${currentTrip[ind - 1].marker?.location.lng()}) | (${result.marker?.location.lat()}, ${result.marker?.location.lng()})`} 
+                            key={`${currentTrip[ind - 1].place_id} - ${result.place_id}`} 
                             place1={currentTrip[ind - 1]} 
                             place2={result} 
                             travelMode={travelMode} 
+                            windowFunc={updateWindows}
                             markerInd={ind}
                             mapRef={mapRef}/>
                 })

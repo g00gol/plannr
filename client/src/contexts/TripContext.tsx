@@ -6,7 +6,9 @@ import { arrayMoveImmutable } from "array-move";
 interface TripContextType {
   currentTrip: PlaceData[];
   tripName: string;
+  currentInfoWindow: number;
   setTripName: (name: string) => void;
+  setInfoWindow: (index: number) => void;
   addPlace: (place: PlaceData) => void;
   removePlace: (place: PlaceData) => void;
   onSortEnd: (oldIndex: number, newIndex: number) => void;
@@ -18,6 +20,7 @@ export const TripContext = React.createContext<TripContextType>(null!);
 export const TripProvider = ({ children }: React.PropsWithChildren<{}>) => {
   const [tripName, setTripName] = useState<string>("My Trip");
   const [currentTrip, setCurrentTrip] = useState<PlaceData[]>([]);
+  const [currentInfoWindow, setInfoWindow] = useState<number>(-1);
   // const [loadingTrip, setLoadingTrip] = useState<boolean>(true);
   // const currentUser = useContext(AuthContext);
 
@@ -96,7 +99,9 @@ export const TripProvider = ({ children }: React.PropsWithChildren<{}>) => {
       value={{
         currentTrip,
         tripName,
+        currentInfoWindow,
         setTripName,
+        setInfoWindow,
         addPlace,
         removePlace,
         onSortEnd,
