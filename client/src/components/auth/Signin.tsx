@@ -16,9 +16,10 @@ export default function Signin(): React.ReactElement {
     e.preventDefault();
     const email = (document.getElementById("email") as HTMLInputElement).value;
     const password = (document.getElementById("password") as HTMLInputElement).value;
+    const remember = (document.getElementById("remember") as HTMLInputElement).checked;
     try {
       await signinSchema.validateAsync({ email: email, signinPassword: password });
-      await signin(email, password);
+      await signin(email, password, remember);
       unloadModal(navigate);
     } catch (error: any) {
       console.log(`Error: ${error.message}`);
@@ -58,8 +59,9 @@ export default function Signin(): React.ReactElement {
         >
           Login
         </button>
-        <label>
+        <label className="align-middle">
           <input
+            id="remember"
             type="checkbox"
             checked={checked}
             name="remember"
