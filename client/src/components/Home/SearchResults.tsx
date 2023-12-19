@@ -22,10 +22,10 @@ export default function SearchResults({
   return (
     <aside
       id="searchResults"
-      className="results top-inherit left-inherit load-slide-left fixed left-2 z-20 ml-2 h-4/5 w-1/3 rounded-lg pb-10 pl-10 opacity-90"
+      className={`results top-inherit left-inherit load-slide-left fixed left-2 z-20 ml-2 ${placeData.length < 3 ? "h-fit" : "h-4/5"} w-1/3 rounded-lg pb-10 pl-10 opacity-90}`}
     >
       { placeData.length !== 0 ? (
-      <div className={`dark:bg-gray-150 z-20 flex ${placeData.length < 4 ? "h-fit" : "h-full"} flex-col rounded-lg bg-white shadow-md`}>
+      <div className={`dark:bg-gray-150 z-20 flex ${placeData.length < 3 ? "h-fit" : "h-full"} flex-col rounded-lg bg-white shadow-md`}>
         <div className="flex justify-between px-5 py-4">
           <h2 className="pt-2 text-2xl font-bold text-blue-500">
             Search Results

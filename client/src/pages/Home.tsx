@@ -15,8 +15,10 @@ import React, {
 } from "react";
 import "react-simple-typewriter/dist/index";
 
+import AddIcon from '@mui/icons-material/Add';
 import MapIcon from '@mui/icons-material/Map';
 import SearchIcon from '@mui/icons-material/Search';
+
 import nearbySearch from "../api/GoogleMaps/nearbySearch";
 import Directions from "../components/Directions/Directions";
 import SearchResults from "../components/Home/SearchResults";
@@ -131,6 +133,9 @@ export default function Home(props: HomeProps): React.ReactElement {
             id={"WEBSITE_MAP"}
             onLoad={onLoad}
           >
+            {/* Map crosshair */}
+            <AddIcon className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 text-2xl text-blue-800 z-10"/>
+            {/* Search Bar */}
             <form className="flex justify-center" onSubmit={search}>
               <input
                 type="search"
@@ -138,7 +143,7 @@ export default function Home(props: HomeProps): React.ReactElement {
                 name="searchBar"
                 placeholder="Search Plannr ... Need inspiration? Use the dropdown to filter by category."
                 className="bg-gray-40 p-50 z-10 m-3 block w-3/6 rounded-xl border border-gray-600 p-4 ps-10 text-lg opacity-90"
-              ></input>
+              />
               <select
                 name="categories"
                 id="categories"
@@ -165,6 +170,7 @@ export default function Home(props: HomeProps): React.ReactElement {
                 id="travel_mode"
                 className="w-1/8 bg-gray-40 p-50 z-10 m-3 block rounded-xl border border-gray-600 p-4 ps-10 text-lg opacity-90"
                 defaultValue={google.maps.TravelMode.WALKING}
+                onChange={() => search}
               >
                 {travelModeKeys.map((key) => {
                   const val = google.maps.TravelMode[key];
