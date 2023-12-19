@@ -2,12 +2,14 @@ import React, { useState, useMemo, useCallback } from "react";
 import { RenderDirectionsProps } from "../../types/RenderDirectionsType";
 import { DirectionsRenderer, DirectionsService, Marker } from "@react-google-maps/api";
 import { pinSVGFilled } from "../../constants/GoogleMaps/config";
+import { routeColors, hexVals } from "../../constants/GoogleMaps/config";
 
 export default function RenderDirections({
   place1,
   place2,
   travelMode,
   markerInd,
+  windowFunc,
   mapRef
 }: RenderDirectionsProps): React.ReactElement {
   const [dirResult, setDirectionsResult] = useState<google.maps.DirectionsResult | null>(null);
@@ -24,6 +26,22 @@ export default function RenderDirections({
       }
     },
     []);
+
+  const getColor = useCallback(
+    () => {
+      const index = markerInd - 1;
+      if(index >= routeColors.length){
+        let retStr = "#";
+
+        for(let i = 0; i < 6; ++i) {
+          retStr += hexVals[(Math.floor(Math.random() * 16))]
+        }
+
+        return retStr;
+      }
+      return routeColors[index];
+    },
+  []);
 
   const directionsOpts = useMemo<google.maps.DirectionsRequest | null>(() => {
     return place1.marker && place2.marker && place1.marker.location && place2.marker.location
@@ -50,18 +68,20 @@ export default function RenderDirections({
                     preserveViewport: true,
                     polylineOptions: {
                         zIndex: 5,
-                        strokeColor: "blue" 
+                        strokeColor: getColor()
                     }}}/>
                 : <></>
             }
             <Marker
-              key={`(${place2.marker.location.lat()}, ${place2.marker.location.lng()})`}
+              key={place2.place_id}
               title={place2.marker.title}
               position={place2.marker.location}
               label={{
                 color: "white",
                 text: String(markerInd + 1)
               }}
+              zIndex={markerInd}
+              onClick={() => windowFunc(markerInd)}
               icon={{
                 path: pinSVGFilled,
                 anchor: new google.maps.Point(12, 17),

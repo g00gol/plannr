@@ -4,8 +4,8 @@ interface DirectionsProps {
     children?: React.ReactNode
 }
 
-interface DirectionsState {
+interface RenderDirectionsState {
     polyline: string
 }
 
-export type { DirectionsProps, DirectionsState }
+export type { RenderDirectionsProps, RenderDirectionsState }

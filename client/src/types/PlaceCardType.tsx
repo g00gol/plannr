@@ -1,10 +1,11 @@
 import { PlaceData } from "../dataObjects/PlaceData";
 
 interface PlaceCardProps {
-    mapRef: React.MutableRefObject<google.maps.Map | undefined>
-    place: PlaceData
-    isResult: boolean
-    children?: React.ReactNode
+  mapRef: React.MutableRefObject<google.maps.Map | undefined>;
+  place: PlaceData;
+  isResult: boolean;
+  index?: number;
+  children?: React.ReactNode
 }
 
 interface PlaceCardState {
