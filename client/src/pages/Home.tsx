@@ -13,8 +13,11 @@ import React, {
 } from "react";
 import "react-simple-typewriter/dist/index";
 
+import AddIcon from '@mui/icons-material/Add';
 import MapIcon from '@mui/icons-material/Map';
 import SearchIcon from '@mui/icons-material/Search';
+import { Button } from "@mui/material";
+
 import nearbySearch from "../api/GoogleMaps/nearbySearch";
 import Directions from "../components/Directions/Directions";
 import SearchResults from "../components/Home/SearchResults";
@@ -120,6 +123,9 @@ export default function Home(props: HomeProps): React.ReactElement {
             id={"WEBSITE_MAP"}
             onLoad={onLoad}
           >
+            {/* Map crosshair */}
+            <AddIcon className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 text-2xl text-blue-800 z-10"/>
+            {/* Search Bar */}
             <form className="flex justify-center" onSubmit={search}>
               <input
                 type="search"
@@ -169,6 +175,9 @@ export default function Home(props: HomeProps): React.ReactElement {
                   );
                 })}
               </select>
+              <Button className="w-1/8 p-50 z-10 block rounded-xl border border-gray-600 p-4 ps-10 text-lg" type="submit" endIcon={<SearchIcon/>}>
+                Search
+              </Button>
             </form>
 
             {/* Results Window pretend-component */}
