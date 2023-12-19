@@ -46,9 +46,9 @@ export default function SearchResults({
           : {placeData.length}
         </h3>
         <div className="flex-grow overflow-y-scroll px-3 py-4">
-          {placeData.map((result) => (
-            <div key={result.place_id}>
-              <PlaceCard mapRef={mapRef} place={result} isResult={true} />
+          {placeData.map((result, index) => (
+            <div key={`${result.addr}-result`}>
+              <PlaceCard mapRef={mapRef} place={result} isResult={true} index={index}/>
             </div>
           ))}
         </div>

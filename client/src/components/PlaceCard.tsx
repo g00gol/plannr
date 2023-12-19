@@ -22,6 +22,7 @@ export default function PlaceCard({
   place,
   isResult,
   mapRef,
+  index,
   children,
 }: PlaceCardProps): React.ReactElement {
   const [showDetails, setShowDetails] = useState<boolean>(false);
@@ -85,6 +86,7 @@ export default function PlaceCard({
       >
         <div className="col-span-6 row-span-2">
           <p className="card-title truncate text-lg font-bold" onClick={toggleShowDetails}>
+            {index !== undefined ? ( <span className="text-blue-600">{index + 1}. </span>) : ""}
             {place.title.length > 30
               ? `${place.title.substring(0, 25)}...`
               : place.title}

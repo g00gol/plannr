@@ -29,12 +29,12 @@ import {
   placeKeys,
   travelModeKeys
 } from "../constants/GoogleMaps/config";
+import { SearchResultContext } from "../contexts/SearchResultContext";
+import { TripContext } from "../contexts/TripContext";
 import { CircleData } from "../dataObjects/CircleData";
 import { PlaceData } from "../dataObjects/PlaceData";
 import { PlanMarkerData } from "../dataObjects/PlanMarkerData";
 import { HomeProps } from "../types/HomeTypes";
-import { SearchResultContext } from "../contexts/SearchResultContext";
-import { TripContext } from "../contexts/TripContext";
 
 const underScoreRegex = new RegExp("_", "g");
 
@@ -271,7 +271,7 @@ export default function Home(props: HomeProps): React.ReactElement {
                     position={result.marker.location}
                     label={{
                       color: "black",
-                      text: String(ind),
+                      text: String(ind + 1),
                     }}
                     onClick={() => updateWindows(ind)}
                     icon={{
