@@ -5,6 +5,8 @@ import Home from "./pages/Home";
 import AuthModal from "./components/auth/AuthModal";
 import Signin from "./components/auth/Signin";
 import Signup from "./components/auth/Signup";
+import ForgotPassword from "./components/auth/ForgotPassword";
+import ResetPassword from "./components/auth/ResetPassword";
 import "./App.css";
 
 export default function App(): React.ReactElement {
@@ -38,7 +40,26 @@ export default function App(): React.ReactElement {
           </Home>
         }
       />
-      {/* <Route path="/forgot" element={<Home><></></Home>} /> */}
+      <Route
+        path="/forgot"
+        element={
+          <Home>
+            <AuthModal>
+              <ForgotPassword />
+            </AuthModal>
+          </Home>
+        }
+      />
+      <Route
+        path="/reset"
+        element={
+          <Home>
+            <AuthModal>
+              <ResetPassword />
+            </AuthModal>
+          </Home>
+        }
+      />
       <Route
         path="*"
         element={

@@ -53,14 +53,14 @@ const changepassword = async (
   await logout();
 };
 
-const resetpassword = async (email: string) => {
+const forgotpassword = async (email: string) => {
   //update
   const auth = getAuth();
   await sendPasswordResetEmail(auth, email);
   console.log(`Password reset email sent to ${email}`);
 };
 
-const confirmresetpassword = async (oob: string, newPass: string) => {
+const resetpassword = async (oob: string, newPass: string) => {
   const auth = getAuth();
   await confirmPasswordReset(auth, oob, newPass);
 };
@@ -81,6 +81,6 @@ export {
   signin,
   logout,
   changepassword,
+  forgotpassword,
   resetpassword,
-  confirmresetpassword,
 };
