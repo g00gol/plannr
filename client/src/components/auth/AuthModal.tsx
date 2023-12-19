@@ -9,7 +9,7 @@ export const unloadModal = (navigate: Function) => {
   modal?.classList.add("unload-slide-fast");
   setTimeout(() => {
     navigate("/");
-  }, 250);
+  }, 300);
 };
 
 export default function AuthModal(props: AuthModalProps): React.ReactElement {
