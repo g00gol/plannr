@@ -1,15 +1,15 @@
 import { TextField } from "@mui/material";
 import React, { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
-import "../../App.css";
+
 import { signin } from "../../api/auth.js";
 import logo from "../../assets/logo_cropped.png";
 import { signinSchema } from "../../helpers/validation.js";
+import { unloadModal } from "./AuthModal.js";
 
 export default function Signin(): React.ReactElement {
   const [checked, setChecked] = useState(false);
   const [error, setError] = useState("");
-  // const [forgot, setForgot] = useState(false);
   const navigate = useNavigate();
 
   const doSignIn = async (e: React.FormEvent) => {
@@ -19,7 +19,7 @@ export default function Signin(): React.ReactElement {
     try {
       await signinSchema.validateAsync({ email: email, signinPassword: password });
       await signin(email, password);
-      navigate("/");
+      unloadModal(navigate);
     } catch (error: any) {
       console.log(`Error: ${error.message}`);
       setError(error.message);

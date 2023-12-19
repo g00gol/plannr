@@ -1,10 +1,11 @@
 import React, { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { TextField } from "@mui/material";
-import "../../App.css";
+
 import { signup } from "../../api/auth.js";
 import logo from "../../assets/logo_cropped.png";
 import { signupSchema } from "../../helpers/validation.js";
+import { unloadModal } from "./AuthModal.js";
 
 export default function Signup(): React.ReactElement {
   const [error, setError] = useState("");
@@ -19,7 +20,7 @@ export default function Signup(): React.ReactElement {
     try {
       await signupSchema.validateAsync({ email, username, password, confirmPassword });
       await signup(email, username, password);
-      navigate("/signin");
+      unloadModal(navigate);
     } catch (error: any) {
       console.log(`Error: ${error.message}`);
       setError(error.message);
@@ -64,7 +65,7 @@ export default function Signup(): React.ReactElement {
         />
         <TextField
           id="confirmPassword"
-          type="confirmPassword"
+          type="password"
           label="ConfirmPassword"
           placeholder="Confirm Password"
           variant="outlined"
