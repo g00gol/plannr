@@ -2,7 +2,7 @@ from typing import List
 from fastapi import APIRouter, HTTPException, Request, Depends
 
 from db import users_db
-from models import User
+from models import User, Trip
 from dependencies import firebase_auth
 
 
@@ -37,6 +37,7 @@ async def create_user(request: Request) -> str:
 
     user: User = {
         "user_id": request.state.uid,
+        "trips": [],
     }
 
     user_id = await users_db.create_user(user)
@@ -44,26 +45,38 @@ async def create_user(request: Request) -> str:
 
 
 @router.get("/{user_id}")
-async def get_user(user_id: str, authorization=Depends(firebase_auth.authorize)) -> User:
+async def get_user(request: Request, authorization=Depends(firebase_auth.authorize)) -> User:
     """
     Gets a user from the database.
     """
-
-    user = await users_db.get_user(user_id)
+    user = await users_db.get_user(request.state.uid)
     return user
 
 
-@router.get("/{user_id}/saved-routes")
-async def get_saved_routes(user_id: str, authorization=Depends(firebase_auth.authorize)) -> List[dict]:
+@router.get("/{user_id}/trips")
+async def get_trips(request: Request, authorization=Depends(firebase_auth.authorize)) -> List[dict]:
     """
     Gets all saved routes for a user.
     """
-    return
+    user = await users_db.get_user(request.state.uid)
+    return user["trips"]
 
 
-@router.post("/{user_id}/saved-routes")
-async def save_route(user_id: str, route: dict) -> dict:
+@router.post("/{user_id}/trips")
+async def save_trip(trip_name: str, request: Request, authorization=Depends(firebase_auth.authorize)) -> dict:
     """
     Saves a route for a user.
     """
+    user = await users_db.add_trip(request.state.uid, trip_name)
+
+    return user
+
+
+@router.put("/{user_id}/trips/{trip_id}")
+async def update_trip(request: Request, trip_id: str, places: List[str], authorization=Depends(firebase_auth.authorize)) -> dict:
+    """
+    Updates a route for a user.
+    """
+    user = await users_db.update_trip(request.state.uid, trip_id, places)
+
     return
