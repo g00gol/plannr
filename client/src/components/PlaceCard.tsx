@@ -5,6 +5,7 @@ import RemoveIcon from "@mui/icons-material/Remove";
 import { Button } from "@mui/material";
 import React, { useContext, useEffect, useState } from "react";
 import noImage from "../assets/noImage.png";
+import { PlaceContext } from "../contexts/PlaceContext";
 import { TripContext } from "../contexts/TripContext";
 import { PlaceCardProps } from "../types/PlaceCardType";
 
@@ -32,7 +33,7 @@ export default function PlaceCard({
 
   const date: number = new Date().getDay();
   const { addPlace, removePlace } = useContext(TripContext);
-  //const { setPlace, currentPlaceId } = useContext(PlaceContext);
+  const { currentPlaceDetails, setCurrentPlaceDetails, currentTripPlaceDetails, setCurrentTripPlaceDetails } = useContext(PlaceContext);
 
   const fetchPlaceDetails = () => {
     const map = mapRef.current;
@@ -60,16 +61,22 @@ export default function PlaceCard({
     }
   }, [showDetails, place.place_id, mapRef]);
 
-  const toggleShowDetails = () => {
-    setShowDetails(!showDetails);
-  }
+  useEffect(() => {
+    if (place.place_id === currentPlaceDetails && (isResult)) {
+      setShowDetails(true);
+    } else {
+      setShowDetails(false);
+    }
+  }, [place.place_id, currentPlaceDetails, isResult]);
 
   const showDetailsHandler = () => {
+    if (place.place_id) {
+      setCurrentPlaceDetails(place.place_id);
+    }
     setShowDetails(true);
   };
 
   const hideDetailsHandler = () => {
-    //setPlace(null);
     setShowDetails(false);
   };
 
@@ -85,7 +92,7 @@ export default function PlaceCard({
         } card-grid gap-4`}
       >
         <div className="col-span-6 row-span-2">
-          <p className="card-title truncate text-lg font-bold" onClick={toggleShowDetails}>
+          <p className="card-title truncate text-lg font-bold" onClick={() => showDetailsHandler()} onDoubleClick={() => hideDetailsHandler()}>
             {index !== undefined ? ( <span className="text-blue-600">{index + 1}. </span>) : ""}
             {place.title.length > 30
               ? `${place.title.substring(0, 25)}...`
@@ -123,7 +130,7 @@ export default function PlaceCard({
                 variant="text"
                 color="inherit"
                 startIcon={<KeyboardArrowUpIcon />}
-                onClick={hideDetailsHandler}
+                onClick={() => hideDetailsHandler()}
               >
                 Less Info
               </Button>
@@ -132,7 +139,7 @@ export default function PlaceCard({
                 variant="text"
                 color="inherit"
                 startIcon={<KeyboardArrowDownIcon />}
-                onClick={showDetailsHandler}
+                onClick={() => showDetailsHandler()}
               >
                 More Info
               </Button>

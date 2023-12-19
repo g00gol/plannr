@@ -1,9 +1,10 @@
 import React from "react";
 import { AuthProvider } from "./AuthContext";
-import { TripProvider } from "./TripContext";
+import { PlaceProvider } from "./PlaceContext";
 import { SearchResultProvider } from "./SearchResultContext";
+import { TripProvider } from "./TripContext";
 
-const providers = [AuthProvider, TripProvider, SearchResultProvider];
+const providers = [AuthProvider, TripProvider, SearchResultProvider, PlaceProvider];
 
 /**
  * This component is used to wrap the entire application with all the context providers.

@@ -1,25 +1,22 @@
-import React, { createContext, useEffect } from "react";
+import React, { createContext, useState } from "react";
 
 interface PlaceContextType {
-  place: google.maps.places.PlaceResult | null;
-  setPlace: (place: google.maps.places.PlaceResult | null) => void;
-  currentPlaceId: string;
+  currentPlaceDetails: string;
+  setCurrentPlaceDetails: (placeId: string) => void;
 }
 
 export const PlaceContext = createContext<PlaceContextType>(null!);
 
-export const PlaceProvider = ({ children }: React.PropsWithChildren<object>) => {
-  const [place, setPlace] = React.useState<google.maps.places.PlaceResult | null>(null);
-  const [currentPlaceId, setCurrentPlaceId] = React.useState<string>("");
-
-  useEffect(() => {
-    if (place) {
-      setCurrentPlaceId(place.place_id ?? "");
-    }
-  }, [place]);
+export const PlaceProvider = ({ children }: React.PropsWithChildren<{}>) => {
+  const [currentPlaceDetails, setCurrentPlaceDetails] = useState<string>("");
 
   return (
-    <PlaceContext.Provider value={{ place, setPlace, currentPlaceId }}>
+    <PlaceContext.Provider
+      value={{
+        currentPlaceDetails,
+        setCurrentPlaceDetails
+      }}
+    >
       {children}
     </PlaceContext.Provider>
   );
