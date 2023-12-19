@@ -142,12 +142,12 @@ export default function Home(props: HomeProps): React.ReactElement {
                 id="searchBar"
                 name="searchBar"
                 placeholder="Search Plannr ... Need inspiration? Use the dropdown to filter by category."
-                className="bg-gray-40 p-50 z-10 m-3 block w-3/6 rounded-xl border border-gray-600 p-4 ps-10 text-lg opacity-90"
+                className="bg-gray-40 p-50 z-10 m-3 block w-2/6 rounded-xl border border-gray-600 p-4 ps-10 text-lg opacity-90"
               />
               <select
                 name="categories"
                 id="categories"
-                className="w-1/8 bg-gray-40 p-50 z-10 m-3 block rounded-xl border border-gray-600 p-4 ps-10 text-lg opacity-90"
+                className="w-min bg-gray-40 p-50 z-10 m-3 block rounded-xl border border-gray-600 p-4 ps-10 text-lg opacity-90"
               >
                 {placeKeys.map((key) => {
                   const val = EPlaces[key];
@@ -168,7 +168,7 @@ export default function Home(props: HomeProps): React.ReactElement {
               <select
                 name="travel_mode"
                 id="travel_mode"
-                className="w-1/8 bg-gray-40 p-50 z-10 m-3 block rounded-xl border border-gray-600 p-4 ps-10 text-lg opacity-90"
+                className="w-min bg-gray-40 p-50 z-10 m-3 block rounded-xl border border-gray-600 p-4 ps-10 text-lg opacity-90"
                 defaultValue={google.maps.TravelMode.WALKING}
                 onChange={() => search}
               >
