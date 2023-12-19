@@ -21,10 +21,10 @@ export default function ResetPassword(): React.ReactElement {
     try {
       await resetPasswordSchema.validateAsync({ password, confirmPassword });
       await resetpassword(oobCode, password);
-      setMessage("Reset!");
+      setMessage("Success!");
       setTimeout(() => {
         navigate("/signin");
-      }, 5000);
+      }, 1000);
     } catch (error: any) {
       console.log(`Error: ${error.message}`);
       setError(error.message);

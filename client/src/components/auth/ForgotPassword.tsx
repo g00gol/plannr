@@ -20,7 +20,7 @@ export default function ForgotPassword(): React.ReactElement {
       setMessage("Password reset email has been sent. Redirecting...");
       setTimeout(() => {
         navigate("/signin");
-      }, 5000);
+      }, 1000);
     } catch (error: any) {
       console.log(`Error: ${error.message}`);
       setError(error.message);
