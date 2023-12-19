@@ -18,7 +18,6 @@ import "react-simple-typewriter/dist/index";
 import AddIcon from '@mui/icons-material/Add';
 import MapIcon from '@mui/icons-material/Map';
 import SearchIcon from '@mui/icons-material/Search';
-import { Button } from "@mui/material";
 
 import nearbySearch from "../api/GoogleMaps/nearbySearch";
 import Directions from "../components/Directions/Directions";
@@ -144,7 +143,7 @@ export default function Home(props: HomeProps): React.ReactElement {
                 name="searchBar"
                 placeholder="Search Plannr ... Need inspiration? Use the dropdown to filter by category."
                 className="bg-gray-40 p-50 z-10 m-3 block w-3/6 rounded-xl border border-gray-600 p-4 ps-10 text-lg opacity-90"
-              ></input>
+              />
               <select
                 name="categories"
                 id="categories"
@@ -171,6 +170,7 @@ export default function Home(props: HomeProps): React.ReactElement {
                 id="travel_mode"
                 className="w-1/8 bg-gray-40 p-50 z-10 m-3 block rounded-xl border border-gray-600 p-4 ps-10 text-lg opacity-90"
                 defaultValue={google.maps.TravelMode.WALKING}
+                onChange={() => search}
               >
                 {travelModeKeys.map((key) => {
                   const val = google.maps.TravelMode[key];
@@ -186,9 +186,6 @@ export default function Home(props: HomeProps): React.ReactElement {
                   );
                 })}
               </select>
-              <Button className="w-1/8 p-50 z-10 block rounded-xl border border-gray-600 p-4 ps-10 text-lg" type="submit" endIcon={<SearchIcon/>}>
-                Search
-              </Button>
             </form>
 
             {/* Results Window pretend-component */}
