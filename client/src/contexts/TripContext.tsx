@@ -4,7 +4,9 @@ import { PlaceData } from "../dataObjects/PlaceData";
 import { PlanMarkerData } from "../dataObjects/PlanMarkerData";
 import { UserContext } from "./UserContext";
 import { MapContext } from "./MapContext";
+import { updateTripPlaces } from "../api/trip";
 import { arrayMoveImmutable } from "array-move";
+import { TripData } from "../dataObjects/TripData";
 
 interface TripContextType {
   currentTrip: PlaceData[];
@@ -24,6 +26,7 @@ export const TripProvider = ({ children }: React.PropsWithChildren<{}>) => {
   const { mapRef } = useContext(MapContext);
   
   const [tripName, setTripName] = useState<string>("My Trip");
+  const [tripId, setTripId] = useState<string>("");
   const [currentTrip, setCurrentTrip] = useState<PlaceData[]>([]);
   const [currentInfoWindow, setInfoWindow] = useState<number>(-1);
   // const [loadingTrip, setLoadingTrip] = useState<boolean>(true);
@@ -35,9 +38,12 @@ export const TripProvider = ({ children }: React.PropsWithChildren<{}>) => {
       const map = mapRef.current;
       if(!map) return console.log("Map is undefined");
       try {
-        const currentTripId = 0; //userData.currentTrip;
-        const placeIds = userData.trips[currentTripId].places; //..get(currentTripId);
-        setTripName(userData.trips[currentTripId].name); // .get(currentTripId).name);
+        const tripId = userData.currentTrip;
+        const trip = userData.trips.find((trip) => trip._id === tripId) ?? new TripData("Your Trip", []);
+        const placeIds = trip.places;
+        const name = trip.name;
+        setTripName(name);
+        setTripId(tripId);
   
         placeIds.forEach(async (placeId) => {
           const request = {
@@ -113,6 +119,10 @@ export const TripProvider = ({ children }: React.PropsWithChildren<{}>) => {
     setCurrentTrip((array) => arrayMoveImmutable(array, oldIndex, newIndex));
   };
 
+  const saveTrip = () => {
+    updateTripPlaces(currentTrip.map((place) => place.placeId));
+  };
+  
   return (
     <TripContext.Provider
       value={{

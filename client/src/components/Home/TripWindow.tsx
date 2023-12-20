@@ -23,6 +23,8 @@ export default function TripWindow({
     toggleTrip(!tripToggle);
   }
 
+
+
   return (
     <aside
       id="tripWindow"
@@ -31,8 +33,16 @@ export default function TripWindow({
       { currentTrip.length !== 0 ? (
       <div className={`dark:bg-gray-150 z-20 flex ${currentTrip.length < 3 ? "h-fit" : "h-full"} flex-col rounded-lg bg-white shadow-md`}>
         <div className="flex justify-between px-5 py-4">
-          <h2 className="pt-2 text-2xl font-bold text-blue-500">Your Trip</h2>{" "}
           {/* trip name? */}
+          <div className="w-1/2 flex flex-row">
+            <h2 className="pt-2 text-2xl font-bold text-blue-500">Your Trip</h2>{" "}
+            <button
+              type="button"
+              className="text-md rounded-md px-4 py-2 text-center hover:text-red-500 hover:font-bold hover:transition hover:duration-300"
+              >
+              Save
+            </button>
+          </div>
           <button
             type="button"
             className="text-md rounded-md px-4 py-2 text-center hover:text-red-500 hover:font-bold hover:transition hover:duration-300"
@@ -53,7 +63,6 @@ export default function TripWindow({
             lockAxis="y"
           >
             {
-              // current bug: does not remove existing placecards but tacks on new list of placecards.
               currentTrip.map((result, i) => (
                 <SortableItem key={result.placeId}>
                   <PlaceCardRef>
@@ -75,8 +84,16 @@ export default function TripWindow({
       </div> ) : (
         <div className="dark:bg-gray-150 z-20 flex h-fit pb-10 flex-col rounded-lg bg-white shadow-md">
           <div className="flex justify-between px-5 py-4">
-            <h2 className="pt-2 text-2xl font-bold text-blue-500">Your Trip</h2>{" "}
             {/* trip name? */}
+            <div className="w-1/2 flex flex-row">
+              <h2 className="pt-2 text-2xl font-bold text-blue-500">Your Trip</h2>{" "}
+              <button
+                type="button"
+                className="text-md rounded-md px-4 py-2 text-center hover:text-red-500 hover:font-bold hover:transition hover:duration-300"
+                >
+                Save
+              </button>
+            </div>            
             <button
               type="button"
               className="text-md rounded-md px-4 py-2 text-center hover:text-red-500 hover:font-bold hover:transition hover:duration-300"
