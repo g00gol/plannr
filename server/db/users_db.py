@@ -76,7 +76,7 @@ async def create_user(user: User) -> User:
         db = await get_db_async("plannr")
 
         # Check if user_id already exists in database
-        _user = await get_user_by_value("user_id", user["user_id"])
+        _user = await db.users.find_one({"user_id": user["user_id"]})
         if _user:
             raise Exception("User already exists.")
 

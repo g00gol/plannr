@@ -1,10 +1,10 @@
-from typing import List
+from typing import List, Union
 from pydantic import BaseModel, validator
 from bson import ObjectId
 
 
 class Trip(BaseModel):
-    _id: str | ObjectId
+    _id: Union[str, ObjectId]
     name: str
     places: List[str]
 
