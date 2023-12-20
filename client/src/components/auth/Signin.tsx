@@ -1,4 +1,4 @@
-import { TextField } from "@mui/material";
+import { IconButton, InputAdornment, TextField } from "@mui/material";
 import React, { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 
@@ -7,10 +7,18 @@ import logo from "../../assets/logo_cropped.png";
 import { signinSchema } from "../../helpers/validation.js";
 import { unloadModal } from "./AuthModal.js";
 
+import EmailIcon from '@mui/icons-material/Email';
+import VisibilityIcon from '@mui/icons-material/Visibility';
+import VisibilityOffIcon from '@mui/icons-material/VisibilityOff';
+
 export default function Signin(): React.ReactElement {
   const [checked, setChecked] = useState(false);
   const [error, setError] = useState("");
+  const [showPassword, setShowPassword] = useState(false);
   const navigate = useNavigate();
+
+  const handleClickShowPassword = () => setShowPassword(!showPassword);
+  const handleMouseDownPassword = () => setShowPassword(!showPassword);
 
   const doSignIn = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -46,16 +54,43 @@ export default function Signin(): React.ReactElement {
           autoFocus
           fullWidth
           margin="normal"
+
+          InputProps={{
+            endAdornment: (
+              <InputAdornment position="end">
+                <IconButton
+                  aria-label="email icon"
+                  disabled
+                >
+                  <EmailIcon />
+                </IconButton>
+              </InputAdornment>
+            )
+          }}
         />
         <TextField
           id="password"
-          type="password"
+          type={showPassword ? "text" : "password"}
           label="Password"
           placeholder="Password"
           variant="outlined"
           required
           fullWidth
           margin="normal"
+
+          InputProps={{
+            endAdornment: (
+              <InputAdornment position="end">
+                <IconButton
+                  aria-label="toggle password visibility"
+                  onClick={handleClickShowPassword}
+                  onMouseDown={handleMouseDownPassword}
+                >
+                  {showPassword ? <VisibilityIcon /> : <VisibilityOffIcon />}
+                </IconButton>
+              </InputAdornment>
+            )
+          }}
         />
         {error ? <div className="text-red-500">{error}</div> : <div></div>}
         <button

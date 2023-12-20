@@ -9,10 +9,27 @@ from dependencies import firebase_auth
 
 
 router = APIRouter(
-    prefix="/users",
+    prefix="/user",
     tags=["users"],
     dependencies=[Depends(firebase_auth.authenticate)],
 )
+
+
+@router.get("/")
+async def get_user(request: Request) -> User:
+    """
+    Gets a user from the database.
+    """
+    try:
+        user = await users_db.get_user(request.state.uid)
+        return user
+    except HTTPException as http_e:
+        raise http_e
+    except Exception as e:
+        raise HTTPException(
+            status_code=500,
+            detail=str(e),
+        )
 
 
 @router.post("/")
@@ -33,6 +50,8 @@ async def create_user(request: Request) -> User:
         }
         _user = await users_db.create_user(user)
         return _user
+    except HTTPException as http_e:
+        raise http_e
     except Exception as e:
         raise HTTPException(
             status_code=500,
@@ -40,22 +59,7 @@ async def create_user(request: Request) -> User:
         )
 
 
-@router.get("/me")
-async def get_user(request: Request) -> User:
-    """
-    Gets a user from the database.
-    """
-    try:
-        user = await users_db.get_user(request.state.uid)
-        return user
-    except Exception as e:
-        raise HTTPException(
-            status_code=500,
-            detail=str(e),
-        )
-
-
-@router.get("/me/trips")
+@router.get("/trips")
 async def get_trips(request: Request) -> List[Trip]:
     """
     Gets all trips for a user.
@@ -63,6 +67,8 @@ async def get_trips(request: Request) -> List[Trip]:
     try:
         user = await users_db.get_user(request.state.uid)
         return user["trips"]
+    except HTTPException as http_e:
+        raise http_e
     except Exception as e:
         raise HTTPException(
             status_code=500,
@@ -70,7 +76,7 @@ async def get_trips(request: Request) -> List[Trip]:
         )
 
 
-@router.post("/me/trips")
+@router.post("/trips")
 async def save_trip(trip_name: str, request: Request) -> Trip:
     """
     Saves a trip for a user.
@@ -78,6 +84,8 @@ async def save_trip(trip_name: str, request: Request) -> Trip:
     try:
         user = await users_db.add_trip(request.state.uid, trip_name)
         return user
+    except HTTPException as http_e:
+        raise http_e
     except Exception as e:
         raise HTTPException(
             status_code=500,
@@ -85,7 +93,7 @@ async def save_trip(trip_name: str, request: Request) -> Trip:
         )
 
 
-@router.put("/me/trips/{trip_id}")
+@router.put("/trips/{trip_id}")
 async def update_trip(request: Request, trip_id: str, trip_name: str = None, places: List[str] = None) -> Trip:
     """
     Updates a trip for a user.
@@ -100,10 +108,12 @@ async def update_trip(request: Request, trip_id: str, trip_name: str = None, pla
         trip_data = Trip(name=trip_name, places=places)
         trip = await users_db.edit_trip(request.state.uid, trip_id, trip_data.name, trip_data.places)
         return trip
-    except ValidationError as e:
+    except HTTPException as http_e:
+        raise http_e
+    except ValidationError as validation_e:
         raise HTTPException(
             status_code=400,
-            detail=str(e.errors()),
+            detail=str(validation_e.errors()),
         )
     except Exception as e:
         raise HTTPException(
