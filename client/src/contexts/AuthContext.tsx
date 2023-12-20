@@ -31,6 +31,7 @@ export const AuthProvider = ({ children }: React.PropsWithChildren<{}>) => {
           setUserData(userData);
           console.log(userData)
         } catch(error: any) {
+          console.log(error)
           throw error;
         }
       }
@@ -39,7 +40,8 @@ export const AuthProvider = ({ children }: React.PropsWithChildren<{}>) => {
       try {
         await loadUserData();
       } catch (error: any) {
-        if(error.response.status === 404 || error.response.status === 403) {
+        console.log(error)
+        if(error.status === 404 || error.status === 403) {
           await createUserData();
           await loadUserData();
           return;

@@ -34,60 +34,63 @@ export const TripProvider = ({ children }: React.PropsWithChildren<{}>) => {
     if (userData) {
       const map = mapRef.current;
       if(!map) return console.log("Map is undefined");
-
-      const currentTripId = 0; //userData.currentTrip;
-      const placeIds = userData.trips[currentTripId].places; //..get(currentTripId);
-      setTripName(userData.trips[currentTripId].name); // .get(currentTripId).name);
-
-      placeIds.forEach(async (placeId) => {
-        const request = {
-          placeId: placeId,
-          fields: [
-            "name",
-            "vicinity",
-            "placeId",
-            "opening_hours",
-            "geometry",
-            "price_level",
-            "rating",
-            "user_ratings_total",
-            "photos",
-          ],
-        };
-        const service = new google.maps.places.PlacesService(map);
-        service.getDetails(request, (place, status) => {
-          if (
-            status === google.maps.places.PlacesServiceStatus.OK &&
-            place != null
-          ) {
-            console.log(place);
-            const placeId = place.place_id;
-            const name = place.name ? place.name : "Invalid Name";
-            const address = place.vicinity ? place.vicinity : "Invalid Address";
-            const isOpen = place.opening_hours?.isOpen();
-            const location = place.geometry?.location;
-            const priceLevel = place.price_level;
-            const rating = place.rating;
-            const ratingsTotal = place.user_ratings_total;
-            const thumbnail = place.photos ? place.photos[0] : undefined;
-            // NOTE: if this is bad (doesn't refresh), create state for placeids and useEffect for placeIds that clears currentTrip and calls this load function
-            setCurrentTrip([
-              ...currentTrip,
-              new PlaceData(
-                placeId,
-                name,
-                address,
-                priceLevel ? priceLevel : undefined,
-                rating ? rating : undefined,
-                ratingsTotal ? ratingsTotal : undefined,
-                isOpen ? isOpen : false,
-                location ? new PlanMarkerData(name, location) : undefined,
-                thumbnail,
-              ),
-            ]);
-          }
+      try {
+        const currentTripId = 0; //userData.currentTrip;
+        const placeIds = userData.trips[currentTripId].places; //..get(currentTripId);
+        setTripName(userData.trips[currentTripId].name); // .get(currentTripId).name);
+  
+        placeIds.forEach(async (placeId) => {
+          const request = {
+            placeId: placeId,
+            fields: [
+              "name",
+              "vicinity",
+              "placeId",
+              "opening_hours",
+              "geometry",
+              "price_level",
+              "rating",
+              "user_ratings_total",
+              "photos",
+            ],
+          };
+          const service = new google.maps.places.PlacesService(map);
+          service.getDetails(request, (place, status) => {
+            if (
+              status === google.maps.places.PlacesServiceStatus.OK &&
+              place != null
+            ) {
+              console.log(place);
+              const placeId = place.place_id;
+              const name = place.name ? place.name : "Invalid Name";
+              const address = place.vicinity ? place.vicinity : "Invalid Address";
+              const isOpen = place.opening_hours?.isOpen();
+              const location = place.geometry?.location;
+              const priceLevel = place.price_level;
+              const rating = place.rating;
+              const ratingsTotal = place.user_ratings_total;
+              const thumbnail = place.photos ? place.photos[0] : undefined;
+              // NOTE: if this is bad (doesn't refresh), create state for placeids and useEffect for placeIds that clears currentTrip and calls this load function
+              setCurrentTrip([
+                ...currentTrip,
+                new PlaceData(
+                  placeId,
+                  name,
+                  address,
+                  priceLevel ? priceLevel : undefined,
+                  rating ? rating : undefined,
+                  ratingsTotal ? ratingsTotal : undefined,
+                  isOpen ? isOpen : false,
+                  location ? new PlanMarkerData(name, location) : undefined,
+                  thumbnail,
+                ),
+              ]);
+            }
+          });
         });
-      });
+      } catch (err) {
+        console.log(err);
+      } 
     }
   }, [userData]);
 

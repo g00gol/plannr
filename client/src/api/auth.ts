@@ -27,11 +27,8 @@ export const signup = async (email: string, username: string, password: string) 
   try {
     await createUserData();
   } catch (error: any) {
-    console.log('error in signing up')
     console.log(error);
-    
     await user.delete();
-
     throw error;
   }
 

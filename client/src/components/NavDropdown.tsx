@@ -22,6 +22,17 @@ export default function NavDropdown(): React.ReactElement {
   };
 
   // const blam = async (): Promise<void> => {
+  //   const headers = {
+  //     "Content-Type": "application/json",
+  //     Authorization: "Bearer " + (await currentUser?.getIdToken()),
+  //   };
+
+  //   const data = await fetch("http://localhost:8000/user", {
+  //     method: "POST",
+  //     headers: headers,
+  //   });
+  //   console.log(await data.json());
+
   //   try {
   //     const token = await currentUser?.getIdToken();
   //     console.log(token);

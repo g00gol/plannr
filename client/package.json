@@ -17,7 +17,6 @@
     "@mui/material": "^5.14.20",
     "@react-google-maps/api": "^2.19.2",
     "array-move": "^4.0.0",
-    "axios": "^1.6.2",
     "dotenv": "^16.3.1",
     "firebase": "^10.6.0",
     "joi": "^17.11.0",

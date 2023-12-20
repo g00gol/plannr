@@ -1,4 +1,3 @@
-import axios from 'axios';
 import { getidtoken } from './auth';
 import { UserData } from '../dataObjects/UserData';
 
@@ -6,24 +5,44 @@ const baseUrl = import.meta.env.VITE_BASE_API_URL
 
 export const createUserData = async (): Promise<void> => {
     const idToken = await getidtoken();
-    console.log(idToken)
     
-    const headers = { 'Authorization': `Bearer ${idToken}` };
-    const res = await axios.post(`${baseUrl}/user`, { headers });
-    
+    const headers = { 
+        "Content-Type": "application/json",
+        'Authorization': `Bearer ${idToken}`
+    };
+	
+    const res = await fetch(`${baseUrl}/user/`, {
+		method: "POST",
+		headers: headers,
+    });
+
+	if(res.status !== 200) throw res;
+
+	// const data = await res.json();
+
     // verify res
-    console.log(`create ${JSON.stringify(res)}`);
+    // console.log(`create ${JSON.stringify(data)}`);
 };
 
 export const getUserData = async (): Promise<UserData> => {
     const idToken = await getidtoken();
     
-    const headers = { 'Authorization': `Bearer ${idToken}` };
-    const res = await axios.get(`${baseUrl}/user/`, { headers });
+    const headers = { 
+		"Content-Type": "application/json",
+		'Authorization': `Bearer ${idToken}`
+	};
+	const res = await fetch(`${baseUrl}/user/`, {
+		method: "GET",
+		headers: headers,
+    });
+
+	if(res.status !== 200) throw res;
+
+	const data = await res.json();
 
     // verify res
-    console.log(`get ${JSON.stringify(res)}`);
+    // console.log(`get ${JSON.stringify(data)}`);
 
-    const userData = new UserData(res.data.currentTrip, res.data.trips);
+    const userData = new UserData(data.currentTrip, data.trips);
     return userData;
 };
