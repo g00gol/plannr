@@ -59,12 +59,35 @@ async def create_user(user: User) -> User:
     """
     try:
         db = await get_db_async("plannr")
-        res = await db.users.insert_one(user)
 
+        # Check if user_id already exists in database
+        _user = await get_user_by_value("user_id", user["user_id"])
+        if _user:
+            raise Exception("User already exists.")
+
+        res = await db.users.insert_one(user)
         # Get the newly created user
         _user = await db.users.find_one({"_id": res.inserted_id})
 
         return oid_to_str(_user)
+    except Exception as e:
+        raise Exception(e)
+
+
+async def get_trip(user_id: str, trip_id: str) -> Trip:
+    """
+    Gets a trip for a user.
+    """
+    try:
+        db = await get_db_async("plannr")
+        users = db["users"]
+        trip = await users.find_one({"user_id": user_id, "trips._id": ObjectId(trip_id)}, {"trips.$": 1})
+
+        # If trip not found, raise exception
+        if not trip:
+            raise Exception("Trip not found.")
+
+        return oid_to_str(trip["trips"][0])
     except Exception as e:
         raise Exception(e)
 
@@ -86,10 +109,36 @@ async def add_trip(user_id: str, trip_name: str) -> Trip:
         trip: Trip = {
             "_id": ObjectId(),
             "name": trip_name,
-            "routes": [],
+            "places": [],
         }
         await users.update_one({"user_id": user_id}, {"$push": {"trips": trip}})
 
         return oid_to_str(trip)
+    except Exception as e:
+        raise Exception(e)
+
+
+async def edit_trip(user_id: str, trip_id: str, trip_name: str | None, places: List[str] | None) -> Trip:
+    """
+    Updates a trip for a user.
+    """
+    try:
+        db = await get_db_async("plannr")
+        users = db["users"]
+
+        # If user not found, raise exception
+        await get_user(user_id)
+        # Find trip by trip_id and update trip with all non-None values
+        trip: Trip = {}
+        if trip_name:
+            trip["trips.$.name"] = trip_name
+        if places:
+            trip["trips.$.places"] = places
+        await users.update_one({"user_id": user_id, "trips._id": ObjectId(trip_id)}, {"$set": trip})
+
+        # Get the updated trip
+        _trip = await get_trip(user_id, trip_id)
+
+        return oid_to_str(_trip)
     except Exception as e:
         raise Exception(e)

@@ -18,8 +18,14 @@ async def get_users() -> List[User]:
     """
     Gets all users from the database.
     """
-    users = await users_db.get_users()
-    return users
+    try:
+        users = await users_db.get_users()
+        return users
+    except Exception as e:
+        raise HTTPException(
+            status_code=500,
+            detail=str(e),
+        )
 
 
 @router.post("/")
@@ -27,21 +33,18 @@ async def create_user(request: Request) -> User:
     """
     Creates a new user in the database.
     """
-    # Check if user_id already exists in database
-    user = await users_db.get_user_by_value("user_id", request.state.uid)
-    if user:
+    try:
+        user: User = {
+            "user_id": request.state.uid,
+            "trips": [],
+        }
+        _user = await users_db.create_user(user)
+        return _user
+    except Exception as e:
         raise HTTPException(
-            status_code=400,
-            detail="User already exists.",
+            status_code=500,
+            detail=str(e),
         )
-
-    user: User = {
-        "user_id": request.state.uid,
-        "trips": [],
-    }
-
-    _user = await users_db.create_user(user)
-    return _user
 
 
 @router.get("/{user_id}")
@@ -49,8 +52,14 @@ async def get_user(request: Request, authorization=Depends(firebase_auth.authori
     """
     Gets a user from the database.
     """
-    user = await users_db.get_user(request.state.uid)
-    return user
+    try:
+        user = await users_db.get_user(request.state.uid)
+        return user
+    except Exception as e:
+        raise HTTPException(
+            status_code=500,
+            detail=str(e),
+        )
 
 
 @router.get("/{user_id}/trips")
@@ -58,8 +67,14 @@ async def get_trips(request: Request, authorization=Depends(firebase_auth.author
     """
     Gets all trips for a user.
     """
-    user = await users_db.get_user(request.state.uid)
-    return user["trips"]
+    try:
+        user = await users_db.get_user(request.state.uid)
+        return user["trips"]
+    except Exception as e:
+        raise HTTPException(
+            status_code=500,
+            detail=str(e),
+        )
 
 
 @router.post("/{user_id}/trips")
@@ -67,25 +82,32 @@ async def save_trip(trip_name: str, request: Request, authorization=Depends(fire
     """
     Saves a trip for a user.
     """
-    user = await users_db.add_trip(request.state.uid, trip_name)
-    return user
+    try:
+        user = await users_db.add_trip(request.state.uid, trip_name)
+        return user
+    except Exception as e:
+        raise HTTPException(
+            status_code=500,
+            detail=str(e),
+        )
 
 
 @router.put("/{user_id}/trips/{trip_id}")
-async def update_trip(request: Request, trip_id: str, places: List[str], authorization=Depends(firebase_auth.authorize)) -> Trip:
+async def update_trip(request: Request, trip_id: str, trip_name: str = None, places: List[str] = None, authorization=Depends(firebase_auth.authorize)) -> Trip:
     """
     Updates a trip for a user.
     """
-    user = await users_db.update_trip(request.state.uid, trip_id, places)
+    if not trip_name and not places:
+        raise HTTPException(
+            status_code=400,
+            detail="You must change something!",
+        )
 
-    return
-
-
-@router.put("/{user_id}/trips/{trip_id}")
-async def update_trip(request: Request, trip_id: str, places: List[str], authorization=Depends(firebase_auth.authorize)) -> Trip:
-    """
-    Updates a trip for a user.
-    """
-    user = await users_db.update_trip(request.state.uid, trip_id, places)
-
-    return
+    try:
+        trip = await users_db.edit_trip(request.state.uid, trip_id, trip_name, places)
+        return trip
+    except Exception as e:
+        raise HTTPException(
+            status_code=500,
+            detail=str(e),
+        )
