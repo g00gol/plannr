@@ -8,15 +8,15 @@ const email = Joi.string()
         'string.email': 'Invalid email address',
         'string.empty': 'Please enter your email address'
     });
-// const username = Joi.string()
-//     .min(3)
-//     .max(30)
-//     .required()
-//     .messages({
-//         'string.min': 'Username must be at least 3 characters long',
-//         'string.max': 'Username cannot be more than 30 characters long',
-//         'string.empty': 'Please enter a username'
-//     });
+const username = Joi.string()
+    .min(3)
+    .max(30)
+    .required()
+    .messages({
+        'string.min': 'Username must be at least 3 characters long',
+        'string.max': 'Username cannot be more than 30 characters long',
+        'string.empty': 'Please enter a username'
+    });
 const password = Joi.string()
     .min(8)
     .max(30)
@@ -43,15 +43,18 @@ const confirmPassword = Joi.string()
 
 export const signupSchema = Joi.object().keys({
     email,
+    username,
     password,
     confirmPassword
 });
-
 export const signinSchema = Joi.object().keys({
     email,
     signinPassword
 });
-
 export const forgotPasswordSchema = Joi.object().keys({
     email
+});
+export const resetPasswordSchema = Joi.object().keys({
+    password,
+    confirmPassword
 });

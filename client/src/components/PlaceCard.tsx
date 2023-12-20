@@ -33,7 +33,7 @@ export default function PlaceCard({
 
   const date: number = new Date().getDay();
   const { addPlace, removePlace } = useContext(TripContext);
-  const { currentPlaceDetails, setCurrentPlaceDetails, currentTripPlaceDetails, setCurrentTripPlaceDetails } = useContext(PlaceContext);
+  const { currentPlaceDetails, setCurrentPlaceDetails } = useContext(PlaceContext);
 
   const fetchPlaceDetails = () => {
     const map = mapRef.current;

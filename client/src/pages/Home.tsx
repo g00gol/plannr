@@ -134,7 +134,7 @@ export default function Home(props: HomeProps): React.ReactElement {
             onLoad={onLoad}
           >
             {/* Map crosshair */}
-            <AddIcon className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 text-2xl text-blue-800 z-10"/>
+            <AddIcon className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 text-2xl text-blue-800 z-10 pointer-events-none"/>
             {/* Search Bar */}
             <form className="flex justify-center" onSubmit={search}>
               <input
@@ -142,7 +142,7 @@ export default function Home(props: HomeProps): React.ReactElement {
                 id="searchBar"
                 name="searchBar"
                 placeholder="Search Plannr ... Need inspiration? Use the dropdown to filter by category."
-                className="bg-gray-40 p-50 z-10 m-3 block w-2/6 rounded-xl border border-gray-600 p-4 ps-10 text-lg opacity-90"
+                className="bg-gray-40 p-50 z-10 m-3 block w-3/6 rounded-xl border border-gray-600 p-4 ps-10 text-lg opacity-90"
               />
               <select
                 name="categories"

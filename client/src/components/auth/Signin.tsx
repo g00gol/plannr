@@ -1,25 +1,26 @@
 import { TextField } from "@mui/material";
 import React, { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
-import "../../App.css";
+
 import { signin } from "../../api/auth.js";
 import logo from "../../assets/logo_cropped.png";
 import { signinSchema } from "../../helpers/validation.js";
+import { unloadModal } from "./AuthModal.js";
 
 export default function Signin(): React.ReactElement {
   const [checked, setChecked] = useState(false);
   const [error, setError] = useState("");
-  // const [forgot, setForgot] = useState(false);
   const navigate = useNavigate();
 
   const doSignIn = async (e: React.FormEvent) => {
     e.preventDefault();
     const email = (document.getElementById("email") as HTMLInputElement).value;
     const password = (document.getElementById("password") as HTMLInputElement).value;
+    const remember = (document.getElementById("remember") as HTMLInputElement).checked;
     try {
       await signinSchema.validateAsync({ email: email, signinPassword: password });
-      await signin(email, password);
-      navigate("/");
+      await signin(email, password, remember);
+      unloadModal(navigate);
     } catch (error: any) {
       console.log(`Error: ${error.message}`);
       setError(error.message);
@@ -58,8 +59,9 @@ export default function Signin(): React.ReactElement {
         >
           Login
         </button>
-        <label>
+        <label className="align-middle">
           <input
+            id="remember"
             type="checkbox"
             checked={checked}
             name="remember"

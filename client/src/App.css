@@ -26,15 +26,15 @@ body {
 }
 
 .unload-slide {
-  animation: 0.75s ease-out 0s 1 slideOutToLeft;
+  animation: 0.75s ease-out 0s 1 slideOutToLeft forwards;
 }
 
 .unload-slide-fast {
-  animation: 0.25s ease-out 0s 1 slideOutToLeft;
+  animation: 0.25s ease-out 0s 1 slideOutToLeft forwards; /*forwards holds element position at animation end state (out of screen)*/
 }
 
 .unload-slide-right {
-  animation: 0.75s ease-out 0s 1 slideOutToRight;
+  animation: 0.75s ease-out 0s 1 slideOutToRight forwards;
 }
 
 .back-link {

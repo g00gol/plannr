@@ -10,11 +10,12 @@ import {
   EmailAuthProvider,
   reauthenticateWithCredential,
   confirmPasswordReset,
+  setPersistence,
+  browserSessionPersistence,
+  browserLocalPersistence,
 } from "firebase/auth";
-// import axios from 'axios';
 
 const signup = async (email: string, username: string, password: string) => {
-  //create
   const auth = getAuth() as Auth;
   await createUserWithEmailAndPassword(auth, email, password);
 
@@ -26,9 +27,9 @@ const signup = async (email: string, username: string, password: string) => {
   console.log(`Signup successful for ${username}`);
 };
 
-const signin = async (email: string, password: string) => {
-  //read
+const signin = async (email: string, password: string, persistent?: boolean) => {
   const auth = getAuth() as Auth;
+  await setPersistence(auth, persistent ? browserLocalPersistence : browserSessionPersistence); //default session persistence
   await signInWithEmailAndPassword(auth, email, password);
   console.log(`Signin successful for ${email}`);
 };
@@ -38,7 +39,6 @@ const changepassword = async (
   oldPassword: string,
   newPassword: string,
 ) => {
-  //update
   const auth = getAuth() as Auth;
 
   const credential = EmailAuthProvider.credential(email, oldPassword);
@@ -53,20 +53,19 @@ const changepassword = async (
   await logout();
 };
 
-const resetpassword = async (email: string) => {
-  //update
+const forgotpassword = async (email: string) => {
   const auth = getAuth();
   await sendPasswordResetEmail(auth, email);
   console.log(`Password reset email sent to ${email}`);
 };
 
-const confirmresetpassword = async (oob: string, newPass: string) => {
+const resetpassword = async (oob: string, newPass: string) => {
   const auth = getAuth();
   await confirmPasswordReset(auth, oob, newPass);
+  console.log(`Password reset successful`);
 };
 
 const logout = async () => {
-  //delete
   const auth = getAuth() as Auth;
 
   const user = auth.currentUser;
@@ -81,6 +80,6 @@ export {
   signin,
   logout,
   changepassword,
+  forgotpassword,
   resetpassword,
-  confirmresetpassword,
 };
