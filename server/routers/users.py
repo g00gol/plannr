@@ -1,4 +1,5 @@
 from typing import List
+from pydantic import ValidationError
 from fastapi import APIRouter, HTTPException, Request, Depends
 from bson import ObjectId
 
@@ -96,8 +97,14 @@ async def update_trip(request: Request, trip_id: str, trip_name: str = None, pla
         )
 
     try:
-        trip = await users_db.edit_trip(request.state.uid, trip_id, trip_name, places)
+        trip_data = Trip(name=trip_name, places=places)
+        trip = await users_db.edit_trip(request.state.uid, trip_id, trip_data.name, trip_data.places)
         return trip
+    except ValidationError as e:
+        raise HTTPException(
+            status_code=400,
+            detail=str(e.errors()),
+        )
     except Exception as e:
         raise HTTPException(
             status_code=500,

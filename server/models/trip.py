@@ -1,5 +1,5 @@
 from typing import List
-from pydantic import BaseModel, field_validator
+from pydantic import BaseModel, validator
 from bson import ObjectId
 
 
@@ -8,8 +8,11 @@ class Trip(BaseModel):
     name: str
     places: List[str]
 
-    @field_validator("name")
+    @validator("name", pre=True, always=True)
     def name_must_be_valid(cls, v):
+        if v is None:
+            return v
+
         if not v:
             raise ValueError("Name cannot be empty.")
         if len(v) > 50:
