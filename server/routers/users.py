@@ -33,6 +33,8 @@ async def create_user(request: Request) -> User:
         }
         _user = await users_db.create_user(user)
         return _user
+    except HTTPException as http_e:
+        raise http_e
     except Exception as e:
         raise HTTPException(
             status_code=500,
@@ -48,6 +50,8 @@ async def get_user(request: Request) -> User:
     try:
         user = await users_db.get_user(request.state.uid)
         return user
+    except HTTPException as http_e:
+        raise http_e
     except Exception as e:
         raise HTTPException(
             status_code=500,
@@ -63,6 +67,8 @@ async def get_trips(request: Request) -> List[Trip]:
     try:
         user = await users_db.get_user(request.state.uid)
         return user["trips"]
+    except HTTPException as http_e:
+        raise http_e
     except Exception as e:
         raise HTTPException(
             status_code=500,
@@ -78,6 +84,8 @@ async def save_trip(trip_name: str, request: Request) -> Trip:
     try:
         user = await users_db.add_trip(request.state.uid, trip_name)
         return user
+    except HTTPException as http_e:
+        raise http_e
     except Exception as e:
         raise HTTPException(
             status_code=500,
@@ -100,10 +108,12 @@ async def update_trip(request: Request, trip_id: str, trip_name: str = None, pla
         trip_data = Trip(name=trip_name, places=places)
         trip = await users_db.edit_trip(request.state.uid, trip_id, trip_data.name, trip_data.places)
         return trip
-    except ValidationError as e:
+    except HTTPException as http_e:
+        raise http_e
+    except ValidationError as validation_e:
         raise HTTPException(
             status_code=400,
-            detail=str(e.errors()),
+            detail=str(validation_e.errors()),
         )
     except Exception as e:
         raise HTTPException(
