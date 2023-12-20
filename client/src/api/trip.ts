@@ -13,7 +13,7 @@ export const updateTripPlaces = async (tripId: string, placeIds: string[]) => {
 
     const headers = { 'Authorization': `Bearer ${idToken}` };
 
-    const res = await axios.put(`${baseUrl}/users/me/trips/${tripId}`, { 
+    const res = await axios.put(`${baseUrl}/user/trips/${tripId}`, { 
         data: { places: placeIds },
         headers: headers
     });

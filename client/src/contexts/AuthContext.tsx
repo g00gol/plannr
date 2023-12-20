@@ -24,21 +24,28 @@ export const AuthProvider = ({ children }: React.PropsWithChildren<{}>) => {
 
   useEffect(() => {
     const loadUserData = async () => {
+      console.log(currentUser);
       if (currentUser) {
-        const userData = await getUserData();
-        setUserData(userData);
+        try {
+          const userData = await getUserData();
+          setUserData(userData);
+          console.log(userData)
+        } catch(error: any) {
+          throw error;
+        }
       }
     }
     const load = async () => {
       try {
-        loadUserData();
+        await loadUserData();
       } catch (error: any) {
-        if(error.status.code === 404) {
+        if(error.response.status === 404 || error.response.status === 403) {
           await createUserData();
-          loadUserData();
+          await loadUserData();
           return;
         } 
         console.log(error.message);
+        return;
       }
     }
     load();

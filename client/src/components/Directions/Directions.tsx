@@ -1,5 +1,5 @@
 import React, { useCallback, useContext } from "react";
-import { DirectionsProps } from "../../types/DirectionsType";
+import { RenderDirectionsProps } from "../../types/DirectionsType";
 import { TripContext } from "../../contexts/TripContext";
 import RenderDirections from "./RenderDirections";
 import { pinSVGFilled } from "../../constants/GoogleMaps/config";
@@ -9,7 +9,7 @@ import { SearchResultContext } from "../../contexts/SearchResultContext";
 export default function Directions({
   travelMode,
   mapRef
-}: DirectionsProps): React.ReactElement {
+}: RenderDirectionsProps): React.ReactElement {
     const { currentTrip, currentInfoWindow, setInfoWindow : setTripWindow } = useContext(TripContext);
     const { setInfoWindow : setSearchWindow } = useContext(SearchResultContext);
 

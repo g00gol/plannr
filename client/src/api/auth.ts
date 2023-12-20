@@ -24,9 +24,18 @@ export const signup = async (email: string, username: string, password: string) 
   const user = auth.currentUser;
   if(!user) throw new Error('Error creating user');
 
-  await updateProfile(user, { displayName: username });
+  try {
+    await createUserData();
+  } catch (error: any) {
+    console.log('error in signing up')
+    console.log(error);
+    
+    await user.delete();
 
-  await createUserData();
+    throw error;
+  }
+
+  await updateProfile(user, { displayName: username });
   console.log(`Signup successful for ${username}`);
 };
 

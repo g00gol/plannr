@@ -36,7 +36,7 @@ export const TripProvider = ({ children }: React.PropsWithChildren<{}>) => {
       if(!map) return console.log("Map is undefined");
 
       const currentTripId = 0; //userData.currentTrip;
-      const placeIds = userData.trips[currentTripId].placeIds; //..get(currentTripId);
+      const placeIds = userData.trips[currentTripId].places; //..get(currentTripId);
       setTripName(userData.trips[currentTripId].name); // .get(currentTripId).name);
 
       placeIds.forEach(async (placeId) => {
