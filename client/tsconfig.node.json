@@ -5,7 +5,7 @@
     "module": "ESNext",
     "moduleResolution": "bundler",
     "allowSyntheticDefaultImports": true,
-    "types": ["googlemaps"]
+    "types": ["google.maps"]
   },
   "include": ["vite.config.ts"]
 }
