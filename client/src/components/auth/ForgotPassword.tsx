@@ -1,10 +1,12 @@
-import { TextField } from "@mui/material";
+import { InputAdornment, TextField } from "@mui/material";
 import React, { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 
-import logo from "../../assets/logo_cropped.png";
 import { forgotpassword } from "../../api/auth";
+import logo from "../../assets/logo_cropped.png";
 import { forgotPasswordSchema } from "../../helpers/validation";
+
+import EmailIcon from '@mui/icons-material/Email';
 
 export default function ForgotPassword(): React.ReactElement {
   const [error, setError] = useState("");
@@ -42,6 +44,14 @@ export default function ForgotPassword(): React.ReactElement {
           autoFocus
           fullWidth
           margin="normal"
+
+          InputProps={{
+            endAdornment: (
+              <InputAdornment position="end">
+                <EmailIcon />
+              </InputAdornment>
+            )
+          }}
         />
         {message ? <div>{message}</div> : <div></div>}
         {error ? <div className="text-red-500">{error}</div> : <div></div>}
