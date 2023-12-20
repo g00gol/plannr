@@ -36,7 +36,7 @@ export default function Directions({
                 : <></>
         }
         <Marker
-            key={currentTrip[0].place_id}
+            key={currentTrip[0].placeId}
             title={currentTrip[0].marker.title}
             position={currentTrip[0].marker.location}
             label={{
@@ -61,7 +61,7 @@ export default function Directions({
                     }
 
                     return <RenderDirections 
-                            key={`${currentTrip[ind - 1].place_id} - ${result.place_id}`} 
+                            key={`${currentTrip[ind - 1].placeId} - ${result.placeId}`} 
                             place1={currentTrip[ind - 1]} 
                             place2={result} 
                             travelMode={travelMode} 

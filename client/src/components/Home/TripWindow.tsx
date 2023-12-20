@@ -6,13 +6,11 @@ import { TripContext } from "../../contexts/TripContext";
 import PlaceCard, { PlaceCardRef } from "../PlaceCard";
 
 interface TripWindowProps {
-  mapRef: React.MutableRefObject<google.maps.Map | undefined>;
   tripToggle: boolean;
   toggleTrip: React.Dispatch<React.SetStateAction<boolean>>;
 }
 
 export default function TripWindow({
-  mapRef,
   tripToggle,
   toggleTrip,
 }: TripWindowProps): React.ReactElement {
@@ -57,10 +55,10 @@ export default function TripWindow({
             {
               // current bug: does not remove existing placecards but tacks on new list of placecards.
               currentTrip.map((result, i) => (
-                <SortableItem key={result.place_id}>
+                <SortableItem key={result.placeId}>
                   <PlaceCardRef>
                     {/* wraps a div around placecard */}
-                    <PlaceCard mapRef={mapRef} place={result} isResult={false}>
+                    <PlaceCard place={result} isResult={false}>
                       <SortableKnob>
                         <div className="col-span-1 row-span-2 flex cursor-pointer select-none flex-col items-center justify-center">
                           <FaGripLines size={20} />
