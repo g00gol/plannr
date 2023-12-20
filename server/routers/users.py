@@ -1,5 +1,6 @@
 from typing import List
 from fastapi import APIRouter, HTTPException, Request, Depends
+from bson import ObjectId
 
 from db import users_db
 from models import User, Trip
@@ -36,7 +37,11 @@ async def create_user(request: Request) -> User:
     try:
         user: User = {
             "user_id": request.state.uid,
-            "trips": [],
+            "trips": [{
+                "_id": ObjectId(),
+                "name": "My First Trip",
+                "places": [],
+            }],
         }
         _user = await users_db.create_user(user)
         return _user
