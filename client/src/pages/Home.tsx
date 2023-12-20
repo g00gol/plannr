@@ -134,7 +134,7 @@ export default function Home(props: HomeProps): React.ReactElement {
             onLoad={onLoad}
           >
             {/* Map crosshair */}
-            <AddIcon className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 text-2xl text-blue-800 z-10"/>
+            <AddIcon className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 text-2xl text-blue-800 z-10 pointer-events-none"/>
             {/* Search Bar */}
             <form className="flex justify-center" onSubmit={search}>
               <input
