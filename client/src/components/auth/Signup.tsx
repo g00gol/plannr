@@ -1,15 +1,24 @@
+import { IconButton, InputAdornment, TextField } from "@mui/material";
 import React, { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
-import { TextField } from "@mui/material";
 
 import { signup } from "../../api/auth.js";
 import logo from "../../assets/logo_cropped.png";
 import { signupSchema } from "../../helpers/validation.js";
 import { unloadModal } from "./AuthModal.js";
 
+import EmailIcon from '@mui/icons-material/Email';
+import PersonIcon from '@mui/icons-material/Person';
+import VisibilityIcon from '@mui/icons-material/Visibility';
+import VisibilityOffIcon from '@mui/icons-material/VisibilityOff';
+
 export default function Signup(): React.ReactElement {
+  const [showPassword, setShowPassword] = useState(false);
   const [error, setError] = useState("");
   const navigate = useNavigate();
+
+  const handleClickShowPassword = () => setShowPassword(!showPassword);
+  const handleMouseDownPassword = () => setShowPassword(!showPassword);
 
   const doSignUp = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -42,6 +51,19 @@ export default function Signup(): React.ReactElement {
           autoFocus
           fullWidth
           margin="normal"
+
+          InputProps={{
+            endAdornment: (
+              <InputAdornment position="end">
+                <IconButton
+                  aria-label="email icon"
+                  disabled
+                >
+                  <EmailIcon />
+                </IconButton>
+              </InputAdornment>
+            )
+          }}
         />
         <TextField
           id="username"
@@ -52,21 +74,48 @@ export default function Signup(): React.ReactElement {
           required
           fullWidth
           margin="normal"
+
+          InputProps={{
+            endAdornment: (
+              <InputAdornment position="end">
+                <IconButton
+                  aria-label="email icon"
+                  disabled
+                >
+                  <PersonIcon />
+                </IconButton>
+              </InputAdornment>
+            )
+          }}
         />
         <TextField
           id="password"
-          type="password"
+          type={showPassword ? "text" : "password"}
           label="Password"
           placeholder="Password"
           variant="outlined"
           required
           fullWidth
           margin="normal"
+
+          InputProps={{
+            endAdornment: (
+              <InputAdornment position="end">
+                <IconButton
+                  aria-label="toggle password visibility"
+                  onClick={handleClickShowPassword}
+                  onMouseDown={handleMouseDownPassword}
+                >
+                  {showPassword ? <VisibilityIcon /> : <VisibilityOffIcon />}
+                </IconButton>
+              </InputAdornment>
+            )
+          }}
         />
         <TextField
           id="confirmPassword"
           type="password"
-          label="ConfirmPassword"
+          label="Confirm Password"
           placeholder="Confirm Password"
           variant="outlined"
           required
