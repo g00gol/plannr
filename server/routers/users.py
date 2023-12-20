@@ -35,10 +35,12 @@ async def create_user(request: Request) -> User:
     Creates a new user in the database.
     """
     try:
+        _id = ObjectId()
         user: User = {
             "user_id": request.state.uid,
+            "current_trip": _id,
             "trips": [{
-                "_id": ObjectId(),
+                "_id": _id,
                 "name": "My First Trip",
                 "places": [],
             }],
