@@ -1,10 +1,12 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { Link } from "react-router-dom";
 import { Typewriter } from "react-simple-typewriter";
 import logo_cropped from "../assets/logo_cropped.png";
 import NavDropdown from "./NavDropdown";
+import { AuthContext } from "../contexts/AuthContext";
 
 export default function NavBar(): React.ReactElement {
+  const currentUser = React.useContext(AuthContext);
   const wordsList: string[] = [
     " go on a date",
     " take a hike",
@@ -19,6 +21,21 @@ export default function NavBar(): React.ReactElement {
     " discover a new park",
     " go to a concert",
   ];
+
+  const blam = async (): Promise<void> => {
+    try {
+      const token = await currentUser?.getIdToken();
+      console.log(token);
+      console.log("uid", currentUser?.uid);
+    } catch (e) {
+      console.log("err");
+      console.log(e);
+    }
+  };
+
+  useEffect(() => {
+    blam();
+  }, []);
 
   return (
     <header className="bg-white">

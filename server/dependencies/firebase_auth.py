@@ -32,6 +32,9 @@ token_auth_scheme = HTTPBearer()
 
 
 def authenticate(request: Request, token: HTTPAuthorizationCredentials = Depends(token_auth_scheme)) -> str:
+    """
+    Authenticates a user by verifying their Firebase ID token against their Firebase user ID.
+    """
     try:
         decoded_token = auth.verify_id_token(token.credentials)
         request.state.uid = decoded_token["uid"]
