@@ -14,7 +14,7 @@ async def get_users() -> List[User]:
         db = await get_db_async("plannr")
         users = db["users"]
         all_users: List[User] = await users.find({}).to_list(length=9999)
-        return all_users
+        return oid_to_str(all_users)
     except Exception as e:
         raise Exception(e)
 
@@ -26,13 +26,13 @@ async def get_user(user_id: str) -> User:
     try:
         db = await get_db_async("plannr")
         users = db["users"]
-        user = await users.find_one({"user_id": user_id}, {"_id": 0})
+        user = await users.find_one({"user_id": user_id})
 
         # If user not found, raise exception
         if not user:
             raise Exception("User not found.")
 
-        return user
+        return oid_to_str(user)
     except Exception as e:
         raise Exception(e)
 
@@ -45,25 +45,31 @@ async def get_user_by_value(key: str, value: str) -> User:
         db = await get_db_async("plannr")
         users = db["users"]
         user = await users.find_one({key: value})
+        if not user:
+            return None
 
-        return user
+        return oid_to_str(user)
     except Exception as e:
         raise Exception(e)
 
 
-async def create_user(user: User) -> str:
+async def create_user(user: User) -> User:
     """
     Creates a new user in the database.
     """
     try:
         db = await get_db_async("plannr")
         res = await db.users.insert_one(user)
-        return str(res.inserted_id)
+
+        # Get the newly created user
+        _user = await db.users.find_one({"_id": res.inserted_id})
+
+        return oid_to_str(_user)
     except Exception as e:
         raise Exception(e)
 
 
-async def add_trip(user_id: str, trip_name: str) -> User:
+async def add_trip(user_id: str, trip_name: str) -> Trip:
     """
     Adds a trip to a user's list of trips.
     """
@@ -84,9 +90,6 @@ async def add_trip(user_id: str, trip_name: str) -> User:
         }
         await users.update_one({"user_id": user_id}, {"$push": {"trips": trip}})
 
-        # Return the updated user
-        user = await users.find_one({"user_id": user_id})
-        user = oid_to_str(user)
-        return user
+        return oid_to_str(trip)
     except Exception as e:
         raise Exception(e)

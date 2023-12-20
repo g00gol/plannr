@@ -23,7 +23,7 @@ async def get_users() -> List[User]:
 
 
 @router.post("/")
-async def create_user(request: Request) -> str:
+async def create_user(request: Request) -> User:
     """
     Creates a new user in the database.
     """
@@ -40,8 +40,8 @@ async def create_user(request: Request) -> str:
         "trips": [],
     }
 
-    user_id = await users_db.create_user(user)
-    return user_id
+    _user = await users_db.create_user(user)
+    return _user
 
 
 @router.get("/{user_id}")
@@ -54,28 +54,37 @@ async def get_user(request: Request, authorization=Depends(firebase_auth.authori
 
 
 @router.get("/{user_id}/trips")
-async def get_trips(request: Request, authorization=Depends(firebase_auth.authorize)) -> List[dict]:
+async def get_trips(request: Request, authorization=Depends(firebase_auth.authorize)) -> List[Trip]:
     """
-    Gets all saved routes for a user.
+    Gets all trips for a user.
     """
     user = await users_db.get_user(request.state.uid)
     return user["trips"]
 
 
 @router.post("/{user_id}/trips")
-async def save_trip(trip_name: str, request: Request, authorization=Depends(firebase_auth.authorize)) -> dict:
+async def save_trip(trip_name: str, request: Request, authorization=Depends(firebase_auth.authorize)) -> Trip:
     """
-    Saves a route for a user.
+    Saves a trip for a user.
     """
     user = await users_db.add_trip(request.state.uid, trip_name)
-
     return user
 
 
 @router.put("/{user_id}/trips/{trip_id}")
-async def update_trip(request: Request, trip_id: str, places: List[str], authorization=Depends(firebase_auth.authorize)) -> dict:
+async def update_trip(request: Request, trip_id: str, places: List[str], authorization=Depends(firebase_auth.authorize)) -> Trip:
     """
-    Updates a route for a user.
+    Updates a trip for a user.
+    """
+    user = await users_db.update_trip(request.state.uid, trip_id, places)
+
+    return
+
+
+@router.put("/{user_id}/trips/{trip_id}")
+async def update_trip(request: Request, trip_id: str, places: List[str], authorization=Depends(firebase_auth.authorize)) -> Trip:
+    """
+    Updates a trip for a user.
     """
     user = await users_db.update_trip(request.state.uid, trip_id, places)
 
