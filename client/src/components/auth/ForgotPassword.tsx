@@ -16,6 +16,11 @@ export default function ForgotPassword(): React.ReactElement {
     const email = (document.getElementById("email") as HTMLInputElement).value;
     try {
       await forgotPasswordSchema.validateAsync({ email });
+    } catch (error: any) {
+      setError(error.message);
+      return;
+    }
+    try {
       await forgotpassword(email);
       setMessage("Password reset email has been sent. Redirecting...");
       setTimeout(() => {
@@ -23,7 +28,7 @@ export default function ForgotPassword(): React.ReactElement {
       }, 1000);
     } catch (error: any) {
       console.log(`Error: ${error.message}`);
-      setError(error.message);
+      setError("Something went wrong! Please try again.");
     }
   };
 

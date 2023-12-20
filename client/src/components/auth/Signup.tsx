@@ -19,6 +19,11 @@ export default function Signup(): React.ReactElement {
     const confirmPassword = (document.getElementById("confirmPassword") as HTMLInputElement).value;
     try {
       await signupSchema.validateAsync({ email, username, password, confirmPassword });
+    } catch (error: any) {
+      setError(error.message);
+      return;
+    }
+    try {
       await signup(email, username, password);
       unloadModal(navigate);
     } catch (error: any) {

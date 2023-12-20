@@ -1,6 +1,8 @@
 import axios from 'axios';
 import { getidtoken } from './auth';
 
+const baseUrl = import.meta.env.VITE_BASE_API_URL
+
 // create trip (TBD)
 
 // update trip name (TBD)
@@ -11,7 +13,7 @@ export const updateTripPlaces = async (tripId: string, placeIds: string[]) => {
 
     const headers = { 'Authorization': `Bearer ${idToken}` };
 
-    const res = await axios.put(`/api/trip/${tripId}`, { 
+    const res = await axios.put(`${baseUrl}/users/me/trips/${tripId}`, { 
         data: { places: placeIds },
         headers: headers
     });
