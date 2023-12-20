@@ -14,21 +14,6 @@ router = APIRouter(
 )
 
 
-@router.get("/")
-async def get_users() -> List[User]:
-    """
-    Gets all users from the database.
-    """
-    try:
-        users = await users_db.get_users()
-        return users
-    except Exception as e:
-        raise HTTPException(
-            status_code=500,
-            detail=str(e),
-        )
-
-
 @router.post("/")
 async def create_user(request: Request) -> User:
     """
@@ -54,8 +39,8 @@ async def create_user(request: Request) -> User:
         )
 
 
-@router.get("/{user_id}")
-async def get_user(request: Request, authorization=Depends(firebase_auth.authorize)) -> User:
+@router.get("/me")
+async def get_user(request: Request) -> User:
     """
     Gets a user from the database.
     """
@@ -69,8 +54,8 @@ async def get_user(request: Request, authorization=Depends(firebase_auth.authori
         )
 
 
-@router.get("/{user_id}/trips")
-async def get_trips(request: Request, authorization=Depends(firebase_auth.authorize)) -> List[Trip]:
+@router.get("/me/trips")
+async def get_trips(request: Request) -> List[Trip]:
     """
     Gets all trips for a user.
     """
@@ -84,8 +69,8 @@ async def get_trips(request: Request, authorization=Depends(firebase_auth.author
         )
 
 
-@router.post("/{user_id}/trips")
-async def save_trip(trip_name: str, request: Request, authorization=Depends(firebase_auth.authorize)) -> Trip:
+@router.post("/me/trips")
+async def save_trip(trip_name: str, request: Request) -> Trip:
     """
     Saves a trip for a user.
     """
@@ -99,8 +84,8 @@ async def save_trip(trip_name: str, request: Request, authorization=Depends(fire
         )
 
 
-@router.put("/{user_id}/trips/{trip_id}")
-async def update_trip(request: Request, trip_id: str, trip_name: str = None, places: List[str] = None, authorization=Depends(firebase_auth.authorize)) -> Trip:
+@router.put("/me/trips/{trip_id}")
+async def update_trip(request: Request, trip_id: str, trip_name: str = None, places: List[str] = None) -> Trip:
     """
     Updates a trip for a user.
     """
