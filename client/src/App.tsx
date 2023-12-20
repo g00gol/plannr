@@ -1,13 +1,14 @@
 import React from "react";
-import { Routes, Route } from "react-router-dom";
+import { Route, Routes } from "react-router-dom";
 
-import Home from "./pages/Home";
+import "./App.css";
+import About from "./components/About";
 import AuthModal from "./components/auth/AuthModal";
-import Signin from "./components/auth/Signin";
-import Signup from "./components/auth/Signup";
 import ForgotPassword from "./components/auth/ForgotPassword";
 import ResetPassword from "./components/auth/ResetPassword";
-import "./App.css";
+import Signin from "./components/auth/Signin";
+import Signup from "./components/auth/Signup";
+import Home from "./pages/Home";
 
 export default function App(): React.ReactElement {
   return (
@@ -17,6 +18,14 @@ export default function App(): React.ReactElement {
         element={
           <Home>
             <></>
+          </Home>
+        }
+      />
+      <Route
+        path="/about"
+        element={
+          <Home>
+            <About />
           </Home>
         }
       />

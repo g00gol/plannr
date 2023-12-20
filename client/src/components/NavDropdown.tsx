@@ -6,8 +6,8 @@ import MenuItem from "@mui/material/MenuItem";
 import * as React from "react";
 import { FaCircleUser } from "react-icons/fa6";
 import { Link } from "react-router-dom";
-import { AuthContext } from "../contexts/AuthContext";
 import { logout } from "../api/auth";
+import { AuthContext } from "../contexts/AuthContext";
 
 export default function NavDropdown(): React.ReactElement {
   const currentUser = React.useContext(AuthContext);
@@ -77,14 +77,18 @@ export default function NavDropdown(): React.ReactElement {
           </div>
         ) : (
           <div>
-            <MenuItem onClick={handleClose}>
-              About plannr
-              <InfoIcon className="ml-2" />
-            </MenuItem>
-            <MenuItem onClick={handleClose}>
-              <Link to="/signin">Sign in</Link>
-              <LoginIcon className="ml-2" />
-            </MenuItem>
+            <Link to="/about">
+              <MenuItem onClick={handleClose}>
+                About plannr
+                <InfoIcon className="ml-2" />
+              </MenuItem>
+            </Link>
+            <Link to="/signin">
+              <MenuItem onClick={handleClose}>
+                Sign in
+                <LoginIcon className="ml-2" />
+              </MenuItem>
+            </Link>
           </div>
         )}
       </Menu>
