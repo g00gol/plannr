@@ -103,6 +103,7 @@ export default function Home(props: HomeProps): React.ReactElement {
   useEffect(() => {
     async function fetchData() {
       try {
+        setSearchWindow(-1);
         nearbySearch(
           mapRef,
           centerData,
@@ -229,7 +230,7 @@ export default function Home(props: HomeProps): React.ReactElement {
 
             <Directions travelMode={travelMode ? travelMode : google.maps.TravelMode.WALKING} mapRef={mapRef}/>
 
-            {currentInfoWindow != -1 ?
+            {currentInfoWindow != -1 && placeData[currentInfoWindow] ?
               <InfoWindow
                 onCloseClick={() => setSearchWindow(-1)}
                 options={{
