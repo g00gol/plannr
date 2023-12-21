@@ -1,5 +1,5 @@
 import React, { useEffect } from 'react';
-import { Navigate, Outlet } from 'react-router-dom';
+import { Navigate } from 'react-router-dom';
 import { useSearchParams } from 'react-router-dom';
 import { checkoobcode } from '../../api/auth';
 import { MiddlewareProps } from '../../types/MiddlewareTypes';
