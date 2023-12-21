@@ -13,17 +13,21 @@ import {
   setPersistence,
   browserSessionPersistence,
   browserLocalPersistence,
-  checkActionCode
+  checkActionCode,
 } from "firebase/auth";
 
 import { createUserData } from "./user"; // getting user data is done in AuthContext
 
-export const signup = async (email: string, username: string, password: string) => {
+export const signup = async (
+  email: string,
+  username: string,
+  password: string,
+) => {
   const auth = getAuth() as Auth;
   await createUserWithEmailAndPassword(auth, email, password);
 
   const user = auth.currentUser;
-  if(!user) throw new Error('Error creating user');
+  if (!user) throw new Error("Error creating user");
 
   try {
     await createUserData();
@@ -37,14 +41,21 @@ export const signup = async (email: string, username: string, password: string) 
   console.log(`Signup successful for ${username}`);
 };
 
-export const signin = async (email: string, password: string, persistent?: boolean) => {
+export const signin = async (
+  email: string,
+  password: string,
+  persistent?: boolean,
+) => {
   const auth = getAuth() as Auth;
-  await setPersistence(auth, persistent ? browserLocalPersistence : browserSessionPersistence); //default session persistence
+  await setPersistence(
+    auth,
+    persistent ? browserLocalPersistence : browserSessionPersistence,
+  ); //default session persistence
   await signInWithEmailAndPassword(auth, email, password);
 
   const user = auth.currentUser;
-  if(!user) throw new Error('Error signing in');
-  
+  if (!user) throw new Error("Error signing in");
+
   console.log(`Signin successful for ${email}`);
 };
 
@@ -58,7 +69,7 @@ export const changepassword = async (
   const credential = EmailAuthProvider.credential(email, oldPassword);
 
   const user = auth.currentUser;
-  if(!user) throw new Error('Error updating password');
+  if (!user) throw new Error("Error updating password");
 
   await reauthenticateWithCredential(auth.currentUser, credential);
   await updatePassword(auth.currentUser, newPassword);
@@ -78,7 +89,7 @@ export const checkoobcode = async (oob: string) => {
   const result = await checkActionCode(auth, oob);
   console.log(result);
   return result;
-}
+};
 
 export const resetpassword = async (oob: string, newPass: string) => {
   const auth = getAuth();
@@ -90,7 +101,7 @@ export const logout = async () => {
   const auth = getAuth() as Auth;
 
   const user = auth.currentUser;
-  if(!user) throw new Error('Error logging out');
+  if (!user) throw new Error("Error logging out");
 
   console.log(`Logout successful for ${auth.currentUser.email}`);
   await signOut(auth);
@@ -100,9 +111,9 @@ export const getidtoken = async () => {
   const auth = getAuth() as Auth;
 
   const user = auth.currentUser;
-  if(!user) throw new Error('Error getting id token for request');
+  if (!user) throw new Error("Error getting id token for request");
 
   const idToken = await user.getIdToken();
 
   return idToken;
-}
+};

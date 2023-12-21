@@ -50,7 +50,7 @@ export default function NavDropdown(): React.ReactElement {
     } catch (error: any) {
       console.log(`Error: ${error.message}`);
     }
-  }
+  };
 
   return (
     <div className="hidden justify-between p-4 lg:flex lg:flex-1 lg:justify-end">
@@ -59,7 +59,7 @@ export default function NavDropdown(): React.ReactElement {
       <p className="pr-4 pt-4 text-lg leading-6 text-gray-900">
         Hello,{" "}
         <span className="font-bold">
-          {currentUser ? (currentUser.displayName || currentUser.email) : "Guest"}
+          {currentUser ? currentUser.displayName || currentUser.email : "Guest"}
         </span>
       </p>
       <Button

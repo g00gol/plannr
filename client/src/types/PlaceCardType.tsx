@@ -4,7 +4,7 @@ interface PlaceCardProps {
   place: PlaceData;
   isResult: boolean;
   index?: number;
-  children?: React.ReactNode
+  children?: React.ReactNode;
 }
 
 interface PlaceCardState {

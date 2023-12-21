@@ -1,6 +1,6 @@
-import React, { useContext } from 'react';
-import { Navigate, Outlet } from 'react-router-dom';
-import { AuthContext } from '../../contexts/AuthContext';
+import React, { useContext } from "react";
+import { Navigate, Outlet } from "react-router-dom";
+import { AuthContext } from "../../contexts/AuthContext";
 
 /** Protected route wrapper
  *  If authorized, return an outlet that will render child elements
@@ -10,7 +10,7 @@ import { AuthContext } from '../../contexts/AuthContext';
 const Protected = (): React.ReactElement => {
   const currentUser = useContext(AuthContext);
 
-  return currentUser ? <Outlet /> : <Navigate to='/signin' replace={true} />;
+  return currentUser ? <Outlet /> : <Navigate to="/signin" replace={true} />;
 };
 
 export default Protected;

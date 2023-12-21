@@ -27,7 +27,7 @@ export default function PlaceCard({
   children,
 }: PlaceCardProps): React.ReactElement {
   const { mapRef } = useContext(MapContext);
-  
+
   const [showDetails, setShowDetails] = useState<boolean>(false);
   const [phone, setPhone] = useState<string>("");
   const [website, setWebsite] = useState<string>("");
@@ -35,7 +35,8 @@ export default function PlaceCard({
 
   const date: number = new Date().getDay();
   const { addPlace, removePlace } = useContext(TripContext);
-  const { currentPlaceDetails, setCurrentPlaceDetails } = useContext(PlaceContext);
+  const { currentPlaceDetails, setCurrentPlaceDetails } =
+    useContext(PlaceContext);
 
   const fetchPlaceDetails = () => {
     const map = mapRef.current;
@@ -65,7 +66,7 @@ export default function PlaceCard({
   }, [showDetails, place.placeId, mapRef]);
 
   useEffect(() => {
-    if (place.placeId === currentPlaceDetails && (isResult)) {
+    if (place.placeId === currentPlaceDetails && isResult) {
       setShowDetails(true);
     } else {
       setShowDetails(false);
@@ -88,15 +89,29 @@ export default function PlaceCard({
   };
 
   return (
-    <div className={isResult ? "place-card rounded-md p-2 load-slide-left" : "place-card rounded-md p-2"}>
+    <div
+      className={
+        isResult
+          ? "place-card load-slide-left rounded-md p-2"
+          : "place-card rounded-md p-2"
+      }
+    >
       <div
         className={`grid grid-flow-col grid-rows-2 ${
           isResult ? "grid-cols-9" : "grid-cols-10"
         } card-grid gap-4`}
       >
         <div className="col-span-6 row-span-2">
-          <p className="card-title truncate text-lg font-bold" onClick={() => showDetailsHandler()} onDoubleClick={() => hideDetailsHandler()}>
-            {index !== undefined ? ( <span className="text-blue-600">{index + 1}. </span>) : ""}
+          <p
+            className="card-title truncate text-lg font-bold"
+            onClick={() => showDetailsHandler()}
+            onDoubleClick={() => hideDetailsHandler()}
+          >
+            {index !== undefined ? (
+              <span className="text-blue-600">{index + 1}. </span>
+            ) : (
+              ""
+            )}
             {place.title.length > 30
               ? `${place.title.substring(0, 25)}...`
               : place.title}
@@ -194,7 +209,9 @@ export default function PlaceCard({
                 {hours.map((day, index) => (
                   <tr
                     key={index}
-                    className={index === date - 1 ? "font-bold text-blue-600" : ""}
+                    className={
+                      index === date - 1 ? "font-bold text-blue-600" : ""
+                    }
                   >
                     <td className="pr-2">
                       {day.substring(0, day.indexOf(":"))}

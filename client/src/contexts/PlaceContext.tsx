@@ -14,7 +14,7 @@ export const PlaceProvider = ({ children }: React.PropsWithChildren<{}>) => {
     <PlaceContext.Provider
       value={{
         currentPlaceDetails,
-        setCurrentPlaceDetails
+        setCurrentPlaceDetails,
       }}
     >
       {children}

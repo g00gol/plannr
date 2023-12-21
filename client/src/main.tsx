@@ -10,9 +10,9 @@ const config = JSON.parse(import.meta.env.VITE_FIREBASE_CONFIG);
 initializeApp(config);
 
 ReactDOM.createRoot(document.getElementById("root")!).render(
-    <BrowserRouter>
-      <ContextProvider>
-        <App />
-      </ContextProvider>
-    </BrowserRouter>,
+  <BrowserRouter>
+    <ContextProvider>
+      <App />
+    </ContextProvider>
+  </BrowserRouter>,
 );

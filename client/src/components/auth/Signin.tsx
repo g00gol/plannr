@@ -7,9 +7,9 @@ import logo from "../../assets/logo_cropped.png";
 import { signinSchema } from "../../helpers/validation.js";
 import { unloadModal } from "./AuthModal.js";
 
-import EmailIcon from '@mui/icons-material/Email';
-import VisibilityIcon from '@mui/icons-material/Visibility';
-import VisibilityOffIcon from '@mui/icons-material/VisibilityOff';
+import EmailIcon from "@mui/icons-material/Email";
+import VisibilityIcon from "@mui/icons-material/Visibility";
+import VisibilityOffIcon from "@mui/icons-material/VisibilityOff";
 
 export default function Signin(): React.ReactElement {
   const [checked, setChecked] = useState(false);
@@ -23,10 +23,15 @@ export default function Signin(): React.ReactElement {
   const doSignIn = async (e: React.FormEvent) => {
     e.preventDefault();
     const email = (document.getElementById("email") as HTMLInputElement).value;
-    const password = (document.getElementById("password") as HTMLInputElement).value;
-    const remember = (document.getElementById("remember") as HTMLInputElement).checked;
+    const password = (document.getElementById("password") as HTMLInputElement)
+      .value;
+    const remember = (document.getElementById("remember") as HTMLInputElement)
+      .checked;
     try {
-      await signinSchema.validateAsync({ email: email, signinPassword: password });
+      await signinSchema.validateAsync({
+        email: email,
+        signinPassword: password,
+      });
     } catch (error: any) {
       setError(error.message);
       return;
@@ -54,18 +59,14 @@ export default function Signin(): React.ReactElement {
           autoFocus
           fullWidth
           margin="normal"
-
           InputProps={{
             endAdornment: (
               <InputAdornment position="end">
-                <IconButton
-                  aria-label="email icon"
-                  disabled
-                >
+                <IconButton aria-label="email icon" disabled>
                   <EmailIcon />
                 </IconButton>
               </InputAdornment>
-            )
+            ),
           }}
         />
         <TextField
@@ -77,7 +78,6 @@ export default function Signin(): React.ReactElement {
           required
           fullWidth
           margin="normal"
-
           InputProps={{
             endAdornment: (
               <InputAdornment position="end">
@@ -89,7 +89,7 @@ export default function Signin(): React.ReactElement {
                   {showPassword ? <VisibilityIcon /> : <VisibilityOffIcon />}
                 </IconButton>
               </InputAdornment>
-            )
+            ),
           }}
         />
         {error ? <div className="text-red-500">{error}</div> : <div></div>}

@@ -6,7 +6,7 @@ import { forgotpassword } from "../../api/auth";
 import logo from "../../assets/logo_cropped.png";
 import { forgotPasswordSchema } from "../../helpers/validation";
 
-import EmailIcon from '@mui/icons-material/Email';
+import EmailIcon from "@mui/icons-material/Email";
 
 export default function ForgotPassword(): React.ReactElement {
   const [error, setError] = useState("");
@@ -49,13 +49,12 @@ export default function ForgotPassword(): React.ReactElement {
           autoFocus
           fullWidth
           margin="normal"
-
           InputProps={{
             endAdornment: (
               <InputAdornment position="end">
                 <EmailIcon />
               </InputAdornment>
-            )
+            ),
           }}
         />
         {message ? <div>{message}</div> : <div></div>}

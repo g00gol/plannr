@@ -14,9 +14,9 @@ import React, {
 } from "react";
 import "react-simple-typewriter/dist/index";
 
-import AddIcon from '@mui/icons-material/Add';
-import MapIcon from '@mui/icons-material/Map';
-import SearchIcon from '@mui/icons-material/Search';
+import AddIcon from "@mui/icons-material/Add";
+import MapIcon from "@mui/icons-material/Map";
+import SearchIcon from "@mui/icons-material/Search";
 
 import nearbySearch from "../api/GoogleMaps/nearbySearch";
 import Directions from "../components/Directions/Directions";
@@ -29,7 +29,7 @@ import {
   EPlaces,
   pinSVGFilled,
   placeKeys,
-  travelModeKeys
+  travelModeKeys,
 } from "../constants/GoogleMaps/config";
 import { SearchResultContext } from "../contexts/SearchResultContext";
 import { TripContext } from "../contexts/TripContext";
@@ -55,8 +55,9 @@ export default function Home(props: HomeProps): React.ReactElement {
   const [travelMode, setTravelMode] = useState<google.maps.TravelMode>();
   const [keyWordData, setKeyWordData] = useState<string>("");
   const [searchText, setSearchText] = useState<string>("");
-  const { currentInfoWindow, setInfoWindow : setSearchWindow } = useContext(SearchResultContext);
-  const { currentTrip, setInfoWindow : setTripWindow } = useContext(TripContext);
+  const { currentInfoWindow, setInfoWindow: setSearchWindow } =
+    useContext(SearchResultContext);
+  const { currentTrip, setInfoWindow: setTripWindow } = useContext(TripContext);
 
   const { isLoaded } = useJsApiLoader({
     id: "google-map-script",
@@ -80,7 +81,11 @@ export default function Home(props: HomeProps): React.ReactElement {
     event.preventDefault();
     const center = mapRef.current?.getCenter();
 
-    if(event.currentTarget.searchBar.value != keyWordData || center != centerData || event.currentTarget.travel_mode.value != travelMode){
+    if (
+      event.currentTarget.searchBar.value != keyWordData ||
+      center != centerData ||
+      event.currentTarget.travel_mode.value != travelMode
+    ) {
       setSearchText(event.currentTarget.searchBar.value);
       setKeyWordData(event.currentTarget.searchBar.value);
       setTypeData(event.currentTarget.categories.value);
@@ -88,16 +93,15 @@ export default function Home(props: HomeProps): React.ReactElement {
       setCircleData(undefined);
       setPlaceData([]);
       setMarkerData([]);
-  
+
       if (center) {
         setCenterData(center);
         setCircleData(new CircleData(centerData, DEFAULT_RADIUS));
       }
-  
+
       toggleResults(true);
       toggleTrip(true);
     }
-
   };
 
   useEffect(() => {
@@ -135,7 +139,7 @@ export default function Home(props: HomeProps): React.ReactElement {
             onLoad={onLoad}
           >
             {/* Map crosshair */}
-            <AddIcon className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 text-2xl text-blue-800 z-10 pointer-events-none"/>
+            <AddIcon className="pointer-events-none absolute left-1/2 top-1/2 z-10 -translate-x-1/2 -translate-y-1/2 transform text-2xl text-blue-800" />
             {/* Search Bar */}
             <form className="flex justify-center" onSubmit={search}>
               <input
@@ -148,7 +152,7 @@ export default function Home(props: HomeProps): React.ReactElement {
               <select
                 name="categories"
                 id="categories"
-                className="w-min bg-gray-40 p-50 z-10 m-3 block rounded-xl border border-gray-600 p-4 ps-10 text-lg opacity-90"
+                className="bg-gray-40 p-50 z-10 m-3 block w-min rounded-xl border border-gray-600 p-4 ps-10 text-lg opacity-90"
               >
                 {placeKeys.map((key) => {
                   const val = EPlaces[key];
@@ -169,13 +173,17 @@ export default function Home(props: HomeProps): React.ReactElement {
               <select
                 name="travel_mode"
                 id="travel_mode"
-                className="w-min bg-gray-40 p-50 z-10 m-3 block rounded-xl border border-gray-600 p-4 ps-10 text-lg opacity-90"
+                className="bg-gray-40 p-50 z-10 m-3 block w-min rounded-xl border border-gray-600 p-4 ps-10 text-lg opacity-90"
                 defaultValue={google.maps.TravelMode.WALKING}
-                onChange={(e) => setTravelMode(e.target.value as google.maps.TravelMode)}
+                onChange={(e) =>
+                  setTravelMode(e.target.value as google.maps.TravelMode)
+                }
               >
                 {travelModeKeys.map((key) => {
                   const val = google.maps.TravelMode[key];
-                  const text = (key[0].toUpperCase() + key.substring(1, key.length).toLowerCase());
+                  const text =
+                    key[0].toUpperCase() +
+                    key.substring(1, key.length).toLowerCase();
                   return (
                     <option
                       key={val.toString()}
@@ -200,50 +208,70 @@ export default function Home(props: HomeProps): React.ReactElement {
             ) : (
               <aside
                 id="showSearchResultsButton"
-                className="results top-inherit left-inherit load-slide-left fixed left-2 z-20 ml-2 h-4/5 w-1/7 rounded-lg pb-10 opacity-90"
+                className="results top-inherit left-inherit load-slide-left w-1/7 fixed left-2 z-20 ml-2 h-4/5 rounded-lg pb-10 opacity-90"
               >
-                <div className={`dark:bg-gray-150 z-20 flex flex-col rounded-lg bg-white shadow-md p-5`}>
-                  <SearchIcon className="text-2xl text-blue-500"/>
-                  <p className="text-center text-lg toggle-button" onClick={() => toggleResults(true)}>Show Search Results &gt;</p>
+                <div
+                  className={`dark:bg-gray-150 z-20 flex flex-col rounded-lg bg-white p-5 shadow-md`}
+                >
+                  <SearchIcon className="text-2xl text-blue-500" />
+                  <p
+                    className="toggle-button text-center text-lg"
+                    onClick={() => toggleResults(true)}
+                  >
+                    Show Search Results &gt;
+                  </p>
                 </div>
               </aside>
             )}
 
             {/* Trip Window pretend-component */}
             {tripToggle ? (
-              <TripWindow
-                tripToggle={tripToggle}
-                toggleTrip={toggleTrip}
-              />
+              <TripWindow tripToggle={tripToggle} toggleTrip={toggleTrip} />
             ) : (
               <aside
                 id="showTripWindowButton"
-                className="trip top-inherit left-inherit load-slide-right fixed right-12 z-20 h-4/5 w-1/7 rounded-lg pb-10 opacity-90"
+                className="trip top-inherit left-inherit load-slide-right w-1/7 fixed right-12 z-20 h-4/5 rounded-lg pb-10 opacity-90"
               >
-                <div className={`dark:bg-gray-150 z-20 flex flex-col rounded-lg bg-white shadow-md p-5 justify-items-end`}>
-                  <MapIcon className="text-2xl text-blue-500"/>
-                  <p className="text-center text-lg toggle-button" onClick={() => toggleTrip(true)}>&lt; Show Your Trip</p>
+                <div
+                  className={`dark:bg-gray-150 z-20 flex flex-col justify-items-end rounded-lg bg-white p-5 shadow-md`}
+                >
+                  <MapIcon className="text-2xl text-blue-500" />
+                  <p
+                    className="toggle-button text-center text-lg"
+                    onClick={() => toggleTrip(true)}
+                  >
+                    &lt; Show Your Trip
+                  </p>
                 </div>
               </aside>
             )}
 
-            <Directions travelMode={travelMode ? travelMode : google.maps.TravelMode.WALKING} mapRef={mapRef}/>
+            <Directions
+              travelMode={
+                travelMode ? travelMode : google.maps.TravelMode.WALKING
+              }
+              mapRef={mapRef}
+            />
 
-            {currentInfoWindow != -1 ?
+            {currentInfoWindow != -1 ? (
               <InfoWindow
                 onCloseClick={() => setSearchWindow(-1)}
                 options={{
                   ariaLabel: placeData[currentInfoWindow].title,
                   position: placeData[currentInfoWindow].marker?.location,
-                }}>
-                  <div className="text-center">
-                    <h1 className="font-bold">{placeData[currentInfoWindow].title}</h1>
-                    <p>{placeData[currentInfoWindow].addr}</p>
-                  </div>
-                </InfoWindow>
-                : <></>
-            }
-            
+                }}
+              >
+                <div className="text-center">
+                  <h1 className="font-bold">
+                    {placeData[currentInfoWindow].title}
+                  </h1>
+                  <p>{placeData[currentInfoWindow].addr}</p>
+                </div>
+              </InfoWindow>
+            ) : (
+              <></>
+            )}
+
             {markerData.map((result) => {
               return (
                 <Marker
@@ -268,7 +296,10 @@ export default function Home(props: HomeProps): React.ReactElement {
               />
             )}
             {placeData.map((result, ind) => {
-              if (result.marker && !currentTrip.some(({ placeId }) => placeId === result.placeId)) {
+              if (
+                result.marker &&
+                !currentTrip.some(({ placeId }) => placeId === result.placeId)
+              ) {
                 return (
                   <Marker
                     key={`(${result.marker.location.lat()}, ${result.marker.location.lng()})`}

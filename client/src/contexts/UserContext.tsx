@@ -15,7 +15,7 @@ export const UserProvider = ({ children }: React.PropsWithChildren<{}>) => {
     <UserContext.Provider
       value={{
         userData,
-        setUserData
+        setUserData,
       }}
     >
       {children}

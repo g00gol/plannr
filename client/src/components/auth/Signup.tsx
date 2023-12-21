@@ -7,10 +7,10 @@ import logo from "../../assets/logo_cropped.png";
 import { signupSchema } from "../../helpers/validation.js";
 import { unloadModal } from "./AuthModal.js";
 
-import EmailIcon from '@mui/icons-material/Email';
-import PersonIcon from '@mui/icons-material/Person';
-import VisibilityIcon from '@mui/icons-material/Visibility';
-import VisibilityOffIcon from '@mui/icons-material/VisibilityOff';
+import EmailIcon from "@mui/icons-material/Email";
+import PersonIcon from "@mui/icons-material/Person";
+import VisibilityIcon from "@mui/icons-material/Visibility";
+import VisibilityOffIcon from "@mui/icons-material/VisibilityOff";
 
 export default function Signup(): React.ReactElement {
   const [showPassword, setShowPassword] = useState(false);
@@ -23,11 +23,20 @@ export default function Signup(): React.ReactElement {
   const doSignUp = async (e: React.FormEvent) => {
     e.preventDefault();
     const email = (document.getElementById("email") as HTMLInputElement).value;
-    const username = (document.getElementById("username") as HTMLInputElement).value;
-    const password = (document.getElementById("password") as HTMLInputElement).value;
-    const confirmPassword = (document.getElementById("confirmPassword") as HTMLInputElement).value;
+    const username = (document.getElementById("username") as HTMLInputElement)
+      .value;
+    const password = (document.getElementById("password") as HTMLInputElement)
+      .value;
+    const confirmPassword = (
+      document.getElementById("confirmPassword") as HTMLInputElement
+    ).value;
     try {
-      await signupSchema.validateAsync({ email, username, password, confirmPassword });
+      await signupSchema.validateAsync({
+        email,
+        username,
+        password,
+        confirmPassword,
+      });
     } catch (error: any) {
       setError(error.message);
       return;
@@ -56,18 +65,14 @@ export default function Signup(): React.ReactElement {
           autoFocus
           fullWidth
           margin="normal"
-
           InputProps={{
             endAdornment: (
               <InputAdornment position="end">
-                <IconButton
-                  aria-label="email icon"
-                  disabled
-                >
+                <IconButton aria-label="email icon" disabled>
                   <EmailIcon />
                 </IconButton>
               </InputAdornment>
-            )
+            ),
           }}
         />
         <TextField
@@ -79,18 +84,14 @@ export default function Signup(): React.ReactElement {
           required
           fullWidth
           margin="normal"
-
           InputProps={{
             endAdornment: (
               <InputAdornment position="end">
-                <IconButton
-                  aria-label="email icon"
-                  disabled
-                >
+                <IconButton aria-label="email icon" disabled>
                   <PersonIcon />
                 </IconButton>
               </InputAdornment>
-            )
+            ),
           }}
         />
         <TextField
@@ -102,7 +103,6 @@ export default function Signup(): React.ReactElement {
           required
           fullWidth
           margin="normal"
-
           InputProps={{
             endAdornment: (
               <InputAdornment position="end">
@@ -114,7 +114,7 @@ export default function Signup(): React.ReactElement {
                   {showPassword ? <VisibilityIcon /> : <VisibilityOffIcon />}
                 </IconButton>
               </InputAdornment>
-            )
+            ),
           }}
         />
         <TextField
