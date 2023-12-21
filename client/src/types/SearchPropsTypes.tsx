@@ -3,7 +3,6 @@ import { PlaceData } from "../dataObjects/PlaceData";
 import { PlanMarkerData } from "../dataObjects/PlanMarkerData";
 
 export default interface SearchProps {
-  mapRef: React.MutableRefObject<google.maps.Map | undefined>;
   centerData: google.maps.LatLng | google.maps.LatLngLiteral;
   setCenterData: React.Dispatch<
     React.SetStateAction<google.maps.LatLng | google.maps.LatLngLiteral>

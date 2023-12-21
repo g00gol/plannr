@@ -10,7 +10,6 @@ import React, {
   useCallback,
   useContext,
   useEffect,
-  useRef,
   useState,
 } from "react";
 import "react-simple-typewriter/dist/index";
@@ -33,6 +32,7 @@ import {
 } from "../constants/GoogleMaps/config";
 import { SearchResultContext } from "../contexts/SearchResultContext";
 import { TripContext } from "../contexts/TripContext";
+import { MapContext } from "../contexts/MapContext";
 import { CircleData } from "../dataObjects/CircleData";
 import { PlaceData } from "../dataObjects/PlaceData";
 import { PlanMarkerData } from "../dataObjects/PlanMarkerData";
@@ -41,7 +41,7 @@ import { HomeProps } from "../types/HomeTypes";
 const underScoreRegex = new RegExp("_", "g");
 
 export default function Home(props: HomeProps): React.ReactElement {
-  const mapRef = useRef<google.maps.Map>();
+  const { mapRef } = useContext(MapContext);
   const [centerData, setCenterData] = useState<
     google.maps.LatLng | google.maps.LatLngLiteral
   >({ lat: 40.74273, lng: -74.038 });
@@ -191,7 +191,6 @@ export default function Home(props: HomeProps): React.ReactElement {
             {/* Results Window pretend-component */}
             {resultsToggle ? (
               <SearchResults
-                mapRef={mapRef}
                 placeData={placeData}
                 resultsToggle={resultsToggle}
                 toggleResults={toggleResults}
@@ -212,7 +211,6 @@ export default function Home(props: HomeProps): React.ReactElement {
             {/* Trip Window pretend-component */}
             {tripToggle ? (
               <TripWindow
-                mapRef={mapRef}
                 tripToggle={tripToggle}
                 toggleTrip={toggleTrip}
               />
@@ -269,7 +267,7 @@ export default function Home(props: HomeProps): React.ReactElement {
               />
             )}
             {placeData.map((result, ind) => {
-              if (result.marker && !currentTrip.some(({ place_id }) => place_id === result.place_id)) {
+              if (result.marker && !currentTrip.some(({ placeId }) => placeId === result.placeId)) {
                 return (
                   <Marker
                     key={`(${result.marker.location.lat()}, ${result.marker.location.lng()})`}

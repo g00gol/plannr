@@ -15,26 +15,39 @@ import {
   browserLocalPersistence,
 } from "firebase/auth";
 
-const signup = async (email: string, username: string, password: string) => {
+import { createUserData } from "./user"; // getting user data is done in AuthContext
+
+export const signup = async (email: string, username: string, password: string) => {
   const auth = getAuth() as Auth;
   await createUserWithEmailAndPassword(auth, email, password);
 
   const user = auth.currentUser;
   if(!user) throw new Error('Error creating user');
 
-  await updateProfile(user, { displayName: username });
+  try {
+    await createUserData();
+  } catch (error: any) {
+    console.log(error);
+    await user.delete();
+    throw error;
+  }
 
+  await updateProfile(user, { displayName: username });
   console.log(`Signup successful for ${username}`);
 };
 
-const signin = async (email: string, password: string, persistent?: boolean) => {
+export const signin = async (email: string, password: string, persistent?: boolean) => {
   const auth = getAuth() as Auth;
   await setPersistence(auth, persistent ? browserLocalPersistence : browserSessionPersistence); //default session persistence
   await signInWithEmailAndPassword(auth, email, password);
+
+  const user = auth.currentUser;
+  if(!user) throw new Error('Error signing in');
+  
   console.log(`Signin successful for ${email}`);
 };
 
-const changepassword = async (
+export const changepassword = async (
   email: string,
   oldPassword: string,
   newPassword: string,
@@ -53,19 +66,19 @@ const changepassword = async (
   await logout();
 };
 
-const forgotpassword = async (email: string) => {
+export const forgotpassword = async (email: string) => {
   const auth = getAuth();
   await sendPasswordResetEmail(auth, email);
   console.log(`Password reset email sent to ${email}`);
 };
 
-const resetpassword = async (oob: string, newPass: string) => {
+export const resetpassword = async (oob: string, newPass: string) => {
   const auth = getAuth();
   await confirmPasswordReset(auth, oob, newPass);
   console.log(`Password reset successful`);
 };
 
-const logout = async () => {
+export const logout = async () => {
   const auth = getAuth() as Auth;
 
   const user = auth.currentUser;
@@ -75,11 +88,13 @@ const logout = async () => {
   await signOut(auth);
 };
 
-export {
-  signup,
-  signin,
-  logout,
-  changepassword,
-  forgotpassword,
-  resetpassword,
-};
+export const getidtoken = async () => {
+  const auth = getAuth() as Auth;
+
+  const user = auth.currentUser;
+  if(!user) throw new Error('Error getting id token for request');
+
+  const idToken = await user.getIdToken();
+
+  return idToken;
+}

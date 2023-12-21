@@ -5,7 +5,6 @@ import { PlaceData } from "../../dataObjects/PlaceData";
 import PlaceCard from "../PlaceCard";
 
 interface SearchProps {
-  mapRef: React.MutableRefObject<google.maps.Map | undefined>;
   placeData: Array<PlaceData>;
   resultsToggle: boolean;
   toggleResults: React.Dispatch<React.SetStateAction<boolean>>;
@@ -13,12 +12,12 @@ interface SearchProps {
 }
 
 export default function SearchResults({
-  mapRef,
   placeData,
   resultsToggle,
   toggleResults,
   searchText,
 }: SearchProps): React.ReactElement {
+
   return (
     <aside
       id="searchResults"
@@ -48,7 +47,7 @@ export default function SearchResults({
         <div className="flex-grow overflow-y-scroll px-3 py-4">
           {placeData.map((result, index) => (
             <div key={`${result.addr}-result`}>
-              <PlaceCard mapRef={mapRef} place={result} isResult={true} index={index}/>
+              <PlaceCard place={result} isResult={true} index={index}/>
             </div>
           ))}
         </div>

@@ -27,6 +27,11 @@ export default function Signin(): React.ReactElement {
     const remember = (document.getElementById("remember") as HTMLInputElement).checked;
     try {
       await signinSchema.validateAsync({ email: email, signinPassword: password });
+    } catch (error: any) {
+      setError(error.message);
+      return;
+    }
+    try {
       await signin(email, password, remember);
       unloadModal(navigate);
     } catch (error: any) {

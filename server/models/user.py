@@ -1,4 +1,4 @@
-from typing import List
+from typing import List, Union
 from pydantic import BaseModel
 from bson import ObjectId
 
@@ -6,9 +6,9 @@ from .trip import Trip
 
 
 class User(BaseModel):
-    _id: str | ObjectId
+    _id: Union[str, ObjectId]
     user_id: str
-    current_trip: str | ObjectId
+    current_trip: Union[str, ObjectId]
     trips: List[Trip]
 
     class Config:

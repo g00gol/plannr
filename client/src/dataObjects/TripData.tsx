@@ -2,10 +2,12 @@ export class TripData {
   //private markerStyle;
 
   constructor(
+    public trip_id: string,
     public name: string,
-    public place_ids: string[],
+    public places: string[],
   ) {
+    this.trip_id = trip_id;
     this.name = name;
-    this.place_ids = place_ids;
+    this.places = places;
   }
 }

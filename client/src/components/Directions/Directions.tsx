@@ -1,5 +1,5 @@
 import React, { useCallback, useContext } from "react";
-import { DirectionsProps } from "../../types/DirectionsType";
+import { RenderDirectionsProps } from "../../types/DirectionsType";
 import { TripContext } from "../../contexts/TripContext";
 import RenderDirections from "./RenderDirections";
 import { pinSVGFilled } from "../../constants/GoogleMaps/config";
@@ -9,7 +9,7 @@ import { SearchResultContext } from "../../contexts/SearchResultContext";
 export default function Directions({
   travelMode,
   mapRef
-}: DirectionsProps): React.ReactElement {
+}: RenderDirectionsProps): React.ReactElement {
     const { currentTrip, currentInfoWindow, setInfoWindow : setTripWindow } = useContext(TripContext);
     const { setInfoWindow : setSearchWindow } = useContext(SearchResultContext);
 
@@ -36,7 +36,7 @@ export default function Directions({
                 : <></>
         }
         <Marker
-            key={currentTrip[0].place_id}
+            key={currentTrip[0].placeId}
             title={currentTrip[0].marker.title}
             position={currentTrip[0].marker.location}
             label={{
@@ -61,7 +61,7 @@ export default function Directions({
                     }
 
                     return <RenderDirections 
-                            key={`${currentTrip[ind - 1].place_id} - ${result.place_id}`} 
+                            key={`${currentTrip[ind - 1].placeId} - ${result.placeId}`} 
                             place1={currentTrip[ind - 1]} 
                             place2={result} 
                             travelMode={travelMode} 

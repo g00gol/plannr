@@ -73,7 +73,7 @@ export default function RenderDirections({
                 : <></>
             }
             <Marker
-              key={place2.place_id}
+              key={place2.placeId}
               title={place2.marker.title}
               position={place2.marker.location}
               label={{

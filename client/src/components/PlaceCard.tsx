@@ -7,6 +7,7 @@ import React, { useContext, useEffect, useState } from "react";
 import noImage from "../assets/noImage.png";
 import { PlaceContext } from "../contexts/PlaceContext";
 import { TripContext } from "../contexts/TripContext";
+import { MapContext } from "../contexts/MapContext";
 import { PlaceCardProps } from "../types/PlaceCardType";
 
 interface PlaceCardRefProps {
@@ -22,10 +23,11 @@ export const PlaceCardRef = React.forwardRef<HTMLDivElement, PlaceCardRefProps>(
 export default function PlaceCard({
   place,
   isResult,
-  mapRef,
   index,
   children,
 }: PlaceCardProps): React.ReactElement {
+  const { mapRef } = useContext(MapContext);
+  
   const [showDetails, setShowDetails] = useState<boolean>(false);
   const [phone, setPhone] = useState<string>("");
   const [website, setWebsite] = useState<string>("");
@@ -37,13 +39,14 @@ export default function PlaceCard({
 
   const fetchPlaceDetails = () => {
     const map = mapRef.current;
-    if (!map || !place.place_id) {
+
+    if (!map || !place.placeId) {
       console.log("Map or place ID is undefined");
       return;
     }
 
     const service = new google.maps.places.PlacesService(map);
-    service.getDetails({ placeId: place.place_id }, (placeDetails, status) => {
+    service.getDetails({ placeId: place.placeId }, (placeDetails, status) => {
       if (
         status === google.maps.places.PlacesServiceStatus.OK &&
         placeDetails
@@ -59,19 +62,19 @@ export default function PlaceCard({
     if (showDetails) {
       fetchPlaceDetails();
     }
-  }, [showDetails, place.place_id, mapRef]);
+  }, [showDetails, place.placeId, mapRef]);
 
   useEffect(() => {
-    if (place.place_id === currentPlaceDetails && (isResult)) {
+    if (place.placeId === currentPlaceDetails && (isResult)) {
       setShowDetails(true);
     } else {
       setShowDetails(false);
     }
-  }, [place.place_id, currentPlaceDetails, isResult]);
+  }, [place.placeId, currentPlaceDetails, isResult]);
 
   const showDetailsHandler = () => {
-    if (place.place_id) {
-      setCurrentPlaceDetails(place.place_id);
+    if (place.placeId) {
+      setCurrentPlaceDetails(place.placeId);
     }
     setShowDetails(true);
   };
