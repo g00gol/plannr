@@ -80,7 +80,12 @@ export default function Home(props: HomeProps): React.ReactElement {
     event.preventDefault();
     const center = mapRef.current?.getCenter();
 
-    if(event.currentTarget.searchBar.value != keyWordData || center != centerData || event.currentTarget.travel_mode.value != travelMode){
+    if(
+      event.currentTarget.searchBar.value != keyWordData || 
+      event.currentTarget.categories.value != typeData || 
+      center != centerData || 
+      event.currentTarget.travel_mode.value != travelMode) {
+
       setSearchText(event.currentTarget.searchBar.value);
       setKeyWordData(event.currentTarget.searchBar.value);
       setTypeData(event.currentTarget.categories.value);
@@ -119,7 +124,7 @@ export default function Home(props: HomeProps): React.ReactElement {
     if (resultsToggle) {
       fetchData();
     }
-  }, [keyWordData, centerData, travelMode]);
+  }, [keyWordData, typeData, centerData, travelMode]);
 
   return (
     <div className="flex h-screen flex-col">
