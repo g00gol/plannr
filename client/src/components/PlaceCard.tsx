@@ -5,9 +5,9 @@ import RemoveIcon from "@mui/icons-material/Remove";
 import { Button } from "@mui/material";
 import React, { useContext, useEffect, useState } from "react";
 import noImage from "../assets/noImage.png";
+import { MapContext } from "../contexts/MapContext";
 import { PlaceContext } from "../contexts/PlaceContext";
 import { TripContext } from "../contexts/TripContext";
-import { MapContext } from "../contexts/MapContext";
 import { PlaceCardProps } from "../types/PlaceCardType";
 
 interface PlaceCardRefProps {
@@ -88,7 +88,7 @@ export default function PlaceCard({
   };
 
   return (
-    <div className={isResult ? "place-card rounded-md p-2 load-slide-left" : "place-card rounded-md p-2 load-slide-right-fast"}>
+    <div className={isResult ? "place-card rounded-md p-2 load-slide-left" : "place-card rounded-md p-2"}>
       <div
         className={`grid grid-flow-col grid-rows-2 ${
           isResult ? "grid-cols-9" : "grid-cols-10"
