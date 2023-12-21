@@ -89,13 +89,15 @@ export default function TripWindow({
             {/* trip name? */}
             <div className="w-1/2 flex flex-row">
               <h2 className="pt-2 text-2xl font-bold text-blue-500">Your Trip</h2>{" "}
-              <button
-                type="button"
-                className="text-md rounded-md px-4 py-2 text-center hover:text-red-500 hover:font-bold hover:transition hover:duration-300"
-                onClick={() => saveTrip()}
-                >
-                Save
-              </button>
+              { hasChanges &&
+                <button
+                  type="button"
+                  className="text-md rounded-md px-4 py-2 text-center hover:text-red-500 hover:font-bold hover:transition hover:duration-300"
+                  onClick={() => saveTrip()}
+                  >
+                  Save
+                </button>
+              }
             </div>            
             <button
               type="button"
