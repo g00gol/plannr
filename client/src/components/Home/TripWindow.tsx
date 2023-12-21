@@ -1,7 +1,9 @@
+import SaveIcon from '@mui/icons-material/Save';
 import React from "react";
 import SortableList, { SortableItem, SortableKnob } from "react-easy-sort";
 import { FaGripLines } from "react-icons/fa6";
 
+import { Button } from "@mui/material";
 import { TripContext } from "../../contexts/TripContext";
 import PlaceCard, { PlaceCardRef } from "../PlaceCard";
 
@@ -35,15 +37,6 @@ export default function TripWindow({
           {/* trip name? */}
           <div className="w-1/2 flex flex-row">
             <h2 className="pt-2 text-2xl font-bold text-blue-500">Your Trip</h2>{" "}
-            { hasChanges &&
-              <button
-                type="button"
-                className="text-md rounded-md px-4 py-2 text-center hover:text-red-500 hover:font-bold hover:transition hover:duration-300"
-                onClick={() => saveTrip()}
-                >
-                Save
-              </button>
-              }
           </div>
           <button
             type="button"
@@ -57,6 +50,22 @@ export default function TripWindow({
           <span className="font-bold">Places in Trip</span>:{" "}
           {currentTrip.length}
         </h3>
+        { hasChanges &&
+          (
+            <div className="flex justify-left px-5 py-2">
+              <p className="text-red-500 py-2">You have unsaved changes!</p>
+              <Button
+                variant="text"
+                color="inherit"
+                onClick={() => saveTrip()}
+                endIcon={<SaveIcon />}
+                className='text-md rounded-md px-8 py-2 text-center hover:text-red-500 hover:font-bold hover:transition hover:duration-300'
+              >
+                Save
+              </Button>
+            </div>
+          )
+        }
         <div className="flex-grow overflow-y-scroll px-3 py-4">
           <SortableList
             onSortEnd={onSortEnd}
@@ -89,16 +98,7 @@ export default function TripWindow({
             {/* trip name? */}
             <div className="w-1/2 flex flex-row">
               <h2 className="pt-2 text-2xl font-bold text-blue-500">Your Trip</h2>{" "}
-              { hasChanges &&
-                <button
-                  type="button"
-                  className="text-md rounded-md px-4 py-2 text-center hover:text-red-500 hover:font-bold hover:transition hover:duration-300"
-                  onClick={() => saveTrip()}
-                  >
-                  Save
-                </button>
-              }
-            </div>            
+            </div>
             <button
               type="button"
               className="text-md rounded-md px-4 py-2 text-center hover:text-red-500 hover:font-bold hover:transition hover:duration-300"
@@ -111,6 +111,22 @@ export default function TripWindow({
             <span className="font-bold">Places in Trip</span>:{" "}
             {currentTrip.length}
           </h3> */}
+          { hasChanges &&
+            (
+              <div className="flex justify-left px-5 py-2">
+                <p className="text-red-500 py-2">You have unsaved changes!</p>
+                <Button
+                  variant="text"
+                  color="inherit"
+                  onClick={() => saveTrip()}
+                  endIcon={<SaveIcon />}
+                  className='text-md rounded-md px-8 py-2 text-center hover:text-red-500 hover:font-bold hover:transition hover:duration-300'
+                >
+                  Save
+                </Button>
+              </div>
+            )
+          }
           <div className="flex-grow overflow-y-scroll px-3 py-4">
             <p className="text-center text-xl">
             No places in trip yet!
