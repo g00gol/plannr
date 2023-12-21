@@ -2,12 +2,13 @@ import React, { useEffect } from 'react';
 import { Navigate, Outlet } from 'react-router-dom';
 import { useSearchParams } from 'react-router-dom';
 import { checkoobcode } from '../../api/auth';
+import { MiddlewareProps } from '../../types/MiddlewareTypes';
 
 /** Reset Protected route wrapper
  *  Users that have not requested to remember pw should not be able to access pw
  */
 
-const ResetProtected = (): React.ReactElement => {
+const ResetProtected = (props: MiddlewareProps): React.ReactElement => {
 	const [searchParams] = useSearchParams();
     const [isValid, setIsValid] = React.useState<boolean>(true);
 
@@ -31,7 +32,7 @@ const ResetProtected = (): React.ReactElement => {
         check();
     } , []);
 
-    return isValid ? <Outlet /> : <Navigate to='/' replace={true} />;
+    return isValid ? <>{props.children}</> : <Navigate to='/' replace={true} />;
 };
 
 export default ResetProtected;
