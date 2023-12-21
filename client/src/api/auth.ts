@@ -13,6 +13,7 @@ import {
   setPersistence,
   browserSessionPersistence,
   browserLocalPersistence,
+  checkActionCode
 } from "firebase/auth";
 
 import { createUserData } from "./user"; // getting user data is done in AuthContext
@@ -71,6 +72,13 @@ export const forgotpassword = async (email: string) => {
   await sendPasswordResetEmail(auth, email);
   console.log(`Password reset email sent to ${email}`);
 };
+
+export const checkoobcode = async (oob: string) => {
+  const auth = getAuth();
+  const result = await checkActionCode(auth, oob);
+  console.log(result);
+  return result;
+}
 
 export const resetpassword = async (oob: string, newPass: string) => {
   const auth = getAuth();
