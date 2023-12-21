@@ -30,7 +30,10 @@ export default function nearbySearch(
           status === google.maps.places.PlacesServiceStatus.OK &&
           res !== null
         ) {
-          const data: Array<PlaceData> = res.map((r) => {
+          const data: Array<PlaceData> = res.filter((r) => {
+            return r.geometry && r.geometry.location && circleData && google.maps.geometry.spherical.computeDistanceBetween(r.geometry.location, centerData) < circleData.radius;
+          }).map((r) => {
+
             const placeId = r.place_id!;
             const name = r.name ? r.name : "Invalid Name";
             const address = r.vicinity ? r.vicinity : "Invalid Address";
