@@ -4,7 +4,7 @@ export class PlaceData {
   //private markerStyle;
 
   constructor(
-    public placeId: string | undefined,
+    public placeId: string,
     public title: string,
     public addr: string,
     public priceLevel: number | undefined,

@@ -1,12 +1,12 @@
-import React, { useEffect } from "react";
+import React from "react";
 import { Link } from "react-router-dom";
 import { Typewriter } from "react-simple-typewriter";
 import logo_cropped from "../assets/logo_cropped.png";
 import NavDropdown from "./NavDropdown";
-import { AuthContext } from "../contexts/AuthContext";
+// import { AuthContext } from "../contexts/AuthContext";
 
 export default function NavBar(): React.ReactElement {
-  const currentUser = React.useContext(AuthContext);
+  // const currentUser = React.useContext(AuthContext);
   const wordsList: string[] = [
     " go on a date",
     " take a hike",
@@ -22,31 +22,31 @@ export default function NavBar(): React.ReactElement {
     " go to a concert",
   ];
 
-  const blam = async (): Promise<void> => {
-    // const headers = {
-    //   "Content-Type": "application/json",
-    //   Authorization: "Bearer " + (await currentUser?.getIdToken()),
-    // };
+  // const blam = async (): Promise<void> => {
+  //   const headers = {
+  //     "Content-Type": "application/json",
+  //     Authorization: "Bearer " + (await currentUser?.getIdToken()),
+  //   };
 
-    // const data = await fetch("http://localhost:8000/users", {
-    //   method: "POST",
-    //   headers: headers,
-    // });
-    // console.log(await data.json());
+  //   const data = await fetch("http://localhost:8000/users", {
+  //     method: "POST",
+  //     headers: headers,
+  //   });
+  //   console.log(await data.json());
 
-    try {
-      const token = await currentUser?.getIdToken();
-      console.log(token);
-      console.log("uid", currentUser?.uid);
-    } catch (e) {
-      console.log("err");
-      console.log(e);
-    }
-  };
+  //   try {
+  //     const token = await currentUser?.getIdToken();
+  //     console.log(token);
+  //     console.log("uid", currentUser?.uid);
+  //   } catch (e) {
+  //     console.log("err");
+  //     console.log(e);
+  //   }
+  // };
 
-  useEffect(() => {
-    blam();
-  }, []);
+  // useEffect(() => {
+  //   blam();
+  // }, []);
 
   return (
     <header className="bg-white">

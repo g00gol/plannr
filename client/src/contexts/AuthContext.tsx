@@ -24,12 +24,10 @@ export const AuthProvider = ({ children }: React.PropsWithChildren<{}>) => {
 
   useEffect(() => {
     const loadUserData = async () => {
-      console.log(currentUser);
       if (currentUser) {
         try {
           const userData = await getUserData();
           setUserData(userData);
-          console.log(userData)
         } catch(error: any) {
           console.log(error)
           throw error;

@@ -98,7 +98,7 @@ async def get_trip(user_id: str, trip_id: str) -> Trip:
     try:
         db = await get_db_async("plannr")
         users = db["users"]
-        trip = await users.find_one({"user_id": user_id, "trips._id": ObjectId(trip_id)}, {"trips.$": 1})
+        trip = await users.find_one({"user_id": user_id, "trips.trip_id": ObjectId(trip_id)}, {"trips.$": 1})
 
         # If trip not found, raise exception
         if not trip:
@@ -156,7 +156,7 @@ async def edit_trip(user_id: str, trip_id: str, trip_name: str | None, places: L
             trip["trips.$.name"] = trip_name
         if places:
             trip["trips.$.places"] = places
-        await users.update_one({"user_id": user_id, "trips._id": ObjectId(trip_id)}, {"$set": trip})
+        await users.update_one({"user_id": user_id, "trips.trip_id": ObjectId(trip_id)}, {"$set": trip})
 
         # Get the updated trip
         _trip = await get_trip(user_id, trip_id)

@@ -31,7 +31,7 @@ export default function nearbySearch(
           res !== null
         ) {
           const data: Array<PlaceData> = res.map((r) => {
-            const placeId = r.place_id;
+            const placeId = r.place_id!;
             const name = r.name ? r.name : "Invalid Name";
             const address = r.vicinity ? r.vicinity : "Invalid Address";
             const isOpen = r.opening_hours?.isOpen();

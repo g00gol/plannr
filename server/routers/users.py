@@ -105,8 +105,9 @@ async def update_trip(request: Request, trip_id: str, trip_name: str = None, pla
         )
 
     try:
-        trip_data = Trip(name=trip_name, places=places)
-        trip = await users_db.edit_trip(request.state.uid, trip_id, trip_data.name, trip_data.places)
+        existing_trip = await users_db.get_trip(request.state.uid, trip_id)
+        trip_data = Trip(trip_id=trip_id, name=trip_name or existing_trip.get('name'), places=places or existing_trip.get('places'))
+        trip = await users_db.edit_trip(request.state.uid, trip_data.trip_id, trip_data.name, trip_data.places)
         return trip
     except HTTPException as http_e:
         raise http_e
