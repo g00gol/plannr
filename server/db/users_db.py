@@ -78,7 +78,10 @@ async def create_user(user: User) -> User:
         # Check if user_id already exists in database
         _user = await db.users.find_one({"user_id": user["user_id"]})
         if _user:
-            raise Exception("User already exists.")
+            raise HTTPException(
+                status_code=409,
+                detail="User already exists.",
+            )
 
         res = await db.users.insert_one(user)
         # Get the newly created user
