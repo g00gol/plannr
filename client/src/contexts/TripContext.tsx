@@ -40,8 +40,12 @@ export const TripProvider = ({ children }: React.PropsWithChildren<{}>) => {
     const setTrip = async (map: google.maps.Map) => {
       try {
         const tripId = userData.currentTrip;
-        const trip = userData.trips.find((trip) => trip.trip_id === tripId) 
-                     ?? new TripData(tripId, "Your Trip", []);
+        let trip = userData.trips.find((trip) => trip.trip_id === tripId)
+
+        // the below two lines can prolly be revised but my brain is fried
+        if(!trip) trip = new TripData(tripId, "Your Trip", currentTrip.map((place) => place.placeId)); //if trip doesn't exist, create a new one with current guest trip 
+        if(trip.places.length === 0) trip = new TripData(tripId, trip.name, currentTrip.map((place) => place.placeId)); //if it does exist but it's empty, create new one with current guest trip and name
+        
         const placeIds = trip.places;
         const name = trip.name;
 
@@ -128,13 +132,16 @@ export const TripProvider = ({ children }: React.PropsWithChildren<{}>) => {
 
   useEffect(() => {
     checkChanges();
-  }, [currentTrip]);
+  }, [currentTrip, userData]);
 
   const checkChanges = (trip?: TripData) => {
+    // console.log(`checkChanges ${JSON.stringify(userData) } ${JSON.stringify(currentTrip)}`)
     if(userData && currentTrip) {
       const presavePlaces = trip ? trip.places : (userData.trips.find((trip) => trip.trip_id === tripId)?.places ?? []);
       const currentPlaces = currentTrip.map((place) => place.placeId);
       setHasChanges(JSON.stringify(presavePlaces) !== JSON.stringify(currentPlaces));
+    } else if (currentTrip){
+      setHasChanges(false);
     }
   }
 
