@@ -14,7 +14,7 @@ export const AuthProvider = ({ children }: React.PropsWithChildren<{}>) => {
   const auth = getAuth();
   useEffect(() => {
     let myListener = onAuthStateChanged(auth, (user: any) => {
-      setCurrentUser(user);      
+      setCurrentUser(user);
       setLoadingUser(false);
     });
     return () => {
@@ -32,6 +32,9 @@ export const AuthProvider = ({ children }: React.PropsWithChildren<{}>) => {
           console.log(error)
           throw error;
         }
+      }
+      else {
+        setUserData(null!);
       }
     }
     const load = async () => {

@@ -1,8 +1,7 @@
 import InfoIcon from "@mui/icons-material/Info";
 import LoginIcon from "@mui/icons-material/Login";
-import Button from "@mui/material/Button";
-import Menu from "@mui/material/Menu";
-import MenuItem from "@mui/material/MenuItem";
+import LogoutIcon from '@mui/icons-material/Logout';
+import { Button, Dialog, Menu, MenuItem } from "@mui/material";
 import * as React from "react";
 import { FaCircleUser } from "react-icons/fa6";
 import { Link } from "react-router-dom";
@@ -13,13 +12,18 @@ export default function NavDropdown(): React.ReactElement {
   const currentUser = React.useContext(AuthContext);
 
   const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null);
-  const open = Boolean(anchorEl);
+  const openMenu = Boolean(anchorEl);
   const handleClick = (event: React.MouseEvent<HTMLElement>) => {
     setAnchorEl(event.currentTarget);
   };
   const handleClose = () => {
     setAnchorEl(null);
   };
+
+  const [openSignOutModal, setOpenSignOutModal] = React.useState(false);
+
+  const handleOpenSignOutModal = () => setOpenSignOutModal(true);
+  const handleCloseSignOutModal = () => setOpenSignOutModal(false);
 
   // const blam = async (): Promise<void> => {
   //   const headers = {
@@ -45,6 +49,7 @@ export default function NavDropdown(): React.ReactElement {
 
   const signOut = async (): Promise<void> => {
     try {
+      handleCloseSignOutModal();
       await logout();
       // refresh page?
     } catch (error: any) {
@@ -66,7 +71,7 @@ export default function NavDropdown(): React.ReactElement {
         id="basic-button"
         aria-controls="basic-menu"
         aria-haspopup="true"
-        aria-expanded={open ? "true" : undefined}
+        aria-expanded={openMenu ? "true" : undefined}
         onClick={handleClick}
       >
         <FaCircleUser size={40} />
@@ -74,7 +79,7 @@ export default function NavDropdown(): React.ReactElement {
       <Menu
         id="basic-menu"
         anchorEl={anchorEl}
-        open={open}
+        open={openMenu}
         onClose={handleClose}
         MenuListProps={{
           "aria-labelledby": "basic-button",
@@ -82,8 +87,18 @@ export default function NavDropdown(): React.ReactElement {
       >
         {currentUser ? (
           <div>
-            <MenuItem onClick={handleClose}>Saved Trips</MenuItem>
-            <MenuItem onClick={signOut}>Sign out</MenuItem>
+            {/* <MenuItem onClick={handleClose}>Profile</MenuItem>
+            <MenuItem onClick={handleClose}>My account</MenuItem> */}
+            <Link to="/about">
+              <MenuItem onClick={handleClose}>
+                About plannr
+                <InfoIcon className="ml-2" />
+              </MenuItem>
+            </Link>
+            <MenuItem onClick={handleOpenSignOutModal}>
+              Sign Out
+              <LogoutIcon className="ml-2" />
+            </MenuItem>
           </div>
         ) : (
           <div>
@@ -102,6 +117,29 @@ export default function NavDropdown(): React.ReactElement {
           </div>
         )}
       </Menu>
+
+      <Dialog open={openSignOutModal} onClose={handleCloseSignOutModal}>
+        <div className="flex flex-col items-center justify-center p-10">
+          <h1 className="text-3xl font-bold"> Sign Out </h1>
+          <p className="text-xl">Are you sure you want to sign out?</p>
+          <div className="flex flex-row gap-2 pt-2">
+            <Button
+              variant="text"
+              color="inherit"
+              onClick={handleCloseSignOutModal}
+            >
+              Cancel
+            </Button>
+            <Button
+              variant="text"
+              color="error"
+              onClick={signOut}
+            >
+              Sign Out
+            </Button>
+          </div>
+        </div>
+      </Dialog>
     </div>
   );
 }
