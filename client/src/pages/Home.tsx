@@ -24,16 +24,16 @@ import SearchResults from "../components/Home/SearchResults";
 import TripWindow from "../components/Home/TripWindow";
 import Navbar from "../components/Navbar";
 import {
-  libsArr,
   radius as DEFAULT_RADIUS,
   EPlaces,
+  libsArr,
   pinSVGFilled,
   placeKeys,
   travelModeKeys
 } from "../constants/GoogleMaps/config";
+import { MapContext } from "../contexts/MapContext";
 import { SearchResultContext } from "../contexts/SearchResultContext";
 import { TripContext } from "../contexts/TripContext";
-import { MapContext } from "../contexts/MapContext";
 import { CircleData } from "../dataObjects/CircleData";
 import { PlaceData } from "../dataObjects/PlaceData";
 import { PlanMarkerData } from "../dataObjects/PlanMarkerData";
@@ -304,6 +304,10 @@ export default function Home(props: HomeProps): React.ReactElement {
       ) : (
         <div>Loading...</div>
       )}
+
+      <footer className="flex justify-center items-center h-8 bg-black text-white">
+        <p className="text-center">Plannr © 2023 gang gang ice cream so good, Inc.</p>
+      </footer>
     </div>
   );
 }

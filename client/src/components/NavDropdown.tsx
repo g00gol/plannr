@@ -122,6 +122,7 @@ export default function NavDropdown(): React.ReactElement {
         <div className="flex flex-col items-center justify-center p-10">
           <h1 className="text-3xl font-bold"> Sign Out </h1>
           <p className="text-xl">Are you sure you want to sign out?</p>
+          <p className="text-l italic">Unsaved changes in your trip will be lost.</p>
           <div className="flex flex-row gap-2 pt-2">
             <Button
               variant="text"
