@@ -79,12 +79,7 @@ export default function PlaceCard({
       setCurrentPlaceDetails("");
     }
 
-    if (isResult) {
-      setIsInTrip(false);
-    } else {
-      setIsInTrip(true);
-    }
-
+    setIsInTrip(!isResult);
     setShowDetails(true);
   };
 

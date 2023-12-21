@@ -11,7 +11,7 @@ export const PlaceContext = createContext<PlaceContextType>(null!);
 
 export const PlaceProvider = ({ children }: React.PropsWithChildren<{}>) => {
   const [currentPlaceDetails, setCurrentPlaceDetails] = useState<string>("");
-  const [isInTrip, setIsInTrip] = useState<boolean>(false);
+  const [isInTrip, setIsInTrip] = useState<boolean>(true);
 
   return (
     <PlaceContext.Provider
