@@ -1,4 +1,4 @@
-from typing import List
+from typing import List, Union
 from bson import ObjectId
 from fastapi import HTTPException
 
@@ -143,7 +143,7 @@ async def add_trip(user_id: str, trip_name: str) -> Trip:
         raise Exception(e)
 
 
-async def edit_trip(user_id: str, trip_id: str, trip_name: str | None, places: List[str] | None) -> Trip:
+async def edit_trip(user_id: str, trip_id: str, trip_name: Union[str, None], places: Union[List[str], None]) -> Trip:
     """
     Updates a trip for a user.
     """
