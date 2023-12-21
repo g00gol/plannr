@@ -4,7 +4,7 @@ from bson import ObjectId
 
 
 class Trip(BaseModel):
-    _id: Union[str, ObjectId]
+    trip_id: Union[str, ObjectId]
     name: str
     places: List[str]
 
@@ -21,3 +21,9 @@ class Trip(BaseModel):
             raise ValueError("Name cannot be shorter than 3 characters.")
 
         return v.strip()
+
+    class Config:
+        arbitrary_types_allowed = True
+        json_encoders = {
+            ObjectId: str
+        }

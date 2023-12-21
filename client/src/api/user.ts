@@ -18,7 +18,7 @@ export const createUserData = async (): Promise<void> => {
 
 	if(res.status !== 200) throw res;
 
-	// const data = await res.json();
+	const data = await res.json();
 
     // verify res
     // console.log(`create ${JSON.stringify(data)}`);
@@ -43,6 +43,6 @@ export const getUserData = async (): Promise<UserData> => {
     // verify res
     // console.log(`get ${JSON.stringify(data)}`);
 
-    const userData = new UserData(data.currentTrip, data.trips);
+    const userData = new UserData(data.current_trip, data.trips);
     return userData;
 };
