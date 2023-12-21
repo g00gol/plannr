@@ -28,8 +28,8 @@ export const signup = async (email: string, username: string, password: string) 
   try {
     await createUserData();
   } catch (error: any) {
-    console.log(error);
-    await user.delete();
+    // await user.delete();
+    console.log(`Error creating userdata. User ${email} deleted. Are the server and database up?`);
     throw error;
   }
 
