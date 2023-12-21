@@ -32,54 +32,54 @@ export default function App(): React.ReactElement {
           </Home>
         }
       />
-      <Route path="/signin" element={<CounterProtected />}>
-        <Route
-          path="/signin"
-          element={
-            <Home>
+      <Route
+        path="/signin"
+        element={
+          <Home>
+            <CounterProtected>
               <AuthModal>
                 <Signin />
               </AuthModal>
-            </Home>
-          }
-        />
-      </Route>
-      <Route path="/signup" element={<CounterProtected />}>
-        <Route
-          path="/signup"
-          element={
-            <Home>
+            </CounterProtected>
+          </Home>
+        }
+      />
+      <Route
+        path="/signup"
+        element={
+          <Home>
+            <CounterProtected>
               <AuthModal>
                 <Signup />
               </AuthModal>
-            </Home>
-          }
-        />
-      </Route>
-      <Route path="/forgot" element={<CounterProtected />}>
-        <Route
-          path="/forgot"
-          element={
-            <Home>
+            </CounterProtected>        
+          </Home>
+        }
+      />
+      <Route
+        path="/forgot"
+        element={
+          <Home>
+            <CounterProtected>
               <AuthModal>
                 <ForgotPassword />
               </AuthModal>
-            </Home>
-          }
-        />
-      </Route>
-      <Route path="/reset" element={<ResetProtected />}>
-        <Route
-          path="/reset"
-          element={
-            <Home>
+            </CounterProtected>
+          </Home>
+        }
+      />
+      <Route
+        path="/reset"
+        element={
+          <Home>
+            <ResetProtected>
               <AuthModal>
                 <ResetPassword />
               </AuthModal>
-            </Home>
-          }
-        />
-      </Route>
+            </ResetProtected>
+          </Home>
+        }
+      />
       <Route
         path="*"
         element={
