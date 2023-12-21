@@ -40,9 +40,15 @@ export const AuthProvider = ({ children }: React.PropsWithChildren<{}>) => {
       } catch (error: any) {
         console.log(error)
         if(error.status === 404 || error.status === 403) {
-          await createUserData();
-          await loadUserData();
-          return;
+          try {
+            await createUserData();
+            await loadUserData();
+            return;
+          } catch (error: any) {
+            // console.log('Error creating first user data')
+            console.log(error);
+            return;
+          }
         } 
         console.log(error.message);
         return;

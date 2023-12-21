@@ -1,4 +1,6 @@
-const libsArr = ["places"];
+import { Libraries } from "@react-google-maps/api";
+
+const libsArr : Libraries = ["places"];
 
 const radius = 1500;
 
@@ -127,4 +129,4 @@ const travelModeKeys = (Object.keys(TravelMode) as (keyof typeof TravelMode)[]).
   },
 );
 
-export { libsArr, radius, pinSVGFilled, EPlaces, placeKeys, TravelMode, travelModeKeys, routeColors, hexVals };
+export { libsArr,radius, pinSVGFilled, EPlaces, placeKeys, TravelMode, travelModeKeys, routeColors, hexVals };
