@@ -35,8 +35,8 @@ export default function PlaceCard({
 
   const date: number = new Date().getDay();
   const { addPlace, removePlace } = useContext(TripContext);
-  const { currentPlaceDetails, setCurrentPlaceDetails } =
-    useContext(PlaceContext);
+
+  const { currentPlaceDetails, setCurrentPlaceDetails, isInTrip, setIsInTrip } = useContext(PlaceContext);
 
   const fetchPlaceDetails = () => {
     const map = mapRef.current;
@@ -74,13 +74,35 @@ export default function PlaceCard({
   }, [place.placeId, currentPlaceDetails, isResult]);
 
   const showDetailsHandler = () => {
-    if (place.placeId) {
+    if (isResult && !isInTrip) {
       setCurrentPlaceDetails(place.placeId);
+    } else if (!isResult && isInTrip) {
+      setCurrentPlaceDetails("");
     }
+
+    if (isResult) {
+      setIsInTrip(false);
+    } else {
+      setIsInTrip(true);
+    }
+
     setShowDetails(true);
   };
 
   const hideDetailsHandler = () => {
+    if (isResult && !isInTrip) {
+      setCurrentPlaceDetails("");
+    } else if (!isResult && isInTrip) {
+      setCurrentPlaceDetails(place.placeId);
+    }
+
+    if (isResult) {
+      setIsInTrip(true);
+    } else {
+      setIsInTrip(false);
+      setCurrentPlaceDetails("");
+    }
+
     setShowDetails(false);
   };
 
