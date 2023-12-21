@@ -31,9 +31,8 @@ export default function nearbySearch(
           res !== null
         ) {
           const data: Array<PlaceData> = res.filter((r) => {
-            return r.geometry && r.geometry.location && circleData && google.maps.geometry.spherical.computeDistanceBetween(r.geometry.location, centerData) < circleData.radius;
+            return r.geometry?.location && circleData && google.maps.geometry.spherical.computeDistanceBetween(r.geometry?.location, centerData) < circleData?.radius;
           }).map((r) => {
-
             const placeId = r.place_id!;
             const name = r.name ? r.name : "Invalid Name";
             const address = r.vicinity ? r.vicinity : "Invalid Address";
