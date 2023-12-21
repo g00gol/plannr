@@ -24,6 +24,7 @@ import SearchResults from "../components/Home/SearchResults";
 import TripWindow from "../components/Home/TripWindow";
 import Navbar from "../components/Navbar";
 import {
+  libsArr,
   radius as DEFAULT_RADIUS,
   EPlaces,
   pinSVGFilled,
@@ -60,7 +61,7 @@ export default function Home(props: HomeProps): React.ReactElement {
   const { isLoaded } = useJsApiLoader({
     id: "google-map-script",
     googleMapsApiKey: String(import.meta.env.VITE_MAPS_API_KEY),
-    libraries: ["places"],
+    libraries: libsArr,
   });
 
   const onLoad = useCallback((map: google.maps.Map) => {

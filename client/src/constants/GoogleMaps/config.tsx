@@ -1,3 +1,5 @@
+const libsArr = ["places"];
+
 const radius = 1500;
 
 enum EPlaces {
@@ -125,4 +127,4 @@ const travelModeKeys = (Object.keys(TravelMode) as (keyof typeof TravelMode)[]).
   },
 );
 
-export { radius, pinSVGFilled, EPlaces, placeKeys, TravelMode, travelModeKeys, routeColors, hexVals };
+export { libsArr, radius, pinSVGFilled, EPlaces, placeKeys, TravelMode, travelModeKeys, routeColors, hexVals };
