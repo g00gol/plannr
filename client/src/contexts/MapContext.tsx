@@ -12,7 +12,7 @@ export const MapProvider = ({ children }: React.PropsWithChildren<{}>) => {
   return (
     <MapContext.Provider
       value={{
-        mapRef
+        mapRef,
       }}
     >
       {children}

@@ -1,6 +1,6 @@
 import { Libraries } from "@react-google-maps/api";
 
-const libsArr : Libraries = ["places"];
+const libsArr: Libraries = ["places"];
 
 const radius = 1500;
 
@@ -104,18 +104,30 @@ enum EPlaces {
   zoo,
 }
 
-const routeColors = ["blue", "darkcyan", "dodgerblue", "deepskyblue", "mediumturquoise", "lightskyblue", "midnightblue", "paleturquoise", "royalblue", "cyan"]
+const routeColors = [
+  "blue",
+  "darkcyan",
+  "dodgerblue",
+  "deepskyblue",
+  "mediumturquoise",
+  "lightskyblue",
+  "midnightblue",
+  "paleturquoise",
+  "royalblue",
+  "cyan",
+];
 
-const hexVals = "0123456789ABCDEF"
+const hexVals = "0123456789ABCDEF";
 
 enum TravelMode {
-    BICYCLING = 'BICYCLING',
-    DRIVING = 'DRIVING',
-    TRANSIT = 'TRANSIT',
-    WALKING = 'WALKING',
+  BICYCLING = "BICYCLING",
+  DRIVING = "DRIVING",
+  TRANSIT = "TRANSIT",
+  WALKING = "WALKING",
 }
 
-const pinSVGFilled = "M 12,2 C 8.1340068,2 5,5.1340068 5,9 c 0,5.25 7,13 7,13 0,0 7,-7.75 7,-13 0,-3.8659932 -3.134007,-7 -7,-7 z";
+const pinSVGFilled =
+  "M 12,2 C 8.1340068,2 5,5.1340068 5,9 c 0,5.25 7,13 7,13 0,0 7,-7.75 7,-13 0,-3.8659932 -3.134007,-7 -7,-7 z";
 
 const placeKeys = (Object.keys(EPlaces) as (keyof typeof EPlaces)[]).filter(
   (val) => {
@@ -123,10 +135,20 @@ const placeKeys = (Object.keys(EPlaces) as (keyof typeof EPlaces)[]).filter(
   },
 );
 
-const travelModeKeys = (Object.keys(TravelMode) as (keyof typeof TravelMode)[]).filter(
-  (val) => {
-    return isNaN(Number(val));
-  },
-);
+const travelModeKeys = (
+  Object.keys(TravelMode) as (keyof typeof TravelMode)[]
+).filter((val) => {
+  return isNaN(Number(val));
+});
 
-export { libsArr,radius, pinSVGFilled, EPlaces, placeKeys, TravelMode, travelModeKeys, routeColors, hexVals };
+export {
+  libsArr,
+  radius,
+  pinSVGFilled,
+  EPlaces,
+  placeKeys,
+  TravelMode,
+  travelModeKeys,
+  routeColors,
+  hexVals,
+};

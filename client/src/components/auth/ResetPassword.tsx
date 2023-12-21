@@ -16,8 +16,11 @@ export default function ResetPassword(): React.ReactElement {
 
   const doResetPassword = async (e: React.FormEvent) => {
     e.preventDefault();
-    const password = (document.getElementById("password") as HTMLInputElement).value;
-    const confirmPassword = (document.getElementById("confirmPassword") as HTMLInputElement).value;
+    const password = (document.getElementById("password") as HTMLInputElement)
+      .value;
+    const confirmPassword = (
+      document.getElementById("confirmPassword") as HTMLInputElement
+    ).value;
     try {
       await resetPasswordSchema.validateAsync({ password, confirmPassword });
     } catch (error: any) {
