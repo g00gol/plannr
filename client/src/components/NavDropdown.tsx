@@ -82,8 +82,7 @@ export default function NavDropdown(): React.ReactElement {
       >
         {currentUser ? (
           <div>
-            <MenuItem onClick={handleClose}>Profile</MenuItem>
-            <MenuItem onClick={handleClose}>My account</MenuItem>
+            <MenuItem onClick={handleClose}>Saved Trips</MenuItem>
             <MenuItem onClick={signOut}>Sign out</MenuItem>
           </div>
         ) : (
