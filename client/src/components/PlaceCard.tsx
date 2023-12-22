@@ -239,9 +239,11 @@ export default function PlaceCard({
           } place-img-container flex items-center justify-center hover:scale-105 ease-in-out duration-300`}
         >
           <img
-            className="place-img"
+            className="place-img hover:cursor-pointer"
             src={place.img?.getUrl() ?? noImage}
             alt="Place"
+            onClick={() => showDetailsHandler()}
+            onDoubleClick={() => hideDetailsHandler()}
           />
         </div>
         {children}
