@@ -198,7 +198,7 @@ export default function PlaceCard({
                     startIcon={<AddIcon />}
                     onClick={() => addPlace(place)}
                   >
-                    Add to Plan
+                    Add to Trip
                   </Button>
                 )
               )
