@@ -4,7 +4,12 @@ import firebase from "firebase/compat/app";
 import { UserContext } from "./UserContext";
 import { createUserData, getUserData  } from "../api/user";
 
-export const AuthContext = React.createContext<firebase.User>(null!);
+interface AuthContextType {
+  currentUser: firebase.User;
+  loadUserData: () => Promise<void>;
+}
+
+export const AuthContext = React.createContext<AuthContextType>(null!);
 
 export const AuthProvider = ({ children }: React.PropsWithChildren<{}>) => {
   const [currentUser, setCurrentUser] = useState<firebase.User>(null!);
@@ -22,21 +27,22 @@ export const AuthProvider = ({ children }: React.PropsWithChildren<{}>) => {
     };
   }, []);
 
-  useEffect(() => {
-    const loadUserData = async () => {
-      if (currentUser) {
-        try {
-          const userData = await getUserData();
-          setUserData(userData);
-        } catch(error: any) {
-          console.log(error)
-          throw error;
-        }
-      }
-      else {
-        setUserData(null!);
+  const loadUserData = async () => {
+    if (currentUser) {
+      try {
+        const userData = await getUserData();
+        setUserData(userData);
+      } catch(error: any) {
+        console.log(error)
+        throw error;
       }
     }
+    else {
+      setUserData(null!);
+    }
+  }
+  
+  useEffect(() => {
     const load = async () => {
       try {
         await loadUserData();
@@ -69,6 +75,6 @@ export const AuthProvider = ({ children }: React.PropsWithChildren<{}>) => {
   }
 
   return (
-    <AuthContext.Provider value={currentUser}>{children}</AuthContext.Provider>
+    <AuthContext.Provider value={{currentUser, loadUserData}}>{children}</AuthContext.Provider>
   );
 };

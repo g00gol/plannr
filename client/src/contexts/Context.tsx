@@ -6,7 +6,7 @@ import { PlaceProvider } from "./PlaceContext";
 import { SearchResultProvider } from "./SearchResultContext";
 import { TripProvider } from "./TripContext";
 
-const providers = [AuthProvider, TripProvider, SearchResultProvider, PlaceProvider];
+const providers = [TripProvider, SearchResultProvider, PlaceProvider];
 
 /**
  * This component is used to wrap the entire application with all the context providers.
@@ -15,11 +15,13 @@ export function ContextProvider({ children }: { children: React.ReactNode }) {
   return (
     <UserProvider>
       <MapProvider>
-        {
-          providers.reduce((acc, Provider) => {
-            return <Provider>{acc}</Provider>;
-          }, children)
-        }
+        <AuthProvider>
+          {
+            providers.reduce((acc, Provider) => {
+              return <Provider>{acc}</Provider>;
+            }, children)
+          }
+        </AuthProvider>
       </MapProvider>
     </UserProvider>
   )

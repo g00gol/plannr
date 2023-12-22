@@ -4,6 +4,7 @@ import { PlaceData } from "../dataObjects/PlaceData";
 import { PlanMarkerData } from "../dataObjects/PlanMarkerData";
 import { UserContext } from "./UserContext";
 import { MapContext } from "./MapContext";
+import { AuthContext } from "./AuthContext";
 import { updateTripPlaces } from "../api/trip";
 import { arrayMoveImmutable } from "array-move";
 import { TripData } from "../dataObjects/TripData";
@@ -34,6 +35,7 @@ export const TripProvider = ({ children }: React.PropsWithChildren<{}>) => {
   const [currentInfoWindow, setInfoWindow] = useState<number>(-1);
   // const [loadingTrip, setLoadingTrip] = useState<boolean>(true);
   const { userData } = useContext(UserContext);
+  const { loadUserData } = useContext(AuthContext);
 
   useEffect(() => {
     // load trip from user if user has trip in session
@@ -167,6 +169,8 @@ export const TripProvider = ({ children }: React.PropsWithChildren<{}>) => {
   const saveTrip = async () => {
     try {
       const trip = await updateTripPlaces(tripId, currentTrip.map((place) => place.placeId));
+      //try setting user data if not, just have a separate var to hold
+      await loadUserData();
       checkChanges(trip);
     } catch (error: any) {
       console.log(error.message ?? error.statusText);
