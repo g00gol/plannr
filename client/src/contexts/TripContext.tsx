@@ -13,6 +13,7 @@ interface TripContextType {
   tripName: string;
   currentInfoWindow: number;
   hasChanges: boolean;
+  savingTrip: boolean;
   setTripName: (name: string) => void;
   setInfoWindow: (index: number) => void;
   addPlace: (place: PlaceData) => void;
@@ -30,9 +31,11 @@ export const TripProvider = ({ children }: React.PropsWithChildren<{}>) => {
   const [tripName, setTripName] = useState<string>("My Trip");
   const [tripId, setTripId] = useState<string>(""); //not needed yet
   const [hasChanges, setHasChanges] = useState<boolean>(false);
+  const [presaveTrip, setPresaveTrip] = useState<PlaceData[]>([]); //used to check if trip has changed before saving
   const [currentTrip, setCurrentTrip] = useState<PlaceData[]>([]);
   const [currentInfoWindow, setInfoWindow] = useState<number>(-1);
   // const [loadingTrip, setLoadingTrip] = useState<boolean>(true);
+  const [savingTrip, setSavingTrip] = useState<boolean>(false); 
   const { userData } = useContext(UserContext);
 
   useEffect(() => {
@@ -106,6 +109,7 @@ export const TripProvider = ({ children }: React.PropsWithChildren<{}>) => {
         });
 
         Promise.all(promises).then((places) => {
+          setPresaveTrip(places);
           setCurrentTrip(places);
         }).catch((error) => {
           console.error(error);
@@ -132,14 +136,14 @@ export const TripProvider = ({ children }: React.PropsWithChildren<{}>) => {
 
   useEffect(() => {
     checkChanges();
-  }, [currentTrip, userData]);
+  }, [currentTrip, presaveTrip, userData]);
 
-  const checkChanges = (trip?: TripData) => {
+  const checkChanges = () => {
     // console.log(`checkChanges ${JSON.stringify(userData) } ${JSON.stringify(currentTrip)}`)
     if(userData && currentTrip) {
-      const presavePlaces = trip ? trip.places : (userData.trips.find((trip) => trip.trip_id === tripId)?.places ?? []);
-      const currentPlaces = currentTrip.map((place) => place.placeId);
-      setHasChanges(JSON.stringify(presavePlaces) !== JSON.stringify(currentPlaces));
+      const presavePlacesToId = presaveTrip.map((place) => place.placeId);
+      const currentPlacesToId = currentTrip.map((place) => place.placeId);
+      setHasChanges(JSON.stringify(presavePlacesToId) !== JSON.stringify(currentPlacesToId));
     } else if (currentTrip){
       setHasChanges(false);
     }
@@ -166,8 +170,10 @@ export const TripProvider = ({ children }: React.PropsWithChildren<{}>) => {
 
   const saveTrip = async () => {
     try {
-      const trip = await updateTripPlaces(tripId, currentTrip.map((place) => place.placeId));
-      checkChanges(trip);
+      setSavingTrip(true);
+      await updateTripPlaces(tripId, currentTrip.map((place) => place.placeId));
+      setPresaveTrip(currentTrip);
+      setSavingTrip(false);
     } catch (error: any) {
       console.log(error.message ?? error.statusText);
     }
@@ -180,6 +186,7 @@ export const TripProvider = ({ children }: React.PropsWithChildren<{}>) => {
         tripName,
         currentInfoWindow,
         hasChanges,
+        savingTrip,
         setTripName,
         setInfoWindow,
         addPlace,
