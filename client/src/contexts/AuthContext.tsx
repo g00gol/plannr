@@ -53,7 +53,7 @@ export const AuthProvider = ({ children }: React.PropsWithChildren<{}>) => {
             return;
           }
         } 
-        console.log(error.message);
+        console.log(error);
         return;
       }
     }
