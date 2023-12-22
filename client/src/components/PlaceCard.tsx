@@ -1,8 +1,9 @@
 import AddIcon from "@mui/icons-material/Add";
 import KeyboardArrowDownIcon from "@mui/icons-material/KeyboardArrowDown";
 import KeyboardArrowUpIcon from "@mui/icons-material/KeyboardArrowUp";
+import MapIcon from '@mui/icons-material/Map';
 import RemoveIcon from "@mui/icons-material/Remove";
-import { Button } from "@mui/material";
+import { Button, Dialog } from "@mui/material";
 import React, { useContext, useEffect, useState } from "react";
 import { MdChevronLeft, MdChevronRight } from "react-icons/md";
 import noImage from "../assets/noImage.png";
@@ -35,10 +36,14 @@ export default function PlaceCard({
   const [hours, setHours] = useState<string[]>([]);
   const [gmapsLink, setGmapsLink] = useState<string>("");
   const [placeImgs, setPlaceImgs] = useState<google.maps.places.PlacePhoto[]>([]);
+  const [openImgDialog, setOpenImgDialog] = useState<boolean>(false);
+
+  const handleCloseImgDialog = () => setOpenImgDialog(false);
+  const handleOpenImgDialog = () => setOpenImgDialog(true);
 
   const date: number = new Date().getDay(); // 0 = Sunday, 1 = Monday, etc.
 
-  const { addPlace, removePlace } = useContext(TripContext);
+  const { currentTrip, addPlace, removePlace } = useContext(TripContext);
   const { currentPlaceDetails, setCurrentPlaceDetails, isInTrip, setIsInTrip } = useContext(PlaceContext);
 
   const fetchPlaceDetails = () => {
@@ -113,16 +118,37 @@ export default function PlaceCard({
 
   const slideLeft = () => {
     const slider = document.getElementById("slider");
-    if (slider) {
+    const dialogScroll = document.getElementById("dialog-scroll");
+
+    if (slider && !openImgDialog) {
       slider.scrollLeft -= 200;
+    } else if (dialogScroll && openImgDialog) {
+      dialogScroll.scrollLeft -= 300;
     }
   }
 
   const slideRight = () => {
     const slider = document.getElementById("slider");
-    if (slider) {
+    const dialogScroll = document.getElementById("dialog-scroll");
+
+    if (slider && !openImgDialog) {
       slider.scrollLeft += 200;
+    } else if (dialogScroll && openImgDialog) {
+      dialogScroll.scrollLeft += 300;
     }
+  }
+
+  // Determine if the place this card is displaying is in the trip or not
+  const inCurrentTrip = () => {
+    if (currentTrip) {
+      for (let i = 0; i < currentTrip.length; i++) {
+        if (currentTrip[i].placeId === place.placeId) {
+          return true;
+        }
+      }
+    }
+
+    return false;
   }
 
   return (
@@ -149,13 +175,33 @@ export default function PlaceCard({
           </p>
           <div className="flex flex-row gap-2 pt-2">
             {isResult ? (
-              <Button
-                variant="text"
-                startIcon={<AddIcon />}
-                onClick={() => addPlace(place)}
-              >
-                Add to Plan
-              </Button>
+              // <Button
+              //   variant="text"
+              //   startIcon={<AddIcon />}
+              //   onClick={() => addPlace(place)}
+              // >
+              //   Add to Plan
+              // </Button>
+              (
+                inCurrentTrip() ? (
+                  <Button
+                    variant="text"
+                    startIcon={<MapIcon />}
+                    color="error"
+                    disabled
+                  >
+                    Already in Trip
+                  </Button>
+                ) : (
+                  <Button
+                    variant="text"
+                    startIcon={<AddIcon />}
+                    onClick={() => addPlace(place)}
+                  >
+                    Add to Plan
+                  </Button>
+                )
+              )
             ) : (
               <Button
                 variant="text"
@@ -190,7 +236,7 @@ export default function PlaceCard({
         <div
           className={`row-span-2 h-full w-full ${
             isResult ? "col-span-4" : "col-span-3"
-          } place-img-container flex items-center justify-center`}
+          } place-img-container flex items-center justify-center hover:scale-105 ease-in-out duration-300`}
         >
           <img
             className="place-img"
@@ -217,7 +263,7 @@ export default function PlaceCard({
                 rel="noopener noreferrer"
                 target="_blank"
               >
-                {website}
+                See Place's Website
               </a>
             ) : (
               "N/A"
@@ -247,7 +293,7 @@ export default function PlaceCard({
           )}
           <hr className="border-1 border-gray-300 pb-2" />
           <div className="flex flex-row gap-2 pt-2">
-            <span className="font-bold">Photos: </span>
+            <p><span className="font-bold">Photos: </span> <span className="text-xs italic">click to enlarge</span></p>
             {/* Create a horizontal scrollable div for the photos, all images should be the same size */}
             {placeImgs.length > 0 ? (
               <div className="relative flex items-center gap-2">
@@ -259,6 +305,7 @@ export default function PlaceCard({
                       className="place-img rounded-md inline-block cursor-pointer overflow-hidden h-[100px] w-[100px] hover:scale-105 ease-in-out duration-300 m-2"
                       src={img.getUrl()}
                       alt={`${place.placeId} image ${index}`}
+                      onClick={handleOpenImgDialog}
                     />
                   ))}
                 </div>
@@ -270,6 +317,33 @@ export default function PlaceCard({
           </div>
         </div>
       )}
+
+      <Dialog
+        open={openImgDialog}
+        onClose={handleCloseImgDialog}
+        maxWidth="lg"
+        fullWidth
+      >
+        <div className="p-5">
+          <h1 className="text-2xl font-bold">Images for {place.title}:</h1>
+          <div className="relative flex items-center">
+            <MdChevronLeft size={70} onClick={slideLeft} className="opacity-50 cursor-pointer hover:scale-105 hover:text-blue-500 ease-in-out" />
+            <div id="dialog-scroll" className="w-full h-full overflow-x-scroll no-scrollbar scroll whitespace-nowrap scroll-smooth">
+              {
+                placeImgs.map((img, index) => (
+                  <img
+                    key={index}
+                    className="place-img rounded-md inline-block cursor-pointer overflow-hidden h-[200px] w-[200px] hover:scale-105 ease-in-out duration-300 m-2"
+                    src={img.getUrl()}
+                    alt={`${place.placeId} image ${index}`}
+                  />
+                ))
+              }
+            </div>
+            <MdChevronRight size={70} onClick={slideRight} className="opacity-50 cursor-pointer hover:scale-105 hover:text-blue-500 ease-in-out" />
+          </div>
+        </div>
+      </Dialog>
     </div>
   );
 }
