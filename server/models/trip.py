@@ -30,7 +30,6 @@ class TripCreate(BaseModel):
 
     @validator("places", each_item=True)
     def check_place_id_validity(cls, place_id):
-
         api_key = e.get("MAPS_API_KEY")
         url = f"https://maps.googleapis.com/maps/api/place/details/json?place_id={place_id}&key={api_key}"
         response = requests.get(url)
