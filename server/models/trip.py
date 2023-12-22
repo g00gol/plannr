@@ -36,7 +36,7 @@ class TripCreate(BaseModel):
         response = requests.get(url)
         data = response.json()
 
-        if data['status'] != 'OK':
+        if data["status"] != 'OK':
             raise ValueError(f"Invalid place ID: {place_id}")
 
         return place_id
