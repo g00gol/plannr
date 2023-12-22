@@ -1,27 +1,53 @@
-# React + TypeScript + Vite
+# React Client
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+The client is built with React + Vite + Typescript. It also uses TailwindCSS.
 
-Currently, two official plugins are available:
+## First installation and setup
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react/README.md) uses [Babel](https://babeljs.io/) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+### 1. Install all required modules
 
-## Expanding the ESLint configuration
-
-If you are developing a production application, we recommend updating the configuration to enable type aware lint rules:
-
-- Configure the top-level `parserOptions` property like this:
-
-```js
-   parserOptions: {
-    ecmaVersion: 'latest',
-    sourceType: 'module',
-    project: ['./tsconfig.json', './tsconfig.node.json'],
-    tsconfigRootDir: __dirname,
-   },
+```bash
+$ npm i
 ```
 
-- Replace `plugin:@typescript-eslint/recommended` to `plugin:@typescript-eslint/recommended-type-checked` or `plugin:@typescript-eslint/strict-type-checked`
-- Optionally add `plugin:@typescript-eslint/stylistic-type-checked`
-- Install [eslint-plugin-react](https://github.com/jsx-eslint/eslint-plugin-react) and add `plugin:react/recommended` & `plugin:react/jsx-runtime` to the `extends` list
+### 2. Run the app using node
+
+```bash
+$ npm run dev
+```
+
+# FastAPI Python Server
+
+This project's server is built in FastAPI with Python. Please see http://localhost:8000/docs for more info about the API.
+
+## First installation and setup
+
+### 1. Install all required modules
+
+```bash
+$ pip install -r requirements.txt
+```
+
+### 2. Run the app using uvicorn
+
+```bash
+$ uvicorn main:app
+  OR
+$ python3 -m uvicorn main:app
+```
+
+### 3. View
+
+You can find API docs in browser at http://localhost:8000/docs
+
+# Running with Docker
+
+This project is also set up with Docker. It runs an instance with the client, server, and MongoDB. Please note that the MongoDB will not have data from your local machine.
+
+## Note: Please make sure Docker is correctly installed on your computer.
+
+### 1. To run, simply run:
+
+```bash
+$ docker-compose up --build
+```
