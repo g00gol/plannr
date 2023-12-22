@@ -1,6 +1,6 @@
 import InfoIcon from "@mui/icons-material/Info";
 import LoginIcon from "@mui/icons-material/Login";
-import LogoutIcon from '@mui/icons-material/Logout';
+import LogoutIcon from "@mui/icons-material/Logout";
 import { Button, Dialog, Menu, MenuItem } from "@mui/material";
 import * as React from "react";
 import { FaCircleUser } from "react-icons/fa6";
@@ -55,7 +55,7 @@ export default function NavDropdown(): React.ReactElement {
     } catch (error: any) {
       console.log(`Error: ${error.message}`);
     }
-  }
+  };
 
   // Get the current time of day
   const today = new Date();
@@ -73,12 +73,12 @@ export default function NavDropdown(): React.ReactElement {
 
   return (
     <div className="hidden justify-between p-4 lg:flex lg:flex-1 lg:justify-end">
-      <button onClick={blam}>Test Token</button>
+      {/* <button onClick={blam}>Test Token</button> */}
 
       <p className="pr-4 pt-4 text-lg leading-6 text-gray-900">
         { greeting() }{" "}
         <span className="font-bold">
-          {currentUser ? (currentUser.displayName || currentUser.email) : "Guest"}
+          {currentUser ? currentUser.displayName || currentUser.email : "Guest"}
         </span>
       </p>
       <Button
@@ -136,7 +136,9 @@ export default function NavDropdown(): React.ReactElement {
         <div className="flex flex-col items-center justify-center p-10">
           <h1 className="text-3xl font-bold"> Sign Out </h1>
           <p className="text-xl">Are you sure you want to sign out?</p>
-          <p className="text-l italic">Unsaved changes in your trip will be lost.</p>
+          <p className="text-l italic">
+            Unsaved changes in your trip will be lost.
+          </p>
           <div className="flex flex-row gap-2 pt-2">
             <Button
               variant="text"
@@ -145,11 +147,7 @@ export default function NavDropdown(): React.ReactElement {
             >
               Cancel
             </Button>
-            <Button
-              variant="text"
-              color="error"
-              onClick={signOut}
-            >
+            <Button variant="text" color="error" onClick={signOut}>
               Sign Out
             </Button>
           </div>

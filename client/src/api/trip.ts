@@ -15,11 +15,15 @@ export const updateTripPlaces = async (tripId: string, placeIds: string[]) => {
         "Content-Type": "application/json",
         'Authorization': `Bearer ${idToken}`
     };
+    
+    const body = {
+        places: placeIds
+    };
 
     // need to send req body with fields to specify name and placeid instead of just array (so we could potentially change them both)
     const res = await fetch(`${baseUrl}/user/trips/${tripId}`, {
 		method: "PUT",
-        body: JSON.stringify(placeIds),
+        body: JSON.stringify(body),
 		headers: headers,
     });
 

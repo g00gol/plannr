@@ -155,9 +155,9 @@ async def edit_trip(user_id: str, trip_id: str, trip_name: Union[str, None], pla
         await get_user(user_id)
         # Find trip by trip_id and update trip with all non-None values
         trip: Trip = {}
-        if trip_name:
+        if trip_name is not None:
             trip["trips.$.name"] = trip_name
-        if places:
+        if places is not None:
             trip["trips.$.places"] = places
         await users.update_one({"user_id": user_id, "trips.trip_id": ObjectId(trip_id)}, {"$set": trip})
 

@@ -16,7 +16,7 @@ export default function TripWindow({
   tripToggle,
   toggleTrip,
 }: TripWindowProps): React.ReactElement {
-  const { currentTrip, hasChanges, onSortEnd, saveTrip } = React.useContext(TripContext);
+  const { currentTrip, hasChanges, savingTrip, onSortEnd, saveTrip } = React.useContext(TripContext);
 
   // Not working - intent is to unload window with animation
   const unloadWindow = () => {
@@ -48,16 +48,21 @@ export default function TripWindow({
         { hasChanges &&
           (
             <div className="flex justify-left px-5 pb-1">
-              <p className="text-red-500 pb-1">You have unsaved changes!</p>
-              <Button
-                variant="text"
-                color="inherit"
-                onClick={() => saveTrip()}
-                endIcon={<SaveIcon />}
-                className='text-md rounded-md px-8 !pt-0 text-center hover:text-red-500 hover:font-bold hover:transition hover:duration-300'
-              >
-                Save
-              </Button>
+              { savingTrip ?
+                <p className="text-red-500 pb-1">Saving...</p> :
+                <>
+                  <p className="text-red-500 pb-1">You have unsaved changes!</p>
+                  <Button
+                  variant="text"
+                  color="inherit"
+                  onClick={() => saveTrip()}
+                  endIcon={<SaveIcon />}
+                  className='text-md rounded-md px-8 !pt-0 text-center hover:text-red-500 hover:font-bold hover:transition hover:duration-300'
+                  >
+                    Save
+                  </Button>
+                </>
+              }
             </div>
           )
         }

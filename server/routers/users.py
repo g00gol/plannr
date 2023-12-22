@@ -4,7 +4,7 @@ from fastapi import APIRouter, HTTPException, Request, Depends
 from bson import ObjectId
 
 from db import users_db
-from models import User, Trip
+from models import User, Trip, TripCreate
 from dependencies import firebase_auth
 
 
@@ -44,7 +44,7 @@ async def create_user(request: Request) -> User:
             "current_trip": trip_id,
             "trips": [{
                 "trip_id": trip_id,
-                "name": "My First Trip",
+                "name": "Your Trip",
                 "places": [],
             }],
         }
@@ -94,19 +94,19 @@ async def save_trip(trip_name: str, request: Request) -> Trip:
 
 
 @router.put("/trips/{trip_id}")
-async def update_trip(request: Request, trip_id: str, trip_name: str = None, places: List[str] = None) -> Trip:
+async def update_trip(request: Request, trip_id: str, trip: TripCreate) -> Trip:
     """
     Updates a trip for a user.
     """
-    if not trip_name and not places:
-        raise HTTPException(
-            status_code=400,
-            detail="You must change something!",
-        )
+    trip_name = trip.name
+    places = trip.places
 
     try:
         existing_trip = await users_db.get_trip(request.state.uid, trip_id)
-        trip_data = Trip(trip_id=trip_id, name=trip_name or existing_trip.get('name'), places=places or existing_trip.get('places'))
+        trip_data = Trip(trip_id=trip_id,
+                         name=trip_name if trip_name is not None else existing_trip.get(
+                             "name"),
+                         places=places if places is not None else existing_trip.get("places"))
         trip = await users_db.edit_trip(request.state.uid, trip_data.trip_id, trip_data.name, trip_data.places)
         return trip
     except HTTPException as http_e:
