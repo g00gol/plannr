@@ -2,13 +2,20 @@ import { TextField } from "@mui/material";
 import React, { useState } from "react";
 import { useNavigate, useSearchParams } from "react-router-dom";
 
-import logo from "../../assets/logo_cropped.png";
+import VisibilityIcon from '@mui/icons-material/Visibility';
+import VisibilityOffIcon from '@mui/icons-material/VisibilityOff';
+import { IconButton, InputAdornment } from "@mui/material";
 import { resetpassword } from "../../api/auth";
+import logo from "../../assets/logo_cropped.png";
 import { resetPasswordSchema } from "../../helpers/validation";
 
 export default function ResetPassword(): React.ReactElement {
   const [error, setError] = useState("");
   const [message, setMessage] = useState("");
+  const [showPassword, setShowPassword] = useState(false);
+
+  const handleClickShowPassword = () => setShowPassword(!showPassword);
+  const handleMouseDownPassword = () => setShowPassword(!showPassword);
 
   const [searchParams] = useSearchParams();
   const oobCode = searchParams.get("oobCode") || "";
@@ -43,18 +50,32 @@ export default function ResetPassword(): React.ReactElement {
       <form onSubmit={doResetPassword} className="w-full">
         <TextField
           id="password"
-          type="password"
+          type={showPassword ? "text" : "password"}
           label="Password"
           placeholder="Password"
           variant="outlined"
           required
           fullWidth
           margin="normal"
+
+          InputProps={{
+            endAdornment: (
+              <InputAdornment position="end">
+                <IconButton
+                  aria-label="toggle password visibility"
+                  onClick={handleClickShowPassword}
+                  onMouseDown={handleMouseDownPassword}
+                >
+                  {showPassword ? <VisibilityIcon /> : <VisibilityOffIcon />}
+                </IconButton>
+              </InputAdornment>
+            )
+          }}
         />
         <TextField
           id="confirmPassword"
           type="password"
-          label="ConfirmPassword"
+          label="Confirm Password"
           placeholder="Confirm Password"
           variant="outlined"
           required
