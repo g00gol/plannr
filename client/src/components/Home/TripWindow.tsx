@@ -72,7 +72,7 @@ export default function TripWindow({
               <span className="font-bold">Places in Trip</span>:{" "}
               {currentTrip.length}
             </h3>
-            <div className="flex-grow overflow-y-scroll px-3 py-4">
+            <div className="flex-grow overflow-y-scroll no-scrollbar px-3 py-4">
               <SortableList
                 onSortEnd={onSortEnd}
                 className="list"

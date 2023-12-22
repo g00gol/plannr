@@ -4,6 +4,7 @@ import KeyboardArrowUpIcon from "@mui/icons-material/KeyboardArrowUp";
 import RemoveIcon from "@mui/icons-material/Remove";
 import { Button } from "@mui/material";
 import React, { useContext, useEffect, useState } from "react";
+import { MdChevronLeft, MdChevronRight } from "react-icons/md";
 import noImage from "../assets/noImage.png";
 import { MapContext } from "../contexts/MapContext";
 import { PlaceContext } from "../contexts/PlaceContext";
@@ -109,6 +110,20 @@ export default function PlaceCard({
   const convertPriceLevel = (priceLevel: number | undefined) => {
     return priceLevel === undefined ? "N/A" : "$".repeat(priceLevel);
   };
+
+  const slideLeft = () => {
+    const slider = document.getElementById("slider");
+    if (slider) {
+      slider.scrollLeft -= 200;
+    }
+  }
+
+  const slideRight = () => {
+    const slider = document.getElementById("slider");
+    if (slider) {
+      slider.scrollLeft += 200;
+    }
+  }
 
   return (
     <div className={isResult ? "place-card rounded-md p-2 load-slide-left" : "place-card rounded-md p-2"}>
@@ -236,7 +251,8 @@ export default function PlaceCard({
             {/* Create a horizontal scrollable div for the photos, all images should be the same size */}
             {placeImgs.length > 0 ? (
               <div className="relative flex items-center gap-2">
-                <div id="slider" className="w-full h-full overflow-x-scroll scroll whitespace-nowrap scroll-smooth">
+                <MdChevronLeft size={50} onClick={slideLeft} className="opacity-50 cursor-pointer hover:scale-105 hover:text-blue-500 ease-in-out" />
+                <div id="slider" className="w-full h-full overflow-x-scroll no-scrollbar scroll whitespace-nowrap scroll-smooth">
                   {placeImgs.map((img, index) => (
                     <img
                       key={index}
@@ -246,6 +262,7 @@ export default function PlaceCard({
                     />
                   ))}
                 </div>
+                <MdChevronRight size={50} onClick={slideRight} className="opacity-50 cursor-pointer hover:scale-105 hover:text-blue-500 ease-in-out" />
               </div>
             ) : (
               "No photos available."
