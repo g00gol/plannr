@@ -98,9 +98,8 @@ async def update_trip(request: Request, trip_id: str, trip: TripCreate) -> Trip:
     """
     Updates a trip for a user.
     """
-    trip_name = trip.get("name", "")
-    places = trip.get("places", [])
-
+    trip_name = trip.name
+    places = trip.places
     if not trip_name and not places and places != []:
         raise HTTPException(
             status_code=400,

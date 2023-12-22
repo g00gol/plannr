@@ -17,7 +17,7 @@ export const updateTripPlaces = async (tripId: string, placeIds: string[]) => {
     };
     
     const body = {
-        placeIds: placeIds
+        places: placeIds
     };
 
     // need to send req body with fields to specify name and placeid instead of just array (so we could potentially change them both)
