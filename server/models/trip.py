@@ -3,8 +3,7 @@ from pydantic import BaseModel, validator
 from bson import ObjectId
 
 
-class Trip(BaseModel):
-    trip_id: Union[str, ObjectId]
+class TripCreate(BaseModel):
     name: str
     places: List[str]
 
@@ -21,6 +20,10 @@ class Trip(BaseModel):
             raise ValueError("Name cannot be shorter than 3 characters.")
 
         return v.strip()
+
+
+class Trip(TripCreate):
+    trip_id: Union[str, ObjectId]
 
     class Config:
         arbitrary_types_allowed = True
