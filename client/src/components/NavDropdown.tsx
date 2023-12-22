@@ -25,27 +25,27 @@ export default function NavDropdown(): React.ReactElement {
   const handleOpenSignOutModal = () => setOpenSignOutModal(true);
   const handleCloseSignOutModal = () => setOpenSignOutModal(false);
 
-  const blam = async (): Promise<void> => {
-    // const headers = {
-    //   "Content-Type": "application/json",
-    //   Authorization: "Bearer " + (await currentUser?.getIdToken()),
-    // };
+  // const blam = async (): Promise<void> => {
+  //   // const headers = {
+  //   //   "Content-Type": "application/json",
+  //   //   Authorization: "Bearer " + (await currentUser?.getIdToken()),
+  //   // };
 
-    // const data = await fetch("http://localhost:8000/user", {
-    //   method: "POST",
-    //   headers: headers,
-    // });
-    // console.log(await data.json());
+  //   // const data = await fetch("http://localhost:8000/user", {
+  //   //   method: "POST",
+  //   //   headers: headers,
+  //   // });
+  //   // console.log(await data.json());
 
-    try {
-      const token = await currentUser?.getIdToken();
-      console.log(token);
-      console.log("uid", currentUser?.uid);
-    } catch (e) {
-      console.log("err");
-      console.log(e);
-    }
-  };
+  //   try {
+  //     const token = await currentUser?.getIdToken();
+  //     console.log(token);
+  //     console.log("uid", currentUser?.uid);
+  //   } catch (e) {
+  //     console.log("err");
+  //     console.log(e);
+  //   }
+  // };
 
   const signOut = async (): Promise<void> => {
     try {
