@@ -57,12 +57,26 @@ export default function NavDropdown(): React.ReactElement {
     }
   }
 
+  // Get the current time of day
+  const today = new Date();
+  const time = today.getHours();
+
+  const greeting = (): string => {
+    if (time < 12) {
+      return "Good morning,";
+    } else if (time < 18) {
+      return "Good afternoon,";
+    } else {
+      return "Good evening,";
+    }
+  }
+
   return (
     <div className="hidden justify-between p-4 lg:flex lg:flex-1 lg:justify-end">
       {/* <button onClick={blam}>Test Token</button> */}
 
       <p className="pr-4 pt-4 text-lg leading-6 text-gray-900">
-        Hello,{" "}
+        { greeting() }{" "}
         <span className="font-bold">
           {currentUser ? (currentUser.displayName || currentUser.email) : "Guest"}
         </span>
