@@ -32,8 +32,11 @@ export default function PlaceCard({
   const [phone, setPhone] = useState<string>("");
   const [website, setWebsite] = useState<string>("");
   const [hours, setHours] = useState<string[]>([]);
+  const [gmapsLink, setGmapsLink] = useState<string>("");
+  const [placeImgs, setPlaceImgs] = useState<google.maps.places.PlacePhoto[]>([]);
 
-  const date: number = new Date().getDay();
+  const date: number = new Date().getDay(); // 0 = Sunday, 1 = Monday, etc.
+
   const { addPlace, removePlace } = useContext(TripContext);
   const { currentPlaceDetails, setCurrentPlaceDetails, isInTrip, setIsInTrip } = useContext(PlaceContext);
 
@@ -51,9 +54,12 @@ export default function PlaceCard({
         status === google.maps.places.PlacesServiceStatus.OK &&
         placeDetails
       ) {
+        
         setPhone(placeDetails.formatted_phone_number || "");
         setWebsite(placeDetails.website || "");
         setHours(placeDetails?.opening_hours?.weekday_text ?? []);
+        setGmapsLink(placeDetails.url ?? "");
+        setPlaceImgs(placeDetails.photos ?? []);
       }
     });
   };
@@ -200,7 +206,7 @@ export default function PlaceCard({
               </a>
             ) : (
               "N/A"
-            )}
+            )}{" "} | <a className="text-blue-500 hover:underline" href={gmapsLink} rel="noopener noreferrer" target="_blank">See on Google Maps</a>
           </p>
           <p>
             <span className="pt-5 font-bold">Hours: </span>
@@ -224,6 +230,27 @@ export default function PlaceCard({
           ) : (
             <p>No hours available.</p>
           )}
+          <hr className="border-1 border-gray-300 pb-2" />
+          <div className="flex flex-row gap-2 pt-2">
+            <span className="font-bold">Photos: </span>
+            {/* Create a horizontal scrollable div for the photos, all images should be the same size */}
+            {placeImgs.length > 0 ? (
+              <div className="relative flex items-center gap-2">
+                <div id="slider" className="w-full h-full overflow-x-scroll scroll whitespace-nowrap scroll-smooth">
+                  {placeImgs.map((img, index) => (
+                    <img
+                      key={index}
+                      className="place-img rounded-md inline-block cursor-pointer overflow-hidden h-[100px] w-[100px] hover:scale-105 ease-in-out duration-300 m-2"
+                      src={img.getUrl()}
+                      alt={`${place.placeId} image ${index}`}
+                    />
+                  ))}
+                </div>
+              </div>
+            ) : (
+              "No photos available."
+            )}
+          </div>
         </div>
       )}
     </div>
