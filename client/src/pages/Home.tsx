@@ -245,6 +245,7 @@ export default function Home(props: HomeProps): React.ReactElement {
                   <div className="text-center">
                     <h1 className="font-bold">{placeData[currentInfoWindow].title}</h1>
                     <p>{placeData[currentInfoWindow].addr}</p>
+                    <p>{placeData[currentInfoWindow].rating ? `${placeData[currentInfoWindow].rating} ☆ (${placeData[currentInfoWindow].ratingsTotal})` : "No ratings"}</p>
                   </div>
                 </InfoWindow>
                 : <></>

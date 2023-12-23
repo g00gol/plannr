@@ -9,6 +9,7 @@ import { MdChevronLeft, MdChevronRight } from "react-icons/md";
 import noImage from "../assets/noImage.png";
 import { MapContext } from "../contexts/MapContext";
 import { PlaceContext } from "../contexts/PlaceContext";
+import { SearchResultContext } from "../contexts/SearchResultContext";
 import { TripContext } from "../contexts/TripContext";
 import { PlaceCardProps } from "../types/PlaceCardType";
 
@@ -45,6 +46,7 @@ export default function PlaceCard({
 
   const { currentTrip, addPlace, removePlace } = useContext(TripContext);
   const { currentPlaceDetails, setCurrentPlaceDetails, isInTrip, setIsInTrip } = useContext(PlaceContext);
+  const { currentInfoWindow } = useContext(SearchResultContext);
 
   const fetchPlaceDetails = () => {
     const map = mapRef.current;
@@ -151,8 +153,16 @@ export default function PlaceCard({
     return false;
   }
 
+  const selected = () => {
+    if (currentInfoWindow === index) {
+      return "bg-blue-100";
+    } else {
+      return "";
+    }
+  }
+
   return (
-    <div className={isResult ? "place-card rounded-md p-2 load-slide-left" : "place-card rounded-md p-2"}>
+    <div className={isResult ? `place-card rounded-md p-2 load-slide-left ${selected()}` : `place-card rounded-md p-2`}>
       <div
         className={`grid grid-flow-col grid-rows-2 ${
           isResult ? "grid-cols-9" : "grid-cols-10"
@@ -295,7 +305,7 @@ export default function PlaceCard({
           )}
           <hr className="border-1 border-gray-300 pb-2" />
           <div className="flex flex-row gap-2 pt-2">
-            <p><span className="font-bold">Photos: </span> <span className="text-xs italic">click to enlarge</span></p>
+            <p><span className="font-bold">Photos: </span></p>
             {/* Create a horizontal scrollable div for the photos, all images should be the same size */}
             {placeImgs.length > 0 ? (
               <div className="relative flex items-center gap-2">
