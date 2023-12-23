@@ -5,6 +5,8 @@ import MapIcon from '@mui/icons-material/Map';
 import RemoveIcon from "@mui/icons-material/Remove";
 import { Button, Dialog } from "@mui/material";
 import React, { useContext, useEffect, useState } from "react";
+import { CgWebsite } from "react-icons/cg";
+import { FaClock, FaPhoneAlt } from "react-icons/fa";
 import { MdChevronLeft, MdChevronRight } from "react-icons/md";
 import noImage from "../assets/noImage.png";
 import { MapContext } from "../contexts/MapContext";
@@ -263,11 +265,13 @@ export default function PlaceCard({
         <div className="place-details col-span-6 row-span-2">
           <hr className="border-1 border-gray-300 pb-2" />
           <p>
-            <span className="font-bold">Phone: </span>
+            <FaPhoneAlt className="inline-block" />{" | "}
+            <span className="font-bold pr-2">Phone: </span>
             {phone ? phone : "N/A"}
           </p>
           <p>
-            <span className="font-bold">Website: </span>
+            <CgWebsite className="inline-block" />{" | "}
+            <span className="font-bold pr-2">Website: </span>
             {website ? (
               <a
                 className="text-blue-500 hover:underline"
@@ -282,7 +286,8 @@ export default function PlaceCard({
             )}{" "} | <a className="text-blue-500 hover:underline" href={gmapsLink} rel="noopener noreferrer" target="_blank">See on Google Maps</a>
           </p>
           <p>
-            <span className="pt-5 font-bold">Hours: </span>
+            <FaClock className="inline-block" />{" | "}
+            <span className="pt-5 font-bold pr-2">Hours: </span>
           </p>
           {hours.length > 0 ? (
             <table className="table-auto">
