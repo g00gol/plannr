@@ -28,7 +28,7 @@ export default function TripWindow({
   return (
     <aside
       id="tripWindow"
-      className={`trip top-inherit left-inherit load-slide-right fixed right-12 z-20 mr-2 ${currentTrip.length < 3 ? "h-fit" : "h-4/5"} w-1/3 rounded-lg pb-10 pl-10 opacity-90`}
+      className={`trip top-inherit left-inherit load-slide-right fixed right-12 z-20 mr-2 ${currentTrip.length < 3 ? "h-fit" : "h-4/5"} w-1/3 rounded-lg pb-12 pl-10 opacity-90`}
     >
       {/* move this conditional into just the cards so we don't have to repeat some elements */}
       <div className={`dark:bg-gray-150 z-20 flex ${currentTrip.length < 3 ? "h-fit pb-10" : "h-full"} flex-col rounded-lg bg-white shadow-md`}>
