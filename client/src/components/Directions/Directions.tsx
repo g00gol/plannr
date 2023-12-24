@@ -1,10 +1,10 @@
-import React, { useCallback, useContext } from "react";
-import { DirectionsProps } from "../../types/DirectionsType";
-import { TripContext } from "../../contexts/TripContext";
-import RenderDirections from "./RenderDirections";
-import { pinSVGFilled } from "../../constants/GoogleMaps/config";
 import { InfoWindow, Marker } from "@react-google-maps/api";
+import React, { useCallback, useContext } from "react";
+import { pinSVGFilled } from "../../constants/GoogleMaps/config";
 import { SearchResultContext } from "../../contexts/SearchResultContext";
+import { TripContext } from "../../contexts/TripContext";
+import { DirectionsProps } from "../../types/DirectionsType";
+import RenderDirections from "./RenderDirections";
 
 export default function Directions({
   travelMode,
@@ -31,6 +31,7 @@ export default function Directions({
                   <div className="text-center">
                     <h1 className="font-bold">{currentTrip[currentInfoWindow].title}</h1>
                     <p>{currentTrip[currentInfoWindow].addr}</p>
+                    <p>{currentTrip[currentInfoWindow].rating ? `${currentTrip[currentInfoWindow].rating} ☆ (${currentTrip[currentInfoWindow].ratingsTotal})` : "No ratings"}</p>
                   </div>
                 </InfoWindow>
                 : <></>

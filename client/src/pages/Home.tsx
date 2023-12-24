@@ -202,6 +202,7 @@ export default function Home(props: HomeProps): React.ReactElement {
                 resultsToggle={resultsToggle}
                 toggleResults={toggleResults}
                 searchText={searchText}
+                radius={circleData?.radius}
               />
             ) : (
               <aside

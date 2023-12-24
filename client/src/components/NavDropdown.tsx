@@ -21,9 +21,16 @@ export default function NavDropdown(): React.ReactElement {
   };
 
   const [openSignOutModal, setOpenSignOutModal] = React.useState(false);
+  const [openSignOutNotification, setOpenSignOutNotification] = React.useState(false);
 
   const handleOpenSignOutModal = () => setOpenSignOutModal(true);
-  const handleCloseSignOutModal = () => setOpenSignOutModal(false);
+  const handleCloseSignOutModal = () => {
+    setOpenSignOutModal(false);
+    handleOpenSignOutNotification();
+  }
+
+  const handleOpenSignOutNotification = () => setOpenSignOutNotification(true);
+  const handleCloseSignOutNotification = () => setOpenSignOutNotification(false);
 
   // const blam = async (): Promise<void> => {
   //   // const headers = {
@@ -49,8 +56,8 @@ export default function NavDropdown(): React.ReactElement {
 
   const signOut = async (): Promise<void> => {
     try {
-      handleCloseSignOutModal();
       await logout();
+      handleCloseSignOutModal();
       // refresh page?
     } catch (error: any) {
       console.log(`Error: ${error.message}`);
@@ -149,6 +156,22 @@ export default function NavDropdown(): React.ReactElement {
             </Button>
             <Button variant="text" color="error" onClick={signOut}>
               Sign Out
+            </Button>
+          </div>
+        </div>
+      </Dialog>
+        
+      <Dialog open={openSignOutNotification} onClose={handleCloseSignOutNotification}>
+        <div className="flex flex-col items-center justify-center p-10">
+          <h1 className="text-3xl font-bold"> Sign Out </h1>
+          <p className="text-xl">You have successfully signed out.</p>
+          <div className="flex flex-row gap-2 pt-2">
+            <Button
+              variant="text"
+              color="inherit"
+              onClick={handleCloseSignOutNotification}
+            >
+              Close
             </Button>
           </div>
         </div>

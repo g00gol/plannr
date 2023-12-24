@@ -1,6 +1,8 @@
 import { } from "@react-google-maps/api";
 import React from "react";
 
+import { FaSearch } from "react-icons/fa";
+import { TfiTarget } from "react-icons/tfi";
 import { PlaceData } from "../../dataObjects/PlaceData";
 import PlaceCard from "../PlaceCard";
 
@@ -9,6 +11,7 @@ interface SearchProps {
   resultsToggle: boolean;
   toggleResults: React.Dispatch<React.SetStateAction<boolean>>;
   searchText: string;
+  radius: number;
 }
 
 export default function SearchResults({
@@ -16,7 +19,13 @@ export default function SearchResults({
   resultsToggle,
   toggleResults,
   searchText,
+  radius,
 }: SearchProps): React.ReactElement {
+
+  // Radius is in meters, convert to km
+  const radiusToKm = (radius: number) => {
+    return radius / 1000;
+  }
 
   return (
     <aside
@@ -38,11 +47,14 @@ export default function SearchResults({
           </button>
         </div>
         <h3 className="text-1xl px-5">
+          <FaSearch className="inline-block mr-2 mb-1" />
           <span className="font-bold">
             Number of Results
             {searchText ? ` for "${searchText}"` : ""}
           </span>
-          : {placeData.length}
+          : {placeData.length} {" "}
+          <TfiTarget className="inline-block ml-2 mr-2 mb-1" />
+          <span className="font-bold">Search Radius</span>: {radiusToKm(radius)} km
         </h3>
         <div className="flex-grow overflow-y-scroll px-3 py-4 no-scrollbar">
           {placeData.map((result, index) => (

@@ -7,7 +7,7 @@ import { Button, Dialog } from "@mui/material";
 import React, { useContext, useEffect, useState } from "react";
 import { CgWebsite } from "react-icons/cg";
 import { FaClock, FaPhoneAlt } from "react-icons/fa";
-import { MdChevronLeft, MdChevronRight } from "react-icons/md";
+import { MdChevronLeft, MdChevronRight, MdInsertPhoto } from "react-icons/md";
 import noImage from "../assets/noImage.png";
 import { MapContext } from "../contexts/MapContext";
 import { PlaceContext } from "../contexts/PlaceContext";
@@ -157,7 +157,7 @@ export default function PlaceCard({
 
   const selected = () => {
     if (currentInfoWindow === index) {
-      return "bg-blue-100";
+      return "bg-blue-100 transition duration-500 ease-in-out";
     } else {
       return "";
     }
@@ -310,7 +310,10 @@ export default function PlaceCard({
           )}
           <hr className="border-1 border-gray-300 pb-2" />
           <div className="flex flex-row gap-2 pt-2">
-            <p><span className="font-bold">Photos: </span></p>
+            <p>
+              <MdInsertPhoto className="inline-block" />
+              <span className="font-bold">Photos: </span>
+            </p>
             {/* Create a horizontal scrollable div for the photos, all images should be the same size */}
             {placeImgs.length > 0 ? (
               <div className="relative flex items-center gap-2">
