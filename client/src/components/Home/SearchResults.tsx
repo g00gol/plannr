@@ -52,8 +52,8 @@ export default function SearchResults({
             Number of Results
             {searchText ? ` for "${searchText}"` : ""}
           </span>
-          : {placeData.length} {" "}
-          <TfiTarget className="inline-block ml-2 mr-2 mb-1" />
+          : {placeData.length} {" |"}
+          <TfiTarget className="inline-block ml-1 mr-2 mb-1" />
           <span className="font-bold">Search Radius</span>: {radiusToKm(radius)} km
         </h3>
         <div className="flex-grow overflow-y-scroll px-3 py-4 no-scrollbar">
