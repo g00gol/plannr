@@ -12,6 +12,7 @@ interface SearchProps {
   toggleResults: React.Dispatch<React.SetStateAction<boolean>>;
   searchText: string;
   radius: number;
+  unit: string;
 }
 
 export default function SearchResults({
@@ -20,11 +21,16 @@ export default function SearchResults({
   toggleResults,
   searchText,
   radius,
+  unit,
 }: SearchProps): React.ReactElement {
 
-  // Radius is in meters, convert to km
-  const radiusToKm = (radius: number) => {
-    return radius / 1000;
+  // Convert radius to readable format
+  const convertRadius = () => {
+    if (unit === "KM") {
+      return (radius / 1000).toFixed(1);
+    } else {
+      return ((radius / 1000) * 0.621371).toFixed(1);
+    }
   }
 
   return (
@@ -54,7 +60,7 @@ export default function SearchResults({
           </span>
           : {placeData.length} {" |"}
           <TfiTarget className="inline-block ml-1 mr-2 mb-1" />
-          <span className="font-bold">Search Radius</span>: {radiusToKm(radius)} km
+          <span className="font-bold">Search Radius</span>: {convertRadius()} {unit.toLowerCase()}
         </h3>
         <div className="flex-grow overflow-y-scroll px-3 py-4 no-scrollbar">
           {placeData.map((result, index) => (
