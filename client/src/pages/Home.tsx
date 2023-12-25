@@ -211,7 +211,9 @@ export default function Home(props: HomeProps): React.ReactElement {
                     min={0.5}
                     max={5}
                     onChange={(e, value) => {
-                      if (value) {
+                      const center = mapRef.current?.getCenter();
+                      if (value && center) {
+                        setCenterData(center);
                         setCircleData(
                           new CircleData(centerData, value as number * 1000),
                         );
@@ -229,7 +231,9 @@ export default function Home(props: HomeProps): React.ReactElement {
                     min={0.5}
                     max={5}
                     onChange={(e, value) => {
-                      if (value) {
+                      const center = mapRef.current?.getCenter();
+                      if (value && center) {
+                        setCenterData(center);
                         setCircleData(
                           new CircleData(centerData, value as number * 1609),
                         );
@@ -246,6 +250,12 @@ export default function Home(props: HomeProps): React.ReactElement {
                 className="w-min bg-gray-40 p-50 z-10 m-3 block rounded-xl border border-gray-600 p-4 ps-10 text-lg opacity-90"
                 defaultValue={Units.KM}
                 onChange={(e) => {
+                  const center = mapRef.current?.getCenter();
+                  
+                  if (center) {
+                    setCenterData(center);
+                  }
+
                   setCurrentUnit(e.target.value as Units);
                   if (circleData) {
                     if (e.target.value === Units.KM) {
