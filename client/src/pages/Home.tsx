@@ -18,6 +18,7 @@ import AddIcon from '@mui/icons-material/Add';
 import MapIcon from '@mui/icons-material/Map';
 import SearchIcon from '@mui/icons-material/Search';
 
+import { Slider } from "@mui/material";
 import nearbySearch from "../api/GoogleMaps/nearbySearch";
 import Directions from "../components/Directions/Directions";
 import SearchResults from "../components/Home/SearchResults";
@@ -26,10 +27,11 @@ import Navbar from "../components/Navbar";
 import {
   radius as DEFAULT_RADIUS,
   EPlaces,
+  Units,
   libsArr,
   pinSVGFilled,
   placeKeys,
-  travelModeKeys
+  travelModeKeys,
 } from "../constants/GoogleMaps/config";
 import { MapContext } from "../contexts/MapContext";
 import { SearchResultContext } from "../contexts/SearchResultContext";
@@ -55,6 +57,7 @@ export default function Home(props: HomeProps): React.ReactElement {
   const [travelMode, setTravelMode] = useState<google.maps.TravelMode>();
   const [keyWordData, setKeyWordData] = useState<string>("");
   const [searchText, setSearchText] = useState<string>("");
+  const [currentUnit, setCurrentUnit] = useState<Units>(Units.KM);
   const { currentInfoWindow, setInfoWindow : setSearchWindow } = useContext(SearchResultContext);
   const { currentTrip, setInfoWindow : setTripWindow } = useContext(TripContext);
 
@@ -96,7 +99,7 @@ export default function Home(props: HomeProps): React.ReactElement {
   
       if (center) {
         setCenterData(center);
-        setCircleData(new CircleData(centerData, DEFAULT_RADIUS));
+        setCircleData(new CircleData(centerData, circleData?.radius ? circleData.radius : DEFAULT_RADIUS));
       }
   
       toggleResults(true);
@@ -148,13 +151,13 @@ export default function Home(props: HomeProps): React.ReactElement {
                 type="search"
                 id="searchBar"
                 name="searchBar"
-                placeholder="Search Plannr ... Need inspiration? Use the dropdown to filter by category."
+                placeholder="Search Plannr ... Use the dropdown to filter by category."
                 className="bg-gray-40 p-50 z-10 m-3 block w-2/6 rounded-xl border border-gray-600 p-4 ps-10 text-lg opacity-90"
               />
               <select
                 name="categories"
                 id="categories"
-                className="w-min bg-gray-40 p-50 z-10 m-3 block rounded-xl border border-gray-600 p-4 ps-10 text-lg opacity-90"
+                className="w-min bg-gray-40 p-50 z-10 m-3 block rounded-xl border border-gray-600 p-2 ps-6 text-lg opacity-90"
               >
                 {placeKeys.map((key) => {
                   const val = EPlaces[key];
@@ -175,7 +178,7 @@ export default function Home(props: HomeProps): React.ReactElement {
               <select
                 name="travel_mode"
                 id="travel_mode"
-                className="w-min bg-gray-40 p-50 z-10 m-3 block rounded-xl border border-gray-600 p-4 ps-10 text-lg opacity-90"
+                className="w-min bg-gray-40 p-50 z-10 m-3 block rounded-xl border border-gray-600 p-2 ps-10 text-lg opacity-90"
                 defaultValue={google.maps.TravelMode.WALKING}
                 onChange={(e) => setTravelMode(e.target.value as google.maps.TravelMode)}
               >
@@ -193,6 +196,85 @@ export default function Home(props: HomeProps): React.ReactElement {
                   );
                 })}
               </select>
+
+              <div className="w-2/12 bg-gray-40 p-50 z-10 m-3 block rounded-xl border border-gray-600 p-4 ps-10 text-lg flex flex-row justify-center">
+                <p className="text-center text-md mr-5 bg-slate-100 pl-2 pr-2 rounded-xl opacity-90">Radius</p>
+                {
+                  currentUnit === Units.KM ? (
+                    <Slider
+                    className="w-1/2 bg-gray-40"
+                    defaultValue={DEFAULT_RADIUS / 1000}
+                    aria-label="Radius"
+                    valueLabelDisplay="auto"
+                    step={0.5}
+                    marks
+                    min={0.5}
+                    max={5}
+                    onChange={(e, value) => {
+                      const center = mapRef.current?.getCenter();
+                      if (value && center) {
+                        setCenterData(center);
+                        setCircleData(
+                          new CircleData(centerData, value as number * 1000),
+                        );
+                      }
+                    }}
+                    />
+                  ) : (
+                    <Slider
+                    className="w-1/2 bg-gray-40"
+                    defaultValue={DEFAULT_RADIUS / 1609}
+                    aria-label="Radius"
+                    valueLabelDisplay="auto"
+                    step={0.5}
+                    marks
+                    min={0.5}
+                    max={5}
+                    onChange={(e, value) => {
+                      const center = mapRef.current?.getCenter();
+                      if (value && center) {
+                        setCenterData(center);
+                        setCircleData(
+                          new CircleData(centerData, value as number * 1609),
+                        );
+                      }
+                    }}
+                    />
+                  )
+                }
+              </div>
+
+              <select
+                name="units"
+                id="units"
+                className="w-min bg-gray-40 p-50 z-10 m-3 block rounded-xl border border-gray-600 p-4 ps-10 text-lg opacity-90"
+                defaultValue={Units.KM}
+                onChange={(e) => {
+                  const center = mapRef.current?.getCenter();
+                  
+                  if (center) {
+                    setCenterData(center);
+                  }
+
+                  setCurrentUnit(e.target.value as Units);
+                  if (circleData) {
+                    if (e.target.value === Units.KM) {
+                      // convert to km
+                      setCircleData(
+                        new CircleData(centerData, circleData.radius / 1.609),
+                      );
+                    } else {
+                      // convert to miles
+                      setCircleData(
+                        new CircleData(centerData, circleData.radius * 1.609),
+                      );
+                    }
+                  }
+                }}
+              >
+                <option value={Units.KM}>km</option>
+                <option value={Units.MI}>mi</option>
+              </select>
             </form>
 
             {/* Results Window pretend-component */}
@@ -202,6 +284,8 @@ export default function Home(props: HomeProps): React.ReactElement {
                 resultsToggle={resultsToggle}
                 toggleResults={toggleResults}
                 searchText={searchText}
+                radius={circleData ? circleData.radius : DEFAULT_RADIUS}
+                unit={currentUnit}
               />
             ) : (
               <aside
@@ -245,6 +329,7 @@ export default function Home(props: HomeProps): React.ReactElement {
                   <div className="text-center">
                     <h1 className="font-bold">{placeData[currentInfoWindow].title}</h1>
                     <p>{placeData[currentInfoWindow].addr}</p>
+                    <p>{placeData[currentInfoWindow].rating ? `${placeData[currentInfoWindow].rating} ☆ (${placeData[currentInfoWindow].ratingsTotal})` : "No ratings"}</p>
                   </div>
                 </InfoWindow>
                 : <></>

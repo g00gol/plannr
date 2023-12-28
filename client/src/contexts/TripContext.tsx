@@ -1,12 +1,12 @@
-import React, { useState, useEffect, useContext } from "react";
+import React, { useContext, useEffect, useState } from "react";
 
+import { arrayMoveImmutable } from "array-move";
+import { updateTripPlaces } from "../api/trip";
 import { PlaceData } from "../dataObjects/PlaceData";
 import { PlanMarkerData } from "../dataObjects/PlanMarkerData";
-import { UserContext } from "./UserContext";
-import { MapContext } from "./MapContext";
-import { updateTripPlaces } from "../api/trip";
-import { arrayMoveImmutable } from "array-move";
 import { TripData } from "../dataObjects/TripData";
+import { MapContext } from "./MapContext";
+import { UserContext } from "./UserContext";
 
 interface TripContextType {
   currentTrip: PlaceData[];
@@ -176,6 +176,8 @@ export const TripProvider = ({ children }: React.PropsWithChildren<{}>) => {
       setSavingTrip(false);
     } catch (error: any) {
       console.log(error.message ?? error.statusText);
+      setSavingTrip(false);
+      alert("Error saving trip");
     }
   };
   
