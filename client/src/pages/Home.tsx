@@ -152,12 +152,12 @@ export default function Home(props: HomeProps): React.ReactElement {
                 id="searchBar"
                 name="searchBar"
                 placeholder="Search Plannr ... Use the dropdown to filter by category."
-                className="bg-gray-40 p-50 z-10 m-3 block w-2/6 rounded-xl border border-gray-600 p-4 ps-10 text-lg opacity-90"
+                className="bg-gray-40 p-50 z-10 m-3 block w-2/6 rounded-xl border border-gray-600 p-4 text-lg opacity-90"
               />
               <select
                 name="categories"
                 id="categories"
-                className="w-min bg-gray-40 p-50 z-10 m-3 block rounded-xl border border-gray-600 p-2 ps-6 text-lg opacity-90"
+                className="w-min bg-gray-40 p-50 z-10 m-3 block rounded-xl border border-gray-600 p-4 text-lg opacity-90"
               >
                 {placeKeys.map((key) => {
                   const val = EPlaces[key];
@@ -178,7 +178,7 @@ export default function Home(props: HomeProps): React.ReactElement {
               <select
                 name="travel_mode"
                 id="travel_mode"
-                className="w-min bg-gray-40 p-50 z-10 m-3 block rounded-xl border border-gray-600 p-2 ps-10 text-lg opacity-90"
+                className="w-min bg-gray-40 p-50 z-10 m-3 block rounded-xl border border-gray-600 p-4 text-lg opacity-90"
                 defaultValue={google.maps.TravelMode.WALKING}
                 onChange={(e) => setTravelMode(e.target.value as google.maps.TravelMode)}
               >
@@ -197,7 +197,7 @@ export default function Home(props: HomeProps): React.ReactElement {
                 })}
               </select>
 
-              <div className="w-2/12 bg-gray-40 p-50 z-10 m-3 block rounded-xl border border-gray-600 p-4 ps-10 text-lg flex flex-row justify-center">
+              <div className="w-2/12 bg-gray-40 p-50 z-10 m-3 block rounded-xl border border-gray-600 p-4 text-lg flex flex-row justify-center">
                 <p className="text-center text-md mr-5 bg-slate-100 pl-2 pr-2 rounded-xl opacity-90">Radius</p>
                 {
                   currentUnit === Units.KM ? (
@@ -247,7 +247,7 @@ export default function Home(props: HomeProps): React.ReactElement {
               <select
                 name="units"
                 id="units"
-                className="w-min bg-gray-40 p-50 z-10 m-3 block rounded-xl border border-gray-600 p-4 ps-10 text-lg opacity-90"
+                className="w-min bg-gray-40 p-50 z-10 m-3 block rounded-xl border border-gray-600 p-4 text-lg opacity-90"
                 defaultValue={Units.KM}
                 onChange={(e) => {
                   const center = mapRef.current?.getCenter();
