@@ -2,6 +2,8 @@ import SaveIcon from '@mui/icons-material/Save';
 import React from "react";
 import SortableList, { SortableItem, SortableKnob } from "react-easy-sort";
 import { FaGripLines } from "react-icons/fa6";
+import { FaShare } from 'react-icons/fa';
+import { Tooltip } from 'react-tooltip'
 
 import { Button } from "@mui/material";
 import { TripContext } from "../../contexts/TripContext";
@@ -17,12 +19,21 @@ export default function TripWindow({
   toggleTrip,
 }: TripWindowProps): React.ReactElement {
   const { currentTrip, hasChanges, savingTrip, onSortEnd, saveTrip } = React.useContext(TripContext);
+  const [shareTooltipCopied, setShareTooltipCopied] = React.useState<boolean>(false);
 
   // Not working - intent is to unload window with animation
   const unloadWindow = () => {
     document.getElementById("tripWindow")?.classList.remove("load-slide-right");
     document.getElementById("tripWindow")?.classList.add("unload-slide-right");
     toggleTrip(!tripToggle);
+  }
+
+  const createShareLink = () => {
+    const baseUrl = window.location.href.split('?')[0];
+    const placeIds = currentTrip.map(place => place.placeId);
+    const shareLink = `${baseUrl}?places[]=${placeIds.join('&places[]=')}`;
+    navigator.clipboard.writeText(shareLink);
+    setShareTooltipCopied(true);
   }
 
   return (
@@ -35,7 +46,9 @@ export default function TripWindow({
         <div className="flex justify-between px-5 py-4">
           {/* trip name? */}
           <div className="w-1/2 flex flex-row">
-            <h2 className="pt-2 text-2xl font-bold text-blue-500">Your Trip</h2>{" "}
+            <h2 className="pt-2 text-2xl font-bold text-blue-500">Your Trip</h2> 
+            <Tooltip anchorSelect='.share-tooltip' place="top" afterHide={() => setShareTooltipCopied(false)}>{shareTooltipCopied ? "Copied!" : "Share Trip"}</Tooltip>
+            <button className='share-tooltip pt-2 ml-2 hover:text-blue-500' onClick={() => createShareLink()}>{<FaShare/>}</button>
           </div>
           <button
             type="button"

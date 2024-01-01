@@ -2,6 +2,7 @@ import React from "react";
 import { Route, Routes } from "react-router-dom";
 
 import "./App.css";
+import Home from "./pages/Home";
 import About from "./components/About";
 import AuthModal from "./components/auth/AuthModal";
 import ForgotPassword from "./components/auth/ForgotPassword";
@@ -11,13 +12,20 @@ import Signup from "./components/auth/Signup";
 // import Protected from "./components/middleware/Protected"; //profile
 import CounterProtected from "./components/middleware/CounterProtected";
 import ResetProtected from "./components/middleware/ResetProtected";
-import Home from "./pages/Home";
 
 export default function App(): React.ReactElement {
   return (
     <Routes>
       <Route
         path="/"
+        element={
+          <Home>
+            <></>
+          </Home>
+        }
+      />
+      <Route
+        path="/share"
         element={
           <Home>
             <></>
