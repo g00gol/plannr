@@ -4,12 +4,11 @@ import os
 
 
 client: Optional[AsyncIOMotorClient] = None
-MONGO_URI = cast(str, os.getenv("ATLAS_URI"))
-print(MONGO_URI)
 
 async def startup():
     global client
     try:
+        MONGO_URI = cast(str, os.getenv("ATLAS_URI"))
         client = AsyncIOMotorClient(MONGO_URI)
     except Exception as e:
         raise Exception(e)
