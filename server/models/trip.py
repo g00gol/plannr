@@ -30,13 +30,18 @@ class TripCreate(BaseModel):
 
     @validator("places", each_item=True)
     def check_place_id_validity(cls, place_id):
-        api_key = e.get("MAPS_API_KEY")
-        url = f"https://maps.googleapis.com/maps/api/place/details/json?place_id={place_id}&key={api_key}"
-        response = requests.get(url)
-        data = response.json()
+        if place_id is None:
+            return place_id
+            
+        if not place_id:
+            raise ValueError("Place ID cannot be empty.")
+        # api_key = e.get("MAPS_API_KEY")
+        # url = f"https://maps.googleapis.com/maps/api/place/details/json?place_id={place_id}&key={api_key}"
+        # response = requests.get(url)
+        # data = response.json()
 
-        if data["status"] != 'OK':
-            raise ValueError(f"Invalid place ID: {place_id}")
+        # if data["status"] != 'OK':
+        #     raise ValueError(f"Invalid place ID: {place_id}")
 
         return place_id
 
