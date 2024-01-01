@@ -4,7 +4,7 @@ import os
 
 
 client: Optional[AsyncIOMotorClient] = None
-MONGO_URI = cast(str, os.getenv("MONGO_URI"))
+MONGO_URI = cast(str, os.getenv("ATLAS_URI"))
 
 
 async def startup():
