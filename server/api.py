@@ -3,13 +3,14 @@ from fastapi.middleware.cors import CORSMiddleware
 
 from routers import users_router
 from db import startup, shutdown
+from typing import cast
+import os
 
 
 app = FastAPI()
+CORS_URL = cast(str, os.getenv("MONGO_URI"))
 origins = [
-    "http://localhost:3000",
-    "http://localhost:5173",
-    "https://plannr-ivory.vercel.app",
+    CORS_URL
 ]
 app.add_middleware(
     CORSMiddleware,

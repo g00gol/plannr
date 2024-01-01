@@ -29,5 +29,5 @@ archive.zip
 # macOS
 .DS_Store
 
-*.env*.local
 *.env
+*.env*.*
