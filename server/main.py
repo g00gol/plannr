@@ -5,11 +5,10 @@ from routers import users_router
 from db import startup, shutdown
 from typing import cast
 import os
-# import uvicorn
+import uvicorn
 
 if __name__ == "__main__":
-    print('main')
-    # uvicorn.run("main:app", host="0.0.0.0", port=8000)
+    uvicorn.run("main:app", host="0.0.0.0", port=8000)
     
 app = FastAPI()
 CORS_URL = cast(str, os.getenv("MONGO_URI"))

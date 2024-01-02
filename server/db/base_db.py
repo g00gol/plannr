@@ -23,6 +23,9 @@ async def shutdown():
 
 async def get_db_async(db_name: str) -> AsyncIOMotorDatabase:
     print(client)
+    MONGO_URI = cast(str, os.getenv("MONGO_URI"))
+    client = AsyncIOMotorClient(MONGO_URI)
+    print(client)
     if client is None:
         raise Exception("Database client not initialized.")
     return client[db_name]
