@@ -28,8 +28,6 @@ app.include_router(users_router)
 
 @app.on_event("startup")
 async def on_startup():
-    print("startup")
-    print("startup")
     await startup()
 
 

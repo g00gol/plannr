@@ -21,6 +21,8 @@ async def shutdown():
 
 
 async def get_db_async(db_name: str) -> MongoClient:
+    MONGO_URI = cast(str, os.getenv("MONGO_URI"))
+    client = MongoClient(MONGO_URI)
     if client is None:
         raise Exception("Database client not initialized.", client)
     return client[db_name]
