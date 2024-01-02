@@ -6,7 +6,6 @@ import os
 client: Optional[AsyncIOMotorClient] = None
 
 async def startup():
-    print("STARTING")
     global client
     try:
         MONGO_URI = cast(str, os.getenv("MONGO_URI"))
