@@ -7,8 +7,9 @@ from typing import cast
 import os
 # import uvicorn
 
-# if __name__ == "__main__":
-#     uvicorn.run("main:app", host="0.0.0.0", port=8000)
+if __name__ == "__main__":
+    print('main')
+    # uvicorn.run("main:app", host="0.0.0.0", port=8000)
     
 app = FastAPI()
 CORS_URL = cast(str, os.getenv("MONGO_URI"))
@@ -28,6 +29,8 @@ app.include_router(users_router)
 
 @app.on_event("startup")
 async def on_startup():
+    print("startup")
+    print("startup")
     await startup()
 
 
