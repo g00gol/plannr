@@ -11,7 +11,7 @@ if __name__ == "__main__":
     uvicorn.run("main:app", host="0.0.0.0", port=8000)
     
 app = FastAPI()
-CORS_URL = cast(str, os.getenv("MONGO_URI"))
+CORS_URL = cast(str, os.getenv("CORS_URL"))
 origins = [
     CORS_URL
 ]
