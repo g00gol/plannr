@@ -83,7 +83,7 @@ async def create_user(user: User) -> User:
                 detail="User already exists.",
             )
 
-        res = await db.users.insert_one(user)
+        res = db.users.insert_one(user)
         # Get the newly created user
         _user = db.users.find_one({"_id": res.inserted_id})
 
@@ -134,7 +134,7 @@ async def add_trip(user_id: str, trip_name: str) -> Trip:
             "name": trip_name,
             "places": [],
         }
-        await users.update_one({"user_id": user_id}, {"$push": {"trips": trip}})
+        users.update_one({"user_id": user_id}, {"$push": {"trips": trip}})
 
         return oid_to_str(trip)
     except HTTPException as http_e:
@@ -159,7 +159,7 @@ async def edit_trip(user_id: str, trip_id: str, trip_name: Union[str, None], pla
             trip["trips.$.name"] = trip_name
         if places is not None:
             trip["trips.$.places"] = places
-        await users.update_one({"user_id": user_id, "trips.trip_id": ObjectId(trip_id)}, {"$set": trip})
+        users.update_one({"user_id": user_id, "trips.trip_id": ObjectId(trip_id)}, {"$set": trip})
 
         # Get the updated trip
         _trip = await get_trip(user_id, trip_id)
