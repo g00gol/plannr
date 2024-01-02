@@ -31,9 +31,7 @@ $ pip install -r requirements.txt
 ### 2. Run the app using uvicorn
 
 ```bash
-$ uvicorn main:app
-  OR
-$ python3 -m uvicorn main:app
+$ python main.py
 ```
 
 ### 3. View
