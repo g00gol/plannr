@@ -102,10 +102,11 @@ export const TripProvider = ({ children }: React.PropsWithChildren<{}>) => {
   }
 
   // http://localhost:5173/share?places%5B%5D=ChIJ__-DlN9ZwokRPnVsSyzpXc0&places%5B%5D=ChIJsYJBfl9XwokRZpOdm5tGNi8
-  // load shared trip if exists and user is not logged in
+  // load shared trip if exists and user is not logged in (for now. later when we add multiple trips, make it so they have to log in (or not?))
   useEffect(() => {
-    if(sharedTrip){
+    if(sharedTrip && sharedTrip.length > 0 && !userData){
       const setTrip = async (map: google.maps.Map) => {
+        console.log('load shared trip')
         const places = await getPlaces(map, sharedTrip);
         setCurrentTrip(places);
       }
@@ -127,6 +128,7 @@ export const TripProvider = ({ children }: React.PropsWithChildren<{}>) => {
   // load trip from user if user has trip in session
   useEffect(() => {
     const setTrip = async (map: google.maps.Map) => {
+      console.log('load existing trip')
       try {
         const tripId = userData.currentTrip;
         let trip = userData.trips.find((trip) => trip.trip_id === tripId)

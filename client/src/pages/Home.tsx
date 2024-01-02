@@ -211,6 +211,7 @@ export default function Home(props: HomeProps): React.ReactElement {
                     min={0.5}
                     max={5}
                     onChange={(e, value) => {
+                      if(e) {}; //src/pages/Home.tsx(213,32): error TS6133: 'e' is declared but its value is never read.
                       const center = mapRef.current?.getCenter();
                       if (value && center) {
                         setCenterData(center);
@@ -231,6 +232,7 @@ export default function Home(props: HomeProps): React.ReactElement {
                     min={0.5}
                     max={5}
                     onChange={(e, value) => {
+                      if(e) {};
                       const center = mapRef.current?.getCenter();
                       if (value && center) {
                         setCenterData(center);

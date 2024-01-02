@@ -29,7 +29,7 @@ async def get_user(user_id: str) -> User:
     try:
         db = await get_db_async("plannr")
         users = db["users"]
-        user = await users.find_one({"user_id": user_id})
+        user = users.find_one({"user_id": user_id})
 
         # If user not found, raise exception
         if not user:
@@ -52,7 +52,7 @@ async def get_user_by_value(key: str, value: str) -> User:
     try:
         db = await get_db_async("plannr")
         users = db["users"]
-        user = await users.find_one({key: value})
+        user = users.find_one({key: value})
 
         # If user not found, raise exception
         if not user:
@@ -76,16 +76,16 @@ async def create_user(user: User) -> User:
         db = await get_db_async("plannr")
 
         # Check if user_id already exists in database
-        _user = await db.users.find_one({"user_id": user["user_id"]})
+        _user = db.users.find_one({"user_id": user["user_id"]})
         if _user:
             raise HTTPException(
                 status_code=409,
                 detail="User already exists.",
             )
 
-        res = await db.users.insert_one(user)
+        res = db.users.insert_one(user)
         # Get the newly created user
-        _user = await db.users.find_one({"_id": res.inserted_id})
+        _user = db.users.find_one({"_id": res.inserted_id})
 
         return oid_to_str(_user)
     except HTTPException as http_e:
@@ -101,7 +101,7 @@ async def get_trip(user_id: str, trip_id: str) -> Trip:
     try:
         db = await get_db_async("plannr")
         users = db["users"]
-        trip = await users.find_one({"user_id": user_id, "trips.trip_id": ObjectId(trip_id)}, {"trips.$": 1})
+        trip = users.find_one({"user_id": user_id, "trips.trip_id": ObjectId(trip_id)}, {"trips.$": 1})
 
         # If trip not found, raise exception
         if not trip:
@@ -134,7 +134,7 @@ async def add_trip(user_id: str, trip_name: str) -> Trip:
             "name": trip_name,
             "places": [],
         }
-        await users.update_one({"user_id": user_id}, {"$push": {"trips": trip}})
+        users.update_one({"user_id": user_id}, {"$push": {"trips": trip}})
 
         return oid_to_str(trip)
     except HTTPException as http_e:
@@ -159,7 +159,7 @@ async def edit_trip(user_id: str, trip_id: str, trip_name: Union[str, None], pla
             trip["trips.$.name"] = trip_name
         if places is not None:
             trip["trips.$.places"] = places
-        await users.update_one({"user_id": user_id, "trips.trip_id": ObjectId(trip_id)}, {"$set": trip})
+        users.update_one({"user_id": user_id, "trips.trip_id": ObjectId(trip_id)}, {"$set": trip})
 
         # Get the updated trip
         _trip = await get_trip(user_id, trip_id)
