@@ -204,6 +204,7 @@ export default function Home(props: HomeProps): React.ReactElement {
                     <Slider
                     className="w-1/2 bg-gray-40"
                     defaultValue={DEFAULT_RADIUS / 1000}
+                    value={circleData ? circleData.radius / 1000 : DEFAULT_RADIUS / 1000}
                     aria-label="Radius"
                     valueLabelDisplay="auto"
                     step={0.5}
@@ -225,6 +226,7 @@ export default function Home(props: HomeProps): React.ReactElement {
                     <Slider
                     className="w-1/2 bg-gray-40"
                     defaultValue={DEFAULT_RADIUS / 1609}
+                    value={circleData ? circleData.radius / 1609 : DEFAULT_RADIUS / 1609}
                     aria-label="Radius"
                     valueLabelDisplay="auto"
                     step={0.5}
