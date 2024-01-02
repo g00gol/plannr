@@ -29,7 +29,7 @@ async def get_user(user_id: str) -> User:
     try:
         db = await get_db_async("plannr")
         users = db["users"]
-        user = await users.find_one({"user_id": user_id})
+        user = users.find_one({"user_id": user_id})
 
         # If user not found, raise exception
         if not user:
