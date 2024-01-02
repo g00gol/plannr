@@ -9,7 +9,9 @@ async def startup():
     global client
     try:
         MONGO_URI = cast(str, os.getenv("MONGO_URI"))
+        print(MONGO_URI)
         client = AsyncIOMotorClient(MONGO_URI)
+        print(client)
     except Exception as e:
         raise Exception(e)
 
