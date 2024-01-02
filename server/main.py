@@ -2,7 +2,7 @@ from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 
 from routers import users_router
-from db import startup, shutdown
+from db import shutdown
 from typing import cast
 import os
 import uvicorn
@@ -26,10 +26,9 @@ app.add_middleware(
 
 app.include_router(users_router)
 
-@app.on_event("startup")
-async def on_startup():
-    await startup()
-
+# @app.on_event("startup")
+# async def on_startup():
+#     await startup()
 
 @app.on_event("shutdown")
 async def on_shutdown():
