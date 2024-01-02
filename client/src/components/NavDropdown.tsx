@@ -24,10 +24,7 @@ export default function NavDropdown(): React.ReactElement {
   const [openSignOutNotification, setOpenSignOutNotification] = React.useState(false);
 
   const handleOpenSignOutModal = () => setOpenSignOutModal(true);
-  const handleCloseSignOutModal = () => {
-    setOpenSignOutModal(false);
-    handleOpenSignOutNotification();
-  }
+  const handleCloseSignOutModal = () => { setOpenSignOutModal(false); }
 
   const handleOpenSignOutNotification = () => setOpenSignOutNotification(true);
   const handleCloseSignOutNotification = () => setOpenSignOutNotification(false);
@@ -57,7 +54,9 @@ export default function NavDropdown(): React.ReactElement {
   const signOut = async (): Promise<void> => {
     try {
       await logout();
+
       handleCloseSignOutModal();
+      handleOpenSignOutNotification();
       // refresh page?
     } catch (error: any) {
       console.log(`Error: ${error.message}`);
