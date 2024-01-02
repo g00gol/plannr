@@ -3,7 +3,7 @@
     "builds": [
       { "src": "main.py", "use": "@vercel/python" }
     ],
-    "buildCommand": "python main.py",
+    "buildCommand": "python -m uvicorn main:app --host 8080",
     "routes": [
       { "src": "/(.*)", "dest": "/main.py" }
     ],
