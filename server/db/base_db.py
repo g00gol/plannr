@@ -26,8 +26,6 @@ async def get_db_async(db_name: str) -> MongoClient:
     # print(client)
     MONGO_URI = cast(str, os.getenv("MONGO_URI"))
     client = MongoClient(MONGO_URI)
-    raise Exception('hi', client, MONGO_URI)
-    print(client)
     if client is None:
-        raise Exception("Database client not initialized.")
+        raise Exception("Database client not initialized.", client)
     return client[db_name]
