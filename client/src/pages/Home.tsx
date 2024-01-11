@@ -79,6 +79,16 @@ export default function Home(props: HomeProps): React.ReactElement {
     setTripWindow(-1);
   }, []);
 
+  const clearSearch = (event: FormEvent<HTMLFormElement>) => {
+    if(!event.currentTarget.searchBar.value && searchText){
+      setSearchText("");
+      setKeyWordData("");
+      setCircleData(undefined);
+      setPlaceData([]);
+      setMarkerData([]);
+    }
+  }
+
   const search = (event: FormEvent<HTMLFormElement>) => {
     event.preventDefault();
     const center = mapRef.current?.getCenter();
@@ -146,7 +156,7 @@ export default function Home(props: HomeProps): React.ReactElement {
             {/* Map crosshair */}
             <AddIcon className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 text-2xl text-blue-800 z-10 pointer-events-none"/>
             {/* Search Bar */}
-            <form className="flex justify-center" onSubmit={search}>
+            <form className="flex justify-center" onSubmit={search} onChange={clearSearch}>
               <input
                 type="search"
                 id="searchBar"
