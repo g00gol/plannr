@@ -17,6 +17,7 @@ import "react-simple-typewriter/dist/index";
 import AddIcon from '@mui/icons-material/Add';
 import MapIcon from '@mui/icons-material/Map';
 import SearchIcon from '@mui/icons-material/Search';
+import addr_search_icon from '../assets/addr_search_icon.png'
 
 import { Slider } from "@mui/material";
 import nearbySearch from "../api/GoogleMaps/nearbySearch";
@@ -79,6 +80,9 @@ export default function Home(props: HomeProps): React.ReactElement {
     setTripWindow(-1);
   }, []);
 
+  const searchAddr = () => {
+    
+  }
   const clearSearch = (event: FormEvent<HTMLFormElement>) => {
     if(!event.currentTarget.searchBar.value && searchText){
       setSearchText("");
@@ -163,6 +167,13 @@ export default function Home(props: HomeProps): React.ReactElement {
                 name="searchBar"
                 placeholder="Search Plannr ... Use the dropdown to filter by category."
                 className="bg-gray-40 p-50 z-10 m-3 block w-2/6 rounded-xl border border-gray-600 p-4 text-lg opacity-90"
+              />
+              <img
+                id="addressSearchBtn" 
+                onClick={searchAddr}
+                className="relative z-10 h-[5%] w-[5%]"
+                src={addr_search_icon}
+                alt="button for searching by address"
               />
               <select
                 name="categories"
