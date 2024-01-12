@@ -12,9 +12,11 @@ export default function nearbySearch(
   keyWordData: string,
   typeData: string,
   setPlaceData: React.Dispatch<React.SetStateAction<PlaceData[]>>,
+  setClosestData: React.Dispatch<React.SetStateAction<PlaceData | undefined>>
 ) {
   if (mapRef && mapRef.current) {
     setPlaceData([]);
+    setClosestData(undefined);
     const placesService = new google.maps.places.PlacesService(mapRef.current);
     placesService.nearbySearch(
       {
@@ -30,8 +32,16 @@ export default function nearbySearch(
           status === google.maps.places.PlacesServiceStatus.OK &&
           res !== null
         ) {
+          let minDist = Number.MAX_VALUE;
+          let minID : string | undefined = undefined;
           const data: Array<PlaceData> = res.filter((r) => {
-            return r.geometry?.location && circleData && google.maps.geometry.spherical.computeDistanceBetween(r.geometry?.location, centerData) < circleData?.radius;
+            const dist = r.geometry?.location && circleData && google.maps.geometry.spherical.computeDistanceBetween(r.geometry?.location, centerData);
+            if(dist && dist < minDist) {
+              minID = r.place_id; 
+              minDist = dist;
+            }
+
+            return dist && dist < circleData?.radius;
           }).map((r) => {
             const placeId = r.place_id!;
             const name = r.name ? r.name : "Invalid Name";
@@ -55,6 +65,7 @@ export default function nearbySearch(
               thumbnail,
             );
           });
+          setClosestData(data.find((place) => {return place.placeId === minID}));
           setPlaceData([...data]);
         }
       },

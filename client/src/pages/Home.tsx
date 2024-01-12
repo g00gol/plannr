@@ -17,7 +17,8 @@ import "react-simple-typewriter/dist/index";
 import AddIcon from '@mui/icons-material/Add';
 import MapIcon from '@mui/icons-material/Map';
 import SearchIcon from '@mui/icons-material/Search';
-import addr_search_icon from '../assets/addr_search_icon.png'
+import addr_icon from '../assets/addr_search_icon.png';
+import addr_unclicked from '../assets/addr_search_icon_unclicked.png'
 
 import { Slider } from "@mui/material";
 import nearbySearch from "../api/GoogleMaps/nearbySearch";
@@ -32,7 +33,7 @@ import {
   libsArr,
   pinSVGFilled,
   placeKeys,
-  travelModeKeys,
+  travelModeKeys
 } from "../constants/GoogleMaps/config";
 import { MapContext } from "../contexts/MapContext";
 import { SearchResultContext } from "../contexts/SearchResultContext";
@@ -59,6 +60,8 @@ export default function Home(props: HomeProps): React.ReactElement {
   const [keyWordData, setKeyWordData] = useState<string>("");
   const [searchText, setSearchText] = useState<string>("");
   const [currentUnit, setCurrentUnit] = useState<Units>(Units.KM);
+  const [addrMode, toggleAddrMode] = useState<boolean>(false);
+  const [closestLocation, setClosestData] = useState<PlaceData | undefined>(undefined);
   const { currentInfoWindow, setInfoWindow : setSearchWindow } = useContext(SearchResultContext);
   const { currentTrip, setInfoWindow : setTripWindow } = useContext(TripContext);
 
@@ -80,9 +83,6 @@ export default function Home(props: HomeProps): React.ReactElement {
     setTripWindow(-1);
   }, []);
 
-  const searchAddr = () => {
-    
-  }
   const clearSearch = (event: FormEvent<HTMLFormElement>) => {
     if(!event.currentTarget.searchBar.value && searchText){
       setSearchText("");
@@ -114,8 +114,8 @@ export default function Home(props: HomeProps): React.ReactElement {
       if (center) {
         setCenterData(center);
         setCircleData(new CircleData(centerData, circleData?.radius ? circleData.radius : DEFAULT_RADIUS));
-      }
-  
+      } 
+      
       toggleResults(true);
       toggleTrip(true);
     }
@@ -133,7 +133,16 @@ export default function Home(props: HomeProps): React.ReactElement {
           keyWordData,
           typeData,
           setPlaceData,
+          setClosestData
         );
+
+        console.log(closestLocation);
+        console.log(addrMode && closestLocation !== undefined && closestLocation.marker !== undefined)
+        if(addrMode && closestLocation !== undefined && closestLocation.marker !== undefined){
+          setCenterData(closestLocation.marker.location);
+          setCircleData(new CircleData(centerData, circleData?.radius ? circleData.radius : DEFAULT_RADIUS));
+        }
+        
       } catch (e) {
         console.log(e);
       }
@@ -142,7 +151,7 @@ export default function Home(props: HomeProps): React.ReactElement {
     if (resultsToggle) {
       fetchData();
     }
-  }, [keyWordData, typeData, centerData, travelMode]);
+  }, [keyWordData, typeData, centerData, travelMode, addrMode]);
 
   return (
     <div className="flex h-screen flex-col">
@@ -170,10 +179,10 @@ export default function Home(props: HomeProps): React.ReactElement {
               />
               <img
                 id="addressSearchBtn" 
-                onClick={searchAddr}
-                className="relative z-10 h-[5%] w-[5%]"
-                src={addr_search_icon}
-                alt="button for searching by address"
+                onClick={() => toggleAddrMode(!addrMode)}
+                className= {`relative z-10 h-[5%] w-[5%] ${addrMode ? "fill-red-500" : ""}`}
+                src={addrMode ? addr_icon : addr_unclicked}
+                alt="Button for searching by address"
               />
               <select
                 name="categories"
