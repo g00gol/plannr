@@ -197,7 +197,7 @@ export default function Home(props: HomeProps): React.ReactElement {
                 })}
               </select>
 
-              <div className="w-2/12 bg-gray-40 p-50 z-10 m-3 block rounded-xl border border-gray-600 p-4 text-lg flex flex-row justify-center">
+              <div className="w-2/12 bg-gray-40 p-50 z-10 m-3 rounded-xl border border-gray-600 p-4 text-lg flex flex-row justify-center">
                 <p className="text-center text-md mr-5 bg-slate-100 pl-2 pr-2 rounded-xl opacity-90">Radius</p>
                 {
                   currentUnit === Units.KM ? (

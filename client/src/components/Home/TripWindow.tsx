@@ -3,6 +3,7 @@ import React from "react";
 import SortableList, { SortableItem, SortableKnob } from "react-easy-sort";
 import { FaGripLines } from "react-icons/fa6";
 import { FaShare } from 'react-icons/fa';
+import { TbMapUp } from "react-icons/tb";
 import { Tooltip } from 'react-tooltip'
 
 import { Button } from "@mui/material";
@@ -36,6 +37,18 @@ export default function TripWindow({
     setShareTooltipCopied(true);
   }
 
+  const openInMaps = () => {
+    // https://developers.google.com/maps/documentation/urls/get-started#directions-action
+    const baseUrl = "https://www.google.com/maps/dir/";
+    const placeIds = currentTrip.map(place => encodeURIComponent(place.placeId));
+    const placeNames = currentTrip.map(place => encodeURIComponent(place.title));
+    const originQP = `origin=${placeNames[0]}&origin_place_id=${placeIds[0]}`; 
+    const destinationQP = `destination=${placeNames[placeNames.length - 1]}&destination_place_id=${placeIds[placeIds.length - 1]}`;
+    const waypointsQP = `waypoints=${placeNames.slice(1, placeNames.length - 1).join('|')}&waypoint_place_ids=${placeIds.slice(1, placeIds.length - 1).join('|')}`
+    const mapsLink = `${baseUrl}?api=1&${originQP}&${destinationQP}&${waypointsQP}`;
+    window.open(mapsLink, '_blank');
+  }
+
   return (
     <aside
       id="tripWindow"
@@ -49,6 +62,8 @@ export default function TripWindow({
             <h2 className="pt-2 text-2xl font-bold text-blue-500">Your Trip</h2> 
             <Tooltip anchorSelect='.share-tooltip' place="top" afterHide={() => setShareTooltipCopied(false)}>{shareTooltipCopied ? "Copied!" : "Share Trip"}</Tooltip>
             <button className='share-tooltip pt-2 ml-2 hover:text-blue-500' onClick={() => createShareLink()}>{<FaShare/>}</button>
+            <Tooltip anchorSelect='.open-in-map-tooltip' place="top">{"Open In Google Maps"}</Tooltip>
+            <button className='open-in-map-tooltip pt-2 ml-2 hover:text-blue-500' onClick={() => openInMaps()}>{<TbMapUp/>}</button>
           </div>
           <button
             type="button"
