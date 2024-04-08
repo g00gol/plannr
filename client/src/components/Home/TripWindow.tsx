@@ -39,13 +39,19 @@ export default function TripWindow({
 
   const openInMaps = () => {
     // https://developers.google.com/maps/documentation/urls/get-started#directions-action
-    const baseUrl = "https://www.google.com/maps/dir/";
+    const baseUrl = "https://www.google.com/maps/dir/?api=1";
+
+    if(currentTrip.length === 0) return window.open(baseUrl, '_blank');
+
     const placeIds = currentTrip.map(place => encodeURIComponent(place.placeId));
     const placeNames = currentTrip.map(place => encodeURIComponent(place.title));
-    const originQP = `origin=${placeNames[0]}&origin_place_id=${placeIds[0]}`; 
+    const originQP = `origin=${placeNames[0]}&origin_place_id=${placeIds[0]}`;
+
+    if(placeIds.length === 1) return window.open(`${baseUrl}&${originQP}`, '_blank');
+    
     const destinationQP = `destination=${placeNames[placeNames.length - 1]}&destination_place_id=${placeIds[placeIds.length - 1]}`;
     const waypointsQP = `waypoints=${placeNames.slice(1, placeNames.length - 1).join('|')}&waypoint_place_ids=${placeIds.slice(1, placeIds.length - 1).join('|')}`
-    const mapsLink = `${baseUrl}?api=1&${originQP}&${destinationQP}&${waypointsQP}`;
+    const mapsLink = `${baseUrl}&${originQP}&${destinationQP}&${waypointsQP}`;
     window.open(mapsLink, '_blank');
   }
 
